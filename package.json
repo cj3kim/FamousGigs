@@ -1,0 +1,14 @@
+{
+  "name": "FamousGigs",
+  "version": "0.0.0",
+  "description": "A site for Famous Developers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cj3kim",
+  "license": "No License",
+  "dependencies": {
+    "express": "^4.11.2"
+  }
+}
