@@ -2,10 +2,15 @@
 var express = require('express')
 var app = express()
 
-// respond with "hello world" when a GET request is made to the homepage
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html')
+
+app.set('views', './app/views');
+
 app.get('/', function(req, res) {
-  res.send('hello world')
+  res.render('index')
 })
 
 var port = 1337;
+
 app.listen(port);
