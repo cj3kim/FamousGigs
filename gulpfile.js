@@ -6,3 +6,14 @@ gulp.task('default', function () {
   require('./app.js');
 })
 
+
+
+var uglify = require('gulp-uglify'),
+    concat = require('gulp-concat');
+
+gulp.task('js', function () {
+   return gulp.src('app/assets/scripts/*.js')
+      .pipe(uglify())
+      .pipe(concat('app.js'))
+      .pipe(gulp.dest('public/scripts'));
+});
