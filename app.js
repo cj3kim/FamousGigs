@@ -8,14 +8,12 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html')
 app.set('views', './app/views');
 
-app.use('/scripts', serveStatic('public/scripts'));
-app.use('/scripts', serveIndex('public/scripts'));
-
+app.use('/public', serveIndex('public/'));
+app.use('/public', serveStatic('public/'));
 
 app.get('/', function(req, res) {
   res.render('index')
 })
 
 var port = 1337;
-
 app.listen(port);
