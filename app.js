@@ -16,4 +16,6 @@ app.get('/', function(req, res) {
 })
 
 var port = 1337;
+console.log('Starting server at port ' + port + '.');
+
 app.listen(port);

@@ -8,13 +8,26 @@ var   gulp       = require('gulp')
     , _          = require('underscore')
     ;
 
+var sass = require('gulp-sass');
 var uglify = require('gulp-uglify'),
-    concat = require('gulp-concat');
+    concatCSS = require('gulp-concat-css');
 
-gulp.task('default', function () {
-  console.log('starting server');
-  require('./app.js');
-})
+gulp.task('default',['sass', 'browserify-watch', 'watch', 'start-dev-server'])
+
+gulp.task('start-dev-server', function () {
+  exec('node ./app.js');
+});
+
+gulp.task('sass', function () {
+    gulp.src('./app/assets/styles/*.scss')
+        .pipe(sass())
+        .pipe(concatCSS('main.css'))
+        .pipe(gulp.dest('./public/styles'));
+});
+
+gulp.task('watch', function () {
+  gulp.watch('./app/assets/styles/*.scss', ['sass'])
+});
 
 gulp.task('browserify-watch', function () {
   var b = browserify({ cache: {}, packageCache: {}, fullPaths: true })
