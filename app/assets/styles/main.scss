@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:500,400,300);
+
 html {
   background: #fff;
 }
@@ -6,3 +8,12 @@ html {
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
 }
+
+h1,h2,h3 {
+  font-family: Raleway, serif;
+}
+
+p,span {
+  font-family: Raleway, serif;
+}
+

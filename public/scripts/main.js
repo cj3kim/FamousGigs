@@ -43,7 +43,7 @@ var navbarSurface = new Surface({
 });
 
 var stateModifier = new StateModifier({
-  transform: Transform.translate(200, 0, 0)
+  transform: Transform.translate(300, 0, 0)
 });
 
 var stateModifierTwo = new StateModifier({
