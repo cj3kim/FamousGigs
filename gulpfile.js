@@ -12,10 +12,15 @@ var sass = require('gulp-sass');
 var uglify = require('gulp-uglify'),
     concatCSS = require('gulp-concat-css');
 
-gulp.task('default',['sass', 'browserify-watch', 'watch', 'start-dev-server'])
+gulp.task('default',['fonts', 'sass', 'browserify-watch', 'watch', 'start-dev-server'])
 
 gulp.task('start-dev-server', function () {
   exec('node ./app.js');
+});
+
+gulp.task('fonts', function () {
+    gulp.src('./app/assets/fonts/**/*')
+      .pipe(gulp.dest('./public/fonts'));
 });
 
 gulp.task('sass', function () {

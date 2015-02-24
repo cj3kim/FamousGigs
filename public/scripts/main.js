@@ -22,25 +22,20 @@ var Timer            = require('famous/utilities/Timer');
 // create the main context
 var mainContext = Engine.createContext();
 var $ = require('zepto-browserify').$;
-var $template = $("<div>\n  <h1>famous gigs</h1>\n  <h3>Gigs/Jobs</h3>\n  <h3>Developers</h3>\n  <h3>Post</h3>\n</div>\n");
+var $template = $("<div class='navbar'>\n  <h1><span>famous</span>gigs</h1>\n  <h3><span class='flaticon-purchase1'></span> Gigs/Jobs</h3>\n  <h3><span class='flaticon-gears3'></span>  Developers</h3>\n  <h3><span class='flaticon-sheet3'></span>  Post</h3>\n</div>\n");
 
 var NavbarView = require('./views/navbar');
-
-var _navbar = new NavbarView();
-console.log(_navbar);
-
-$template.on('click', function () {
-  alert('you clicked the template');
-});
+var navbarView = new NavbarView();
 
 var navbarMod = new Modifier();
 var navbarSurface = new Surface({
   size: [300, undefined],
-  content: $template[0],
+  content: navbarView.$el[0],
   properties: {
     backgroundColor: '#0a3650'
   }
 });
+
 
 var stateModifier = new StateModifier({
   transform: Transform.translate(300, 0, 0)
@@ -77,14 +72,16 @@ var $ = require('zepto-browserify').$;
 Backbone.$ = $;
 
 
-var templateString = "<div>\n  <h1>famous gigs</h1>\n  <h3>Gigs/Jobs</h3>\n  <h3>Developers</h3>\n  <h3>Post</h3>\n</div>\n";
+var templateString = "<div class='navbar'>\n  <h1><span>famous</span>gigs</h1>\n  <h3><span class='flaticon-purchase1'></span> Gigs/Jobs</h3>\n  <h3><span class='flaticon-gears3'></span>  Developers</h3>\n  <h3><span class='flaticon-sheet3'></span>  Post</h3>\n</div>\n";
 var $template = $(templateString);
 
 var Navbar = Backbone.View.extend({
   initialize: function () { 
     console.log('initialized navbar view');
+    console.log(this.$el);
   },
-  template: $template,
+
+  el: templateString,
 });
 
 module.exports = Navbar;

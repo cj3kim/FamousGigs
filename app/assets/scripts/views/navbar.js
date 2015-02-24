@@ -9,8 +9,10 @@ var $template = $(templateString);
 var Navbar = Backbone.View.extend({
   initialize: function () { 
     console.log('initialized navbar view');
+    console.log(this.$el);
   },
-  template: $template,
+
+  el: templateString,
 });
 
 module.exports = Navbar;

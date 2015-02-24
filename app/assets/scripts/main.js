@@ -24,22 +24,17 @@ var $ = require('zepto-browserify').$;
 var $template = $(fs.readFileSync( __dirname + '/templates/navbar.html', 'utf8'));
 
 var NavbarView = require('./views/navbar');
-
-var _navbar = new NavbarView();
-console.log(_navbar);
-
-$template.on('click', function () {
-  alert('you clicked the template');
-});
+var navbarView = new NavbarView();
 
 var navbarMod = new Modifier();
 var navbarSurface = new Surface({
   size: [300, undefined],
-  content: $template[0],
+  content: navbarView.$el[0],
   properties: {
     backgroundColor: '#0a3650'
   }
 });
+
 
 var stateModifier = new StateModifier({
   transform: Transform.translate(300, 0, 0)
