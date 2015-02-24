@@ -32,6 +32,7 @@ gulp.task('watch', function () {
 gulp.task('browserify-watch', function () {
   var b = browserify({ cache: {}, packageCache: {}, fullPaths: true })
   b = watchify(b);
+  b.transform('brfs');
 
   b.on('update', function() {
     bundle(b);
@@ -51,7 +52,6 @@ gulp.task('browserify-watch', function () {
     var endTime   = null;
     var startMessage = compiled({startFile: startFile, buildFile: buildFile});
     console.log(startMessage);
-    b.transform('brfs')
 
     var bundled = b.bundle();
     bundled

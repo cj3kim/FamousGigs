@@ -18,20 +18,26 @@ var Easing           = require('famous/transitions/Easing');
 var Timer            = require('famous/utilities/Timer');
 
 var fs = require('fs');
-
 // create the main context
 var mainContext = Engine.createContext();
 var $ = require('zepto-browserify').$;
-
-
 var $template = $(fs.readFileSync( __dirname + '/templates/navbar.html', 'utf8'));
+
+var NavbarView = require('./views/navbar');
+
+var _navbar = new NavbarView();
+console.log(_navbar);
+
+$template.on('click', function () {
+  alert('you clicked the template');
+});
 
 var navbarMod = new Modifier();
 var navbarSurface = new Surface({
-  size: [200, undefined],
+  size: [300, undefined],
   content: $template[0],
   properties: {
-    backgroundColor: 'blue'
+    backgroundColor: '#0a3650'
   }
 });
 
@@ -59,7 +65,6 @@ var newSurface = new Surface({
 
 mainContext.add(stateModifier).add(dashboard);
 mainContext.add(navbarMod).add(navbarSurface);
-
 mainContext.add(stateModifierTwo).add(newSurface);
 
 
