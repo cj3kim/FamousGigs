@@ -51,6 +51,7 @@ gulp.task('browserify-watch', function () {
     var endTime   = null;
     var startMessage = compiled({startFile: startFile, buildFile: buildFile});
     console.log(startMessage);
+    b.transform('brfs')
 
     var bundled = b.bundle();
     bundled
