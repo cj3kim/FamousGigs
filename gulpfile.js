@@ -15,7 +15,7 @@ var uglify = require('gulp-uglify'),
 gulp.task('default',['fonts', 'sass', 'browserify-watch', 'watch', 'start-dev-server'])
 
 gulp.task('start-dev-server', function () {
-  exec('node ./app.js');
+  require('./app.js');
 });
 
 gulp.task('fonts', function () {

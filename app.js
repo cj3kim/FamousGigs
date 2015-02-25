@@ -15,6 +15,8 @@ app.get('/', function(req, res) {
   res.render('index')
 })
 
+require('./app/routes/company_ads/index')(app);
+
 var port = 1337;
 console.log('Starting server at port ' + port + '.');
 

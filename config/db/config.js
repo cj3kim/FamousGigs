@@ -3,9 +3,10 @@ var DbConfig = {
     client: 'pg',
     connection: {
       host     : '127.0.0.1',
-      user     : 'your_database_user',
-      password : 'your_database_password',
-      database : 'myapp_test',
+      port: 5432,
+      user     : 'famous_gigs_admin',
+      password : 'famous_gig_dev',
+      database : 'famous_gigs_development',
       charset  : 'utf8'
     }
   },
