@@ -111,7 +111,7 @@ var templateString = "<div class='navbar'>\n  <h1><span>famous</span>gigs</h1>\n
 var $template = $(templateString);
 
 var Navbar = Backbone.View.extend({
-  initialize: function () {}, 
+  initialize: function () {},
   el: templateString,
 });
 

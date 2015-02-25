@@ -59,7 +59,11 @@ gulp.task('browserify-watch', function () {
     console.log(startMessage);
 
     var bundled = b.bundle();
-    bundled
+    bundled 
+      .on('error', function(err){
+        console.log(err.message);
+        this.end();
+      })
       .pipe(source(buildName))
       .pipe(gulp.dest(destinationPath));
 
