@@ -4,7 +4,6 @@ module.exports = function (app) {
   app.get('/company_ads', function(req, res) {
     CompanyAds.fetchAll()
     .then(function (models) {
-      console.log(models);
       res.json(models.toJSON());
     })
     .catch(function (err) {

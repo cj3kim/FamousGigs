@@ -7,11 +7,7 @@ var templateString = fs.readFileSync(__dirname + '/../templates/navbar.html', 'u
 var $template = $(templateString);
 
 var Navbar = Backbone.View.extend({
-  initialize: function () { 
-    console.log('initialized navbar view');
-    console.log(this.$el);
-  },
-
+  initialize: function () {}, 
   el: templateString,
 });
 

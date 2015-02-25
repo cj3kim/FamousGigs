@@ -52,21 +52,56 @@ var dashboard = new Surface({
   }
 });
 
-var newSurface = new Surface({
-  size: [200, 200],
-  properties: {
-    backgroundColor: 'yellow'
+var CompanyAdCollection = require('./collections/company_ads');
+
+var companyAds = new CompanyAdCollection();
+
+companyAds.fetch({
+  success: function (models) {
+    models.each(function(model) {
+      var newSurface = new Surface({
+        size: [200, 200],
+        content: model.get('title'),
+        properties: {
+          backgroundColor: 'yellow'
+        }
+      });
+      mainContext.add(stateModifierTwo).add(newSurface);
+    });
+  }, 
+  error:   function (err) {
+    console.log(err);
   }
 });
 
+
+
+
 mainContext.add(stateModifier).add(dashboard);
 mainContext.add(navbarMod).add(navbarSurface);
-mainContext.add(stateModifierTwo).add(newSurface);
 
 
 
 
-},{"./views/navbar":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js","famous-polyfills":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous-polyfills/index.js","famous/core/Engine":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Engine.js","famous/core/EventEmitter":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/EventEmitter.js","famous/core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","famous/core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","famous/core/Surface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Surface.js","famous/core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","famous/modifiers/StateModifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/modifiers/StateModifier.js","famous/surfaces/ImageSurface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/surfaces/ImageSurface.js","famous/transitions/Easing":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Easing.js","famous/transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js","famous/utilities/Timer":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/utilities/Timer.js","zepto-browserify":"/Users/chriskim/Desktop/FamousGigs/node_modules/zepto-browserify/zepto.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js":[function(require,module,exports){
+},{"./collections/company_ads":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/collections/company_ads.js","./views/navbar":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js","famous-polyfills":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous-polyfills/index.js","famous/core/Engine":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Engine.js","famous/core/EventEmitter":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/EventEmitter.js","famous/core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","famous/core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","famous/core/Surface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Surface.js","famous/core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","famous/modifiers/StateModifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/modifiers/StateModifier.js","famous/surfaces/ImageSurface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/surfaces/ImageSurface.js","famous/transitions/Easing":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Easing.js","famous/transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js","famous/utilities/Timer":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/utilities/Timer.js","zepto-browserify":"/Users/chriskim/Desktop/FamousGigs/node_modules/zepto-browserify/zepto.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/collections/company_ads.js":[function(require,module,exports){
+var Backbone = require('backbone');
+var CompanyAd = require('../models/company_ad');
+
+var CompanyAds = Backbone.Collection.extend({
+  model: CompanyAd,
+  url: '/company_ads'
+});
+
+module.exports = CompanyAds;
+
+},{"../models/company_ad":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/models/company_ad.js","backbone":"/Users/chriskim/Desktop/FamousGigs/node_modules/backbone/backbone.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/models/company_ad.js":[function(require,module,exports){
+var Backbone = require('backbone');
+
+var CompanyAd = Backbone.Model.extend({ });
+
+module.exports = CompanyAd;
+
+},{"backbone":"/Users/chriskim/Desktop/FamousGigs/node_modules/backbone/backbone.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('zepto-browserify').$;
 Backbone.$ = $;
@@ -76,11 +111,7 @@ var templateString = "<div class='navbar'>\n  <h1><span>famous</span>gigs</h1>\n
 var $template = $(templateString);
 
 var Navbar = Backbone.View.extend({
-  initialize: function () { 
-    console.log('initialized navbar view');
-    console.log(this.$el);
-  },
-
+  initialize: function () {}, 
   el: templateString,
 });
 

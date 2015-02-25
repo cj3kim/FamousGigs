@@ -51,16 +51,33 @@ var dashboard = new Surface({
   }
 });
 
-var newSurface = new Surface({
-  size: [200, 200],
-  properties: {
-    backgroundColor: 'yellow'
+var CompanyAdCollection = require('./collections/company_ads');
+
+var companyAds = new CompanyAdCollection();
+
+companyAds.fetch({
+  success: function (models) {
+    models.each(function(model) {
+      var newSurface = new Surface({
+        size: [200, 200],
+        content: model.get('title'),
+        properties: {
+          backgroundColor: 'yellow'
+        }
+      });
+      mainContext.add(stateModifierTwo).add(newSurface);
+    });
+  }, 
+  error:   function (err) {
+    console.log(err);
   }
 });
 
+
+
+
 mainContext.add(stateModifier).add(dashboard);
 mainContext.add(navbarMod).add(navbarSurface);
-mainContext.add(stateModifierTwo).add(newSurface);
 
 
 
