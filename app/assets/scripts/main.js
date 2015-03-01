@@ -39,6 +39,9 @@ var navbarSurface = new Surface({
   }
 });
 
+var CollectionLayout = require('famous-flex/src/layouts/CollectionLayout');
+console.log(CollectionLayout);
+
 var grid = new GridLayout({
   dimensions: [8, 8]
 });
@@ -62,6 +65,7 @@ var controller = new LightBox({
 controller.hide();
 
 function newSurface(id) {
+  console.log(CollectionLayout);
   var surface = new Surface({
     size: [undefined, undefined],
     content: id + 1,
