@@ -18,6 +18,10 @@ var EventEmitter     = require('famous/core/EventEmitter');
 var Easing           = require('famous/transitions/Easing');
 var Timer            = require('famous/utilities/Timer');
 
+var GridLayout       = require('famous/views/GridLayout');
+var LightBox         = require('famous/views/LightBox');
+var RenderController = require('famous/views/RenderController');
+
 
 // create the main context
 var mainContext = Engine.createContext();
@@ -36,72 +40,125 @@ var navbarSurface = new Surface({
   }
 });
 
-
-var stateModifier = new StateModifier({
-  transform: Transform.translate(300, 0, 0)
+var grid = new GridLayout({
+  dimensions: [8, 8]
 });
 
-var stateModifierTwo = new StateModifier({
-  transform: Transform.translate(500, 0, 0)
+var surfaces = [];
+var showing;
+
+grid.sequenceFrom(surfaces);
+
+var cmod = new StateModifier({
+  inTransition: true,
+  outTransition: false,
+  overlap: true
 });
 
-var dashboard = new Surface({
-  size: [undefined, undefined],
-  properties: {
-    backgroundColor: 'brown'
-  }
+var controller = new LightBox({
+  inTransition: true,
+  outTransition: false,
+  overlap: true
+});
+controller.hide();
+
+function newSurface(id) {
+  var surface = new Surface({
+    size: [undefined, undefined],
+    content: id + 1,
+    properties: {
+      backgroundColor: "hsl(" + (id * 70 / 64) + ", 60%, 70%)",
+      lineHeight: '50px',
+      textAlign: 'center',
+      cursor: 'pointer'
+    }
+  });
+
+  surface._stateMod = new StateModifier({
+    size: [500, 420],
+    origin: [0.5, 0.5],
+    align: [0.5, 0.5]
+  });
+  surface._renderNode = new RenderNode();
+  surface._renderNode.add(surface._stateMod).add(surface);
+
+  surfaces.push(surface);
+
+  surface.on('click', function (context, e) {
+    var inTransitionObj  = {curve: Easing.inElastic,  duration: 1000 }
+    var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
+
+    var hideFn = function () { gridModifier.setTransform(Transform.scale(1,1,1), outTransitionObj); };
+
+    if (this === showing) {
+      controller.hide(inTransitionObj, hideFn );
+      showing = null;
+    } else {
+      showing = this;
+      gridModifier.setTransform(Transform.scale(0.001, 0.001, 0.001), outTransitionObj)
+      cmod.setTransform(Transform.translate(0,0, 0.0001));
+      controller.show(this._renderNode, outTransitionObj);
+    }  
+  }.bind(surface, mainContext));
+}
+
+for (var i = 0; i < 64; i += 1) {
+  newSurface(i);
+}
+
+var gridModifier = new StateModifier({
+  size: [400, 400], 
+  align: [0.5, 0.5],
+  origin: [0.5, 0.5]
 });
 
-var CompanyAdCollection = require('./collections/company_ads');
-
-var companyAds = new CompanyAdCollection();
-
-companyAds.fetch({
-  success: function (models) {
-    models.each(function(model) {
-      var newSurface = new Surface({
-        size: [200, 200],
-        content: model.get('title'),
-        properties: {
-          backgroundColor: 'yellow'
-        }
-      });
-      mainContext.add(stateModifierTwo).add(newSurface);
-    });
-  }, 
-  error:   function (err) {
-    console.log(err);
-  }
-});
-
-
-
-
-mainContext.add(stateModifier).add(dashboard);
+mainContext.add(gridModifier).add(grid);
+mainContext.add(cmod).add(controller);
 mainContext.add(navbarMod).add(navbarSurface);
 
+//var stateModifier = new StateModifier({
+  //transform: Transform.translate(300, 0, 0)
+//});
+
+//var stateModifierTwo = new StateModifier({
+  //transform: Transform.translate(500, 0, 0)
+//});
+
+//var dashboard = new Surface({
+  //size: [undefined, undefined],
+  //properties: {
+    //backgroundColor: 'brown'
+  //}
+//});
+
+//var CompanyAdCollection = require('./collections/company_ads');
+
+//var companyAds = new CompanyAdCollection();
+
+//companyAds.fetch({
+  //success: function (models) {
+    //models.each(function(model) {
+      //var newSurface = new Surface({
+        //size: [200, 200],
+        //content: model.get('title'),
+        //properties: {
+          //backgroundColor: 'yellow'
+        //}
+      //});
+      //mainContext.add(stateModifierTwo).add(newSurface);
+    //});
+  //}, 
+  //error:   function (err) {
+    //console.log(err);
+  //}
+//});
+
+//mainContext.add(stateModifier).add(dashboard);
 
 
 
-},{"./collections/company_ads":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/collections/company_ads.js","./views/navbar":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js","famous-polyfills":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous-polyfills/index.js","famous/core/Engine":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Engine.js","famous/core/EventEmitter":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/EventEmitter.js","famous/core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","famous/core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","famous/core/Surface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Surface.js","famous/core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","famous/modifiers/StateModifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/modifiers/StateModifier.js","famous/surfaces/ImageSurface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/surfaces/ImageSurface.js","famous/transitions/Easing":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Easing.js","famous/transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js","famous/utilities/Timer":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/utilities/Timer.js","zepto-browserify":"/Users/chriskim/Desktop/FamousGigs/node_modules/zepto-browserify/zepto.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/collections/company_ads.js":[function(require,module,exports){
-var Backbone = require('backbone');
-var CompanyAd = require('../models/company_ad');
 
-var CompanyAds = Backbone.Collection.extend({
-  model: CompanyAd,
-  url: '/company_ads'
-});
-
-module.exports = CompanyAds;
-
-},{"../models/company_ad":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/models/company_ad.js","backbone":"/Users/chriskim/Desktop/FamousGigs/node_modules/backbone/backbone.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/models/company_ad.js":[function(require,module,exports){
-var Backbone = require('backbone');
-
-var CompanyAd = Backbone.Model.extend({ });
-
-module.exports = CompanyAd;
-
-},{"backbone":"/Users/chriskim/Desktop/FamousGigs/node_modules/backbone/backbone.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js":[function(require,module,exports){
+},{"./views/navbar":"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js","famous-polyfills":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous-polyfills/index.js","famous/core/Engine":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Engine.js","famous/core/EventEmitter":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/EventEmitter.js","famous/core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","famous/core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","famous/core/Surface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Surface.js","famous/core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","famous/modifiers/StateModifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/modifiers/StateModifier.js","famous/surfaces/ImageSurface":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/surfaces/ImageSurface.js","famous/transitions/Easing":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Easing.js","famous/transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js","famous/utilities/Timer":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/utilities/Timer.js","famous/views/GridLayout":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/views/GridLayout.js","famous/views/LightBox":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/views/LightBox.js","famous/views/RenderController":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/views/RenderController.js","zepto-browserify":"/Users/chriskim/Desktop/FamousGigs/node_modules/zepto-browserify/zepto.js"}],"/Users/chriskim/Desktop/FamousGigs/app/assets/scripts/views/navbar.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('zepto-browserify').$;
 Backbone.$ = $;
@@ -4206,6 +4263,299 @@ Transform.behind = [
     1
 ];
 module.exports = Transform;
+},{}],"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/View.js":[function(require,module,exports){
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2015
+ */
+var EventHandler = require('./EventHandler');
+var OptionsManager = require('./OptionsManager');
+var RenderNode = require('./RenderNode');
+var Utility = require('../utilities/Utility');
+function View(options) {
+    this._node = new RenderNode();
+    this._eventInput = new EventHandler();
+    this._eventOutput = new EventHandler();
+    EventHandler.setInputHandler(this, this._eventInput);
+    EventHandler.setOutputHandler(this, this._eventOutput);
+    this.options = Utility.clone(this.constructor.DEFAULT_OPTIONS || View.DEFAULT_OPTIONS);
+    this._optionsManager = new OptionsManager(this.options);
+    if (options)
+        this.setOptions(options);
+}
+View.DEFAULT_OPTIONS = {};
+View.prototype.getOptions = function getOptions(key) {
+    return this._optionsManager.getOptions(key);
+};
+View.prototype.setOptions = function setOptions(options) {
+    this._optionsManager.patch(options);
+};
+View.prototype.add = function add() {
+    return this._node.add.apply(this._node, arguments);
+};
+View.prototype._add = View.prototype.add;
+View.prototype.render = function render() {
+    return this._node.render();
+};
+View.prototype.getSize = function getSize() {
+    if (this._node && this._node.getSize) {
+        return this._node.getSize.apply(this._node, arguments) || this.options.size;
+    } else
+        return this.options.size;
+};
+module.exports = View;
+},{"../utilities/Utility":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/utilities/Utility.js","./EventHandler":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/EventHandler.js","./OptionsManager":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/OptionsManager.js","./RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js"}],"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/ViewSequence.js":[function(require,module,exports){
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2015
+ */
+function ViewSequence(options) {
+    if (!options)
+        options = [];
+    if (options instanceof Array)
+        options = { array: options };
+    this._ = null;
+    this.index = options.index || 0;
+    if (options.array)
+        this._ = new this.constructor.Backing(options.array);
+    else if (options._)
+        this._ = options._;
+    if (this.index === this._.firstIndex)
+        this._.firstNode = this;
+    if (this.index === this._.firstIndex + this._.array.length - 1)
+        this._.lastNode = this;
+    if (options.loop !== undefined)
+        this._.loop = options.loop;
+    if (options.trackSize !== undefined)
+        this._.trackSize = options.trackSize;
+    this._previousNode = null;
+    this._nextNode = null;
+}
+ViewSequence.Backing = function Backing(array) {
+    this.array = array;
+    this.firstIndex = 0;
+    this.loop = false;
+    this.firstNode = null;
+    this.lastNode = null;
+    this.cumulativeSizes = [[
+            0,
+            0
+        ]];
+    this.sizeDirty = true;
+    this.trackSize = false;
+};
+ViewSequence.Backing.prototype.getValue = function getValue(i) {
+    var _i = i - this.firstIndex;
+    if (_i < 0 || _i >= this.array.length)
+        return null;
+    return this.array[_i];
+};
+ViewSequence.Backing.prototype.setValue = function setValue(i, value) {
+    this.array[i - this.firstIndex] = value;
+};
+ViewSequence.Backing.prototype.getSize = function getSize(index) {
+    return this.cumulativeSizes[index];
+};
+ViewSequence.Backing.prototype.calculateSize = function calculateSize(index) {
+    index = index || this.array.length;
+    var size = [
+        0,
+        0
+    ];
+    for (var i = 0; i < index; i++) {
+        var nodeSize = this.array[i].getSize();
+        if (!nodeSize)
+            return undefined;
+        if (size[0] !== undefined) {
+            if (nodeSize[0] === undefined)
+                size[0] = undefined;
+            else
+                size[0] += nodeSize[0];
+        }
+        if (size[1] !== undefined) {
+            if (nodeSize[1] === undefined)
+                size[1] = undefined;
+            else
+                size[1] += nodeSize[1];
+        }
+        this.cumulativeSizes[i + 1] = size.slice();
+    }
+    this.sizeDirty = false;
+    return size;
+};
+ViewSequence.Backing.prototype.reindex = function reindex(start, removeCount, insertCount) {
+    if (!this.array[0])
+        return;
+    var i = 0;
+    var index = this.firstIndex;
+    var indexShiftAmount = insertCount - removeCount;
+    var node = this.firstNode;
+    while (index < start - 1) {
+        node = node.getNext();
+        index++;
+    }
+    var spliceStartNode = node;
+    for (i = 0; i < removeCount; i++) {
+        node = node.getNext();
+        if (node)
+            node._previousNode = spliceStartNode;
+    }
+    var spliceResumeNode = node ? node.getNext() : null;
+    spliceStartNode._nextNode = null;
+    node = spliceStartNode;
+    for (i = 0; i < insertCount; i++)
+        node = node.getNext();
+    index += insertCount;
+    if (node !== spliceResumeNode) {
+        node._nextNode = spliceResumeNode;
+        if (spliceResumeNode)
+            spliceResumeNode._previousNode = node;
+    }
+    if (spliceResumeNode) {
+        node = spliceResumeNode;
+        index++;
+        while (node && index < this.array.length + this.firstIndex) {
+            if (node._nextNode)
+                node.index += indexShiftAmount;
+            else
+                node.index = index;
+            node = node.getNext();
+            index++;
+        }
+    }
+    if (this.trackSize)
+        this.sizeDirty = true;
+};
+ViewSequence.prototype.getPrevious = function getPrevious() {
+    var len = this._.array.length;
+    if (!len) {
+        this._previousNode = null;
+    } else if (this.index === this._.firstIndex) {
+        if (this._.loop) {
+            this._previousNode = this._.lastNode || new this.constructor({
+                _: this._,
+                index: this._.firstIndex + len - 1
+            });
+            this._previousNode._nextNode = this;
+        } else {
+            this._previousNode = null;
+        }
+    } else if (!this._previousNode) {
+        this._previousNode = new this.constructor({
+            _: this._,
+            index: this.index - 1
+        });
+        this._previousNode._nextNode = this;
+    }
+    return this._previousNode;
+};
+ViewSequence.prototype.getNext = function getNext() {
+    var len = this._.array.length;
+    if (!len) {
+        this._nextNode = null;
+    } else if (this.index === this._.firstIndex + len - 1) {
+        if (this._.loop) {
+            this._nextNode = this._.firstNode || new this.constructor({
+                _: this._,
+                index: this._.firstIndex
+            });
+            this._nextNode._previousNode = this;
+        } else {
+            this._nextNode = null;
+        }
+    } else if (!this._nextNode) {
+        this._nextNode = new this.constructor({
+            _: this._,
+            index: this.index + 1
+        });
+        this._nextNode._previousNode = this;
+    }
+    return this._nextNode;
+};
+ViewSequence.prototype.indexOf = function indexOf(item) {
+    return this._.array.indexOf(item);
+};
+ViewSequence.prototype.getIndex = function getIndex() {
+    return this.index;
+};
+ViewSequence.prototype.toString = function toString() {
+    return '' + this.index;
+};
+ViewSequence.prototype.unshift = function unshift(value) {
+    this._.array.unshift.apply(this._.array, arguments);
+    this._.firstIndex -= arguments.length;
+    if (this._.trackSize)
+        this._.sizeDirty = true;
+};
+ViewSequence.prototype.push = function push(value) {
+    this._.array.push.apply(this._.array, arguments);
+    if (this._.trackSize)
+        this._.sizeDirty = true;
+};
+ViewSequence.prototype.splice = function splice(index, howMany) {
+    var values = Array.prototype.slice.call(arguments, 2);
+    this._.array.splice.apply(this._.array, [
+        index - this._.firstIndex,
+        howMany
+    ].concat(values));
+    this._.reindex(index, howMany, values.length);
+};
+ViewSequence.prototype.swap = function swap(other) {
+    var otherValue = other.get();
+    var myValue = this.get();
+    this._.setValue(this.index, otherValue);
+    this._.setValue(other.index, myValue);
+    var myPrevious = this._previousNode;
+    var myNext = this._nextNode;
+    var myIndex = this.index;
+    var otherPrevious = other._previousNode;
+    var otherNext = other._nextNode;
+    var otherIndex = other.index;
+    this.index = otherIndex;
+    this._previousNode = otherPrevious === this ? other : otherPrevious;
+    if (this._previousNode)
+        this._previousNode._nextNode = this;
+    this._nextNode = otherNext === this ? other : otherNext;
+    if (this._nextNode)
+        this._nextNode._previousNode = this;
+    other.index = myIndex;
+    other._previousNode = myPrevious === other ? this : myPrevious;
+    if (other._previousNode)
+        other._previousNode._nextNode = other;
+    other._nextNode = myNext === other ? this : myNext;
+    if (other._nextNode)
+        other._nextNode._previousNode = other;
+    if (this.index === this._.firstIndex)
+        this._.firstNode = this;
+    else if (this.index === this._.firstIndex + this._.array.length - 1)
+        this._.lastNode = this;
+    if (other.index === this._.firstIndex)
+        this._.firstNode = other;
+    else if (other.index === this._.firstIndex + this._.array.length - 1)
+        this._.lastNode = other;
+    if (this._.trackSize)
+        this._.sizeDirty = true;
+};
+ViewSequence.prototype.get = function get() {
+    return this._.getValue(this.index);
+};
+ViewSequence.prototype.getSize = function getSize() {
+    var target = this.get();
+    return target ? target.getSize() : null;
+};
+ViewSequence.prototype.render = function render() {
+    if (this._.trackSize && this._.sizeDirty)
+        this._.calculateSize();
+    var target = this.get();
+    return target ? target.render.apply(target, arguments) : null;
+};
+module.exports = ViewSequence;
 },{}],"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/modifiers/StateModifier.js":[function(require,module,exports){
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -5310,7 +5660,559 @@ Utility.clone = function clone(b) {
     return a;
 };
 module.exports = Utility;
-},{}],"/Users/chriskim/Desktop/FamousGigs/node_modules/underscore/underscore.js":[function(require,module,exports){
+},{}],"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/views/GridLayout.js":[function(require,module,exports){
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2015
+ */
+var Entity = require('../core/Entity');
+var RenderNode = require('../core/RenderNode');
+var Transform = require('../core/Transform');
+var ViewSequence = require('../core/ViewSequence');
+var EventHandler = require('../core/EventHandler');
+var Modifier = require('../core/Modifier');
+var OptionsManager = require('../core/OptionsManager');
+var Transitionable = require('../transitions/Transitionable');
+var TransitionableTransform = require('../transitions/TransitionableTransform');
+function GridLayout(options) {
+    this.options = Object.create(GridLayout.DEFAULT_OPTIONS);
+    this.optionsManager = new OptionsManager(this.options);
+    if (options)
+        this.setOptions(options);
+    this.id = Entity.register(this);
+    this._modifiers = [];
+    this._states = [];
+    this._contextSizeCache = [
+        0,
+        0
+    ];
+    this._dimensionsCache = [
+        0,
+        0
+    ];
+    this._activeCount = 0;
+    this._eventOutput = new EventHandler();
+    EventHandler.setOutputHandler(this, this._eventOutput);
+}
+function _reflow(size, cols, rows) {
+    var usableSize = [
+        size[0],
+        size[1]
+    ];
+    usableSize[0] -= this.options.gutterSize[0] * (cols - 1);
+    usableSize[1] -= this.options.gutterSize[1] * (rows - 1);
+    var rowSize = Math.round(usableSize[1] / rows);
+    var colSize = Math.round(usableSize[0] / cols);
+    var currY = 0;
+    var currX;
+    var currIndex = 0;
+    for (var i = 0; i < rows; i++) {
+        currX = 0;
+        for (var j = 0; j < cols; j++) {
+            if (this._modifiers[currIndex] === undefined) {
+                _createModifier.call(this, currIndex, [
+                    colSize,
+                    rowSize
+                ], [
+                    currX,
+                    currY,
+                    0
+                ], 1);
+            } else {
+                _animateModifier.call(this, currIndex, [
+                    colSize,
+                    rowSize
+                ], [
+                    currX,
+                    currY,
+                    0
+                ], 1);
+            }
+            currIndex++;
+            currX += colSize + this.options.gutterSize[0];
+        }
+        currY += rowSize + this.options.gutterSize[1];
+    }
+    this._dimensionsCache = [
+        this.options.dimensions[0],
+        this.options.dimensions[1]
+    ];
+    this._contextSizeCache = [
+        size[0],
+        size[1]
+    ];
+    this._activeCount = rows * cols;
+    for (i = this._activeCount; i < this._modifiers.length; i++)
+        _animateModifier.call(this, i, [
+            Math.round(colSize),
+            Math.round(rowSize)
+        ], [
+            0,
+            0
+        ], 0);
+    this._eventOutput.emit('reflow');
+}
+function _createModifier(index, size, position, opacity) {
+    var transitionItem = {
+        transform: new TransitionableTransform(Transform.translate.apply(null, position)),
+        opacity: new Transitionable(opacity),
+        size: new Transitionable(size)
+    };
+    var modifier = new Modifier({
+        transform: transitionItem.transform,
+        opacity: transitionItem.opacity,
+        size: transitionItem.size
+    });
+    this._states[index] = transitionItem;
+    this._modifiers[index] = modifier;
+}
+function _animateModifier(index, size, position, opacity) {
+    var currState = this._states[index];
+    var currSize = currState.size;
+    var currOpacity = currState.opacity;
+    var currTransform = currState.transform;
+    var transition = this.options.transition;
+    currTransform.halt();
+    currOpacity.halt();
+    currSize.halt();
+    currTransform.setTranslate(position, transition);
+    currSize.set(size, transition);
+    currOpacity.set(opacity, transition);
+}
+GridLayout.DEFAULT_OPTIONS = {
+    dimensions: [
+        1,
+        1
+    ],
+    transition: false,
+    gutterSize: [
+        0,
+        0
+    ]
+};
+GridLayout.prototype.render = function render() {
+    return this.id;
+};
+GridLayout.prototype.setOptions = function setOptions(options) {
+    return this.optionsManager.setOptions(options);
+};
+GridLayout.prototype.sequenceFrom = function sequenceFrom(sequence) {
+    if (sequence instanceof Array)
+        sequence = new ViewSequence(sequence);
+    this.sequence = sequence;
+};
+GridLayout.prototype.getSize = function getSize() {
+    return this._contextSizeCache;
+};
+GridLayout.prototype.commit = function commit(context) {
+    var transform = context.transform;
+    var opacity = context.opacity;
+    var origin = context.origin;
+    var size = context.size;
+    var cols = this.options.dimensions[0];
+    var rows = this.options.dimensions[1];
+    if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || cols !== this._dimensionsCache[0] || rows !== this._dimensionsCache[1]) {
+        _reflow.call(this, size, cols, rows);
+    }
+    var sequence = this.sequence;
+    var result = [];
+    var currIndex = 0;
+    while (sequence && currIndex < this._modifiers.length) {
+        var item = sequence.get();
+        var modifier = this._modifiers[currIndex];
+        if (currIndex >= this._activeCount && this._states[currIndex].opacity.isActive()) {
+            this._modifiers.splice(currIndex, 1);
+            this._states.splice(currIndex, 1);
+        }
+        if (item) {
+            result.push(modifier.modify({
+                origin: origin,
+                target: item.render()
+            }));
+        }
+        sequence = sequence.getNext();
+        currIndex++;
+    }
+    if (size)
+        transform = Transform.moveThen([
+            -size[0] * origin[0],
+            -size[1] * origin[1],
+            0
+        ], transform);
+    return {
+        transform: transform,
+        opacity: opacity,
+        size: size,
+        target: result
+    };
+};
+module.exports = GridLayout;
+},{"../core/Entity":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Entity.js","../core/EventHandler":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/EventHandler.js","../core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","../core/OptionsManager":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/OptionsManager.js","../core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","../core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","../core/ViewSequence":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/ViewSequence.js","../transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js","../transitions/TransitionableTransform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/TransitionableTransform.js"}],"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/views/LightBox.js":[function(require,module,exports){
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2015
+ */
+var Transform = require('../core/Transform');
+var Modifier = require('../core/Modifier');
+var RenderNode = require('../core/RenderNode');
+var Utility = require('../utilities/Utility');
+var OptionsManager = require('../core/OptionsManager');
+var Transitionable = require('../transitions/Transitionable');
+var TransitionableTransform = require('../transitions/TransitionableTransform');
+function Lightbox(options) {
+    this.options = Object.create(Lightbox.DEFAULT_OPTIONS);
+    this._optionsManager = new OptionsManager(this.options);
+    if (options)
+        this.setOptions(options);
+    this._showing = false;
+    this.nodes = [];
+    this.transforms = [];
+    this.states = [];
+}
+Lightbox.DEFAULT_OPTIONS = {
+    inTransform: Transform.scale(0.001, 0.001, 0.001),
+    inOpacity: 0,
+    inOrigin: [
+        0.5,
+        0.5
+    ],
+    inAlign: [
+        0.5,
+        0.5
+    ],
+    outTransform: Transform.scale(0.001, 0.001, 0.001),
+    outOpacity: 0,
+    outOrigin: [
+        0.5,
+        0.5
+    ],
+    outAlign: [
+        0.5,
+        0.5
+    ],
+    showTransform: Transform.identity,
+    showOpacity: 1,
+    showOrigin: [
+        0.5,
+        0.5
+    ],
+    showAlign: [
+        0.5,
+        0.5
+    ],
+    inTransition: true,
+    outTransition: true,
+    overlap: false
+};
+Lightbox.prototype.setOptions = function setOptions(options) {
+    return this._optionsManager.setOptions(options);
+};
+Lightbox.prototype.show = function show(renderable, transition, callback) {
+    if (!renderable) {
+        return this.hide(callback);
+    }
+    if (transition instanceof Function) {
+        callback = transition;
+        transition = undefined;
+    }
+    if (this._showing) {
+        if (this.options.overlap)
+            this.hide();
+        else {
+            return this.hide(this.show.bind(this, renderable, transition, callback));
+        }
+    }
+    this._showing = true;
+    var stateItem = {
+        transform: new TransitionableTransform(this.options.inTransform),
+        origin: new Transitionable(this.options.inOrigin),
+        align: new Transitionable(this.options.inAlign),
+        opacity: new Transitionable(this.options.inOpacity)
+    };
+    var transform = new Modifier({
+        transform: stateItem.transform,
+        opacity: stateItem.opacity,
+        origin: stateItem.origin,
+        align: stateItem.align
+    });
+    var node = new RenderNode();
+    node.add(transform).add(renderable);
+    this.nodes.push(node);
+    this.states.push(stateItem);
+    this.transforms.push(transform);
+    var _cb = callback ? Utility.after(3, callback) : undefined;
+    if (!transition)
+        transition = this.options.inTransition;
+    stateItem.transform.set(this.options.showTransform, transition, _cb);
+    stateItem.opacity.set(this.options.showOpacity, transition, _cb);
+    stateItem.origin.set(this.options.showOrigin, transition, _cb);
+    stateItem.align.set(this.options.showAlign, transition, _cb);
+};
+Lightbox.prototype.hide = function hide(transition, callback) {
+    if (!this._showing)
+        return;
+    this._showing = false;
+    if (transition instanceof Function) {
+        callback = transition;
+        transition = undefined;
+    }
+    var node = this.nodes[this.nodes.length - 1];
+    var transform = this.transforms[this.transforms.length - 1];
+    var stateItem = this.states[this.states.length - 1];
+    var _cb = Utility.after(3, function () {
+        this.nodes.splice(this.nodes.indexOf(node), 1);
+        this.states.splice(this.states.indexOf(stateItem), 1);
+        this.transforms.splice(this.transforms.indexOf(transform), 1);
+        if (callback)
+            callback.call(this);
+    }.bind(this));
+    if (!transition)
+        transition = this.options.outTransition;
+    stateItem.transform.set(this.options.outTransform, transition, _cb);
+    stateItem.opacity.set(this.options.outOpacity, transition, _cb);
+    stateItem.origin.set(this.options.outOrigin, transition, _cb);
+    stateItem.align.set(this.options.outAlign, transition, _cb);
+};
+Lightbox.prototype.render = function render() {
+    var result = [];
+    for (var i = 0; i < this.nodes.length; i++) {
+        result.push(this.nodes[i].render());
+    }
+    return result;
+};
+module.exports = Lightbox;
+},{"../core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","../core/OptionsManager":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/OptionsManager.js","../core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","../core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","../transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js","../transitions/TransitionableTransform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/TransitionableTransform.js","../utilities/Utility":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/utilities/Utility.js"}],"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/views/RenderController.js":[function(require,module,exports){
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * @license MPL 2.0
+ * @copyright Famous Industries, Inc. 2015
+ */
+var Modifier = require('../core/Modifier');
+var RenderNode = require('../core/RenderNode');
+var Transform = require('../core/Transform');
+var Transitionable = require('../transitions/Transitionable');
+var View = require('../core/View');
+function RenderController(options) {
+    View.apply(this, arguments);
+    this._showing = -1;
+    this._outgoingRenderables = [];
+    this._nextRenderable = null;
+    this._renderables = [];
+    this._nodes = [];
+    this._modifiers = [];
+    this._states = [];
+    this.inTransformMap = RenderController.DefaultMap.transform;
+    this.inOpacityMap = RenderController.DefaultMap.opacity;
+    this.inOriginMap = RenderController.DefaultMap.origin;
+    this.inAlignMap = RenderController.DefaultMap.align;
+    this.outTransformMap = RenderController.DefaultMap.transform;
+    this.outOpacityMap = RenderController.DefaultMap.opacity;
+    this.outOriginMap = RenderController.DefaultMap.origin;
+    this.outAlignMap = RenderController.DefaultMap.align;
+    this._output = [];
+}
+RenderController.prototype = Object.create(View.prototype);
+RenderController.prototype.constructor = RenderController;
+RenderController.DEFAULT_OPTIONS = {
+    inTransition: true,
+    outTransition: true,
+    overlap: true
+};
+RenderController.DefaultMap = {
+    transform: function () {
+        return Transform.identity;
+    },
+    opacity: function (progress) {
+        return progress;
+    },
+    origin: null,
+    align: null
+};
+function _mappedState(map, state) {
+    return map(state.get());
+}
+RenderController.prototype.inTransformFrom = function inTransformFrom(transform) {
+    if (transform instanceof Function)
+        this.inTransformMap = transform;
+    else if (transform && transform.get)
+        this.inTransformMap = transform.get.bind(transform);
+    else
+        throw new Error('inTransformFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.inOpacityFrom = function inOpacityFrom(opacity) {
+    if (opacity instanceof Function)
+        this.inOpacityMap = opacity;
+    else if (opacity && opacity.get)
+        this.inOpacityMap = opacity.get.bind(opacity);
+    else
+        throw new Error('inOpacityFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.inOriginFrom = function inOriginFrom(origin) {
+    if (origin instanceof Function)
+        this.inOriginMap = origin;
+    else if (origin && origin.get)
+        this.inOriginMap = origin.get.bind(origin);
+    else
+        throw new Error('inOriginFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.inAlignFrom = function inAlignFrom(align) {
+    if (align instanceof Function)
+        this.inAlignMap = align;
+    else if (align && align.get)
+        this.inAlignMap = align.get.bind(align);
+    else
+        throw new Error('inAlignFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.outTransformFrom = function outTransformFrom(transform) {
+    if (transform instanceof Function)
+        this.outTransformMap = transform;
+    else if (transform && transform.get)
+        this.outTransformMap = transform.get.bind(transform);
+    else
+        throw new Error('outTransformFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.outOpacityFrom = function outOpacityFrom(opacity) {
+    if (opacity instanceof Function)
+        this.outOpacityMap = opacity;
+    else if (opacity && opacity.get)
+        this.outOpacityMap = opacity.get.bind(opacity);
+    else
+        throw new Error('outOpacityFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.outOriginFrom = function outOriginFrom(origin) {
+    if (origin instanceof Function)
+        this.outOriginMap = origin;
+    else if (origin && origin.get)
+        this.outOriginMap = origin.get.bind(origin);
+    else
+        throw new Error('outOriginFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.outAlignFrom = function outAlignFrom(align) {
+    if (align instanceof Function)
+        this.outAlignMap = align;
+    else if (align && align.get)
+        this.outAlignMap = align.get.bind(align);
+    else
+        throw new Error('outAlignFrom takes only function or getter object');
+    return this;
+};
+RenderController.prototype.show = function show(renderable, transition, callback) {
+    if (!renderable) {
+        return this.hide(callback);
+    }
+    if (transition instanceof Function) {
+        callback = transition;
+        transition = null;
+    }
+    if (this._showing >= 0) {
+        if (this.options.overlap)
+            this.hide();
+        else {
+            if (this._nextRenderable) {
+                this._nextRenderable = renderable;
+            } else {
+                this._nextRenderable = renderable;
+                this.hide(function () {
+                    if (this._nextRenderable === renderable)
+                        this.show(this._nextRenderable, callback);
+                    this._nextRenderable = null;
+                });
+            }
+            return undefined;
+        }
+    }
+    var state = null;
+    var renderableIndex = this._renderables.indexOf(renderable);
+    if (renderableIndex >= 0) {
+        this._showing = renderableIndex;
+        state = this._states[renderableIndex];
+        state.halt();
+        var outgoingIndex = this._outgoingRenderables.indexOf(renderable);
+        if (outgoingIndex >= 0)
+            this._outgoingRenderables.splice(outgoingIndex, 1);
+    } else {
+        state = new Transitionable(0);
+        var modifier = new Modifier({
+            transform: this.inTransformMap ? _mappedState.bind(this, this.inTransformMap, state) : null,
+            opacity: this.inOpacityMap ? _mappedState.bind(this, this.inOpacityMap, state) : null,
+            origin: this.inOriginMap ? _mappedState.bind(this, this.inOriginMap, state) : null,
+            align: this.inAlignMap ? _mappedState.bind(this, this.inAlignMap, state) : null
+        });
+        var node = new RenderNode();
+        node.add(modifier).add(renderable);
+        this._showing = this._nodes.length;
+        this._nodes.push(node);
+        this._modifiers.push(modifier);
+        this._states.push(state);
+        this._renderables.push(renderable);
+    }
+    if (!transition)
+        transition = this.options.inTransition;
+    state.set(1, transition, callback);
+};
+RenderController.prototype.hide = function hide(transition, callback) {
+    if (this._showing < 0)
+        return;
+    var index = this._showing;
+    this._showing = -1;
+    if (transition instanceof Function) {
+        callback = transition;
+        transition = undefined;
+    }
+    var node = this._nodes[index];
+    var modifier = this._modifiers[index];
+    var state = this._states[index];
+    var renderable = this._renderables[index];
+    modifier.transformFrom(this.outTransformMap ? _mappedState.bind(this, this.outTransformMap, state) : null);
+    modifier.opacityFrom(this.outOpacityMap ? _mappedState.bind(this, this.outOpacityMap, state) : null);
+    modifier.originFrom(this.outOriginMap ? _mappedState.bind(this, this.outOriginMap, state) : null);
+    modifier.alignFrom(this.outAlignMap ? _mappedState.bind(this, this.outAlignMap, state) : null);
+    if (this._outgoingRenderables.indexOf(renderable) < 0)
+        this._outgoingRenderables.push(renderable);
+    if (!transition)
+        transition = this.options.outTransition;
+    state.halt();
+    state.set(0, transition, function (node, modifier, state, renderable) {
+        if (this._outgoingRenderables.indexOf(renderable) >= 0) {
+            var index = this._nodes.indexOf(node);
+            this._nodes.splice(index, 1);
+            this._modifiers.splice(index, 1);
+            this._states.splice(index, 1);
+            this._renderables.splice(index, 1);
+            this._outgoingRenderables.splice(this._outgoingRenderables.indexOf(renderable), 1);
+            if (this._showing >= index)
+                this._showing--;
+        }
+        if (callback)
+            callback.call(this);
+    }.bind(this, node, modifier, state, renderable));
+};
+RenderController.prototype.render = function render() {
+    var result = this._output;
+    if (result.length > this._nodes.length)
+        result.splice(this._nodes.length);
+    for (var i = 0; i < this._nodes.length; i++) {
+        result[i] = this._nodes[i].render();
+    }
+    return result;
+};
+module.exports = RenderController;
+},{"../core/Modifier":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Modifier.js","../core/RenderNode":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/RenderNode.js","../core/Transform":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/Transform.js","../core/View":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/core/View.js","../transitions/Transitionable":"/Users/chriskim/Desktop/FamousGigs/node_modules/famous/transitions/Transitionable.js"}],"/Users/chriskim/Desktop/FamousGigs/node_modules/underscore/underscore.js":[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
