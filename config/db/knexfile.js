@@ -8,7 +8,7 @@ module.exports = {
       host     : '127.0.0.1',
       port: 5432,
       user     : 'famous_gigs_admin',
-      password : 'famous_gig_dev',
+      password : 'famous_gigs_dev',
       database : 'famous_gigs_development',
       charset  : 'utf8'
     },
