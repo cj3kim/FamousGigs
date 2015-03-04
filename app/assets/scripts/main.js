@@ -39,124 +39,39 @@ var navbarSurface = new Surface({
   }
 });
 
-var CollectionLayout = require('famous-flex/src/layouts/CollectionLayout');
-console.log(CollectionLayout);
-
-var grid = new GridLayout({
-  dimensions: [8, 8]
+var stateModifier = new StateModifier({
+  transform: Transform.translate(300, 0, 0)
 });
 
-var surfaces = [];
-var showing;
-
-grid.sequenceFrom(surfaces);
-
-var cmod = new StateModifier({
-  inTransition: true,
-  outTransition: false,
-  overlap: true
+var stateModifierTwo = new StateModifier({
+  transform: Transform.translate(500, 0, 0)
 });
 
-var controller = new LightBox({
-  inTransition: true,
-  outTransition: false,
-  overlap: true
-});
-controller.hide();
+var CompanyAdCollection = require('./collections/company_ads');
 
-function newSurface(id) {
-  console.log(CollectionLayout);
-  var surface = new Surface({
-    size: [undefined, undefined],
-    content: id + 1,
-    properties: {
-      backgroundColor: "hsl(" + (id * 70 / 64) + ", 60%, 70%)",
-      lineHeight: '50px',
-      textAlign: 'center',
-      cursor: 'pointer'
-    }
-  });
+var companyAds = new CompanyAdCollection();
 
-  surface._stateMod = new StateModifier({
-    size: [500, 420],
-    origin: [0.5, 0.5],
-    align: [0.5, 0.5]
-  });
-  surface._renderNode = new RenderNode();
-  surface._renderNode.add(surface._stateMod).add(surface);
-
-  surfaces.push(surface);
-
-  surface.on('click', function (context, e) {
-    var inTransitionObj  = {curve: Easing.inElastic,  duration: 1000 }
-    var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
-
-    var hideFn = function () { gridModifier.setTransform(Transform.scale(1,1,1), outTransitionObj); };
-
-    if (this === showing) {
-      controller.hide(inTransitionObj, hideFn );
-      showing = null;
-    } else {
-      showing = this;
-      gridModifier.setTransform(Transform.scale(0.001, 0.001, 0.001), outTransitionObj)
-      cmod.setTransform(Transform.translate(0,0, 0.0001));
-      controller.show(this._renderNode, outTransitionObj);
-    }  
-  }.bind(surface, mainContext));
-}
-
-for (var i = 0; i < 64; i += 1) {
-  newSurface(i);
-}
-
-var gridModifier = new StateModifier({
-  size: [400, 400], 
-  align: [0.5, 0.5],
-  origin: [0.5, 0.5]
+console.log(companyAds);
+companyAds.fetch({
+  success: function (models) {
+    console.log(models);
+    models.each(function(model) {
+      var newSurface = new Surface({
+        size: [200, 200],
+        content: model.get('title'),
+        properties: {
+          backgroundColor: 'yellow'
+        }
+      });
+      mainContext.add(stateModifierTwo).add(newSurface);
+    });
+  },
+  error:   function (err) {
+    console.log(err);
+  }
 });
 
-mainContext.add(gridModifier).add(grid);
-mainContext.add(cmod).add(controller);
-mainContext.add(navbarMod).add(navbarSurface);
-
-//var stateModifier = new StateModifier({
-  //transform: Transform.translate(300, 0, 0)
-//});
-
-//var stateModifierTwo = new StateModifier({
-  //transform: Transform.translate(500, 0, 0)
-//});
-
-//var dashboard = new Surface({
-  //size: [undefined, undefined],
-  //properties: {
-    //backgroundColor: 'brown'
-  //}
-//});
-
-//var CompanyAdCollection = require('./collections/company_ads');
-
-//var companyAds = new CompanyAdCollection();
-
-//companyAds.fetch({
-  //success: function (models) {
-    //models.each(function(model) {
-      //var newSurface = new Surface({
-        //size: [200, 200],
-        //content: model.get('title'),
-        //properties: {
-          //backgroundColor: 'yellow'
-        //}
-      //});
-      //mainContext.add(stateModifierTwo).add(newSurface);
-    //});
-  //}, 
-  //error:   function (err) {
-    //console.log(err);
-  //}
-//});
-
-//mainContext.add(stateModifier).add(dashboard);
+mainContext.add(navbarSurface)
 
 
 
