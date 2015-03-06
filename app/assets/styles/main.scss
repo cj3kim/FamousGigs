@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:500,400,300);
 
-html {
-  background: #fff;
+html, body {
+  background: #efecf0;
 }
 
 .backfaceVisibility {
@@ -35,4 +35,19 @@ div.navbar {
 
   .flaticon-gears3 {
   }
+}
+
+div.company_ad {
+  background-color: white;
+  border-radius: 2.5%;
+}
+
+div.stop-gap-div {
+  /*stop-gap-div defers the decision of how to interface famous and backbone surfaces and views. */
+  /*use it as the first element in the javascript template you have. it will be the first child element of a famous surface. */
+  /*there maybe a performance cost related to coding it this way, but it's probably immaterial. research this later.*/
+  /*once you've decided on a convention, remove the stop-gap-div implementation*/
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }

@@ -44,24 +44,22 @@ var stateModifier = new StateModifier({
 });
 
 var stateModifierTwo = new StateModifier({
-  transform: Transform.translate(500, 0, 0)
+  transform: Transform.translate(500, 200, 0)
 });
 
 var CompanyAdCollection = require('./collections/company_ads');
-
 var companyAds = new CompanyAdCollection();
 
-console.log(companyAds);
+var CompanyAdView = require('./views/company_ad');
+
 companyAds.fetch({
   success: function (models) {
-    console.log(models);
     models.each(function(model) {
+      var companyAdView = new CompanyAdView();
       var newSurface = new Surface({
-        size: [200, 200],
-        content: model.get('title'),
-        properties: {
-          backgroundColor: 'yellow'
-        }
+        size: [262, 200],
+        classes: ['company_ad'],
+        content: companyAdView.$el[0]
       });
       mainContext.add(stateModifierTwo).add(newSurface);
     });
