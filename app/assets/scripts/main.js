@@ -55,7 +55,7 @@ var CompanyAdView = require('./views/company_ad');
 companyAds.fetch({
   success: function (models) {
     models.each(function(model) {
-      var companyAdView = new CompanyAdView();
+      var companyAdView = new CompanyAdView({model: model});
       var newSurface = new Surface({
         size: [262, 200],
         classes: ['company_ad'],
