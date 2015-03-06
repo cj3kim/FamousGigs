@@ -40,7 +40,19 @@ div.navbar {
 div.company_ad {
   background-color: white;
   border-radius: 2.5%;
+  padding: 10px;
+  h3 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    color: #0facc3;
+    font-size: 24px;
+    font-weight: 500;
+  }
 }
+
 
 div.stop-gap-div {
   /*stop-gap-div defers the decision of how to interface famous and backbone surfaces and views. */

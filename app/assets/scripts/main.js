@@ -44,7 +44,7 @@ var stateModifier = new StateModifier({
 });
 
 var stateModifierTwo = new StateModifier({
-  transform: Transform.translate(500, 200, 0)
+  transform: Transform.translate(350, 50, 0)
 });
 
 var CompanyAdCollection = require('./collections/company_ads');
@@ -57,7 +57,7 @@ companyAds.fetch({
     models.each(function(model) {
       var companyAdView = new CompanyAdView({model: model});
       var newSurface = new Surface({
-        size: [262, 200],
+        size: [262, 300],
         classes: ['company_ad'],
         content: companyAdView.$el[0]
       });
