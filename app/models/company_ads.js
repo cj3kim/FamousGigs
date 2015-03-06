@@ -1,5 +1,6 @@
 
-var dbConfig = require('../../config/db/config')['development'];
+var env = process.env.NODE_ENV;
+var dbConfig = require('../../config/db/knexfile')[env];
 var knex = require('knex')(dbConfig);
 
 var bookshelf = require('bookshelf')(knex);
