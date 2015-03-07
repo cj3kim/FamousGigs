@@ -21,6 +21,27 @@ var GridLayout       = require('famous/views/GridLayout');
 var LightBox         = require('famous/views/LightBox');
 var RenderController = require('famous/views/RenderController');
 
+
+
+var CollectionLayout = require('../../../famous-flex/src/layouts/CollectionLayout');
+var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
+
+// Create scrollable layout where items have a fixed width/height
+var scrollView = new FlexScrollView({
+  layout: CollectionLayout,
+  layoutOptions: {
+    itemSize: [100, 100],    // item has width and height of 100 pixels
+    margins: [10, 5, 10, 5], // outer margins
+    spacing: [10, 10]        // spacing between items
+  },
+  dataSource: [
+    new Surface({content: 'item 1'}),
+    new Surface({content: 'item 2'}),
+    new Surface({content: 'item 3'})
+  ]
+});
+
+
 var fs = require('fs');
 // create the main context
 var mainContext = Engine.createContext();
@@ -40,17 +61,32 @@ var navbarSurface = new Surface({
 });
 
 var stateModifier = new StateModifier({
-  transform: Transform.translate(300, 0, 0)
-});
-
-var stateModifierTwo = new StateModifier({
   transform: Transform.translate(350, 50, 0)
 });
 
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
-
 var CompanyAdView = require('./views/company_ad');
+
+var grid = new GridLayout({
+  dimensions: [8,8]
+});
+var surfaces = []
+var showing;
+grid.sequenceFrom(surfaces);
+
+var cmod = new StateModifier({
+  inTransition:  true,
+  outTransition: false,
+  overlap: true
+});
+
+var controller = new LightBox({
+  inTransition: true,
+  outTransition: false,
+  overlap: true
+});
+controller.hide();
 
 companyAds.fetch({
   success: function (models) {
@@ -61,7 +97,8 @@ companyAds.fetch({
         classes: ['company_ad'],
         content: companyAdView.$el[0]
       });
-      mainContext.add(stateModifierTwo).add(newSurface);
+
+      mainContext.add(stateModifier).add(newSurface);
     });
   },
   error:   function (err) {
@@ -70,6 +107,13 @@ companyAds.fetch({
 });
 
 mainContext.add(navbarSurface)
+
+var stateModifier2 = new StateModifier({
+  transform: Transform.translate(600, 50, 0)
+});
+
+
+mainContext.add(stateModifier2).add(scrollView);
 
 
 

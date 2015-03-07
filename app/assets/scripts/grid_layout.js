@@ -56,7 +56,7 @@ function newSurface(id) {
       gridModifier.setTransform(Transform.scale(0.001, 0.001, 0.001), outTransitionObj)
       cmod.setTransform(Transform.translate(0,0, 0.0001));
       controller.show(this._renderNode, outTransitionObj);
-    }  
+    }
   }.bind(surface, mainContext));
 }
 
