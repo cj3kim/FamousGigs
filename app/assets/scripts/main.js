@@ -30,16 +30,30 @@ var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
 var scrollView = new FlexScrollView({
   layout: CollectionLayout,
   layoutOptions: {
-    itemSize: [100, 100],    // item has width and height of 100 pixels
+    itemSize: [262, 300],    // item has width and height of 100 pixels
     margins: [10, 5, 10, 5], // outer margins
     spacing: [10, 10]        // spacing between items
   },
   dataSource: [
-    new Surface({content: 'item 1'}),
-    new Surface({content: 'item 2'}),
-    new Surface({content: 'item 3'})
+    createSurface(),
+    createSurface(),
+    createSurface()
   ]
 });
+
+function createSurface() {
+  var surface = new Surface({
+        size: [262, 300],
+    classes: ['company_ad']
+  });
+  surface.on('click', function () {
+    scrollView.hide();
+    console.log('you clicked me');
+
+  });
+
+  return surface;
+}
 
 
 var fs = require('fs');
