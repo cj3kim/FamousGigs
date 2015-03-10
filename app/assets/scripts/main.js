@@ -27,38 +27,15 @@ var CollectionLayout = require('../../../famous-flex/src/layouts/CollectionLayou
 var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
 
 // Create scrollable layout where items have a fixed width/height
-var scrollView = new FlexScrollView({
-  layout: CollectionLayout,
-  layoutOptions: {
-    itemSize: [262, 300],    // item has width and height of 100 pixels
-    margins: [10, 5, 10, 5], // outer margins
-    spacing: [10, 10]        // spacing between items
-  },
-  dataSource: [
-    createSurface(),
-    createSurface(),
-    createSurface()
-  ]
-});
 
-function createSurface() {
-  var surface = new Surface({
-        size: [262, 300],
-    classes: ['company_ad']
-  });
-  surface.on('click', function () {
-    scrollView.hide();
-    console.log('you clicked me');
-
-  });
-
-  return surface;
-}
 
 
 var fs = require('fs');
 // create the main context
 var mainContext = Engine.createContext();
+mainContext.setPerspective(1000);
+
+
 var $ = require('zepto-browserify').$;
 var $template = $(fs.readFileSync( __dirname + '/templates/navbar.html', 'utf8'));
 
@@ -78,54 +55,66 @@ var stateModifier = new StateModifier({
   transform: Transform.translate(350, 50, 0)
 });
 
+
+
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
 var CompanyAdView = require('./views/company_ad');
 
-var grid = new GridLayout({
-  dimensions: [8,8]
-});
-var surfaces = []
-var showing;
-grid.sequenceFrom(surfaces);
+var dataSource = [];
 
-var cmod = new StateModifier({
-  inTransition:  true,
-  outTransition: false,
-  overlap: true
-});
 
-var controller = new LightBox({
-  inTransition: true,
-  outTransition: false,
-  overlap: true
+
+function createSurface(model) {
+  var companyAdView = new CompanyAdView({model: model});
+  var newSurface = new Surface({
+    size: [262, 300],
+    classes: ['company_ad'],
+    content: companyAdView.$el[0]
+  });
+  var renderNode = new RenderNode();
+  var _sm = new StateModifier({
+    origin: [0.5, 0.5],
+    align: [0.5, 0.5]
+  });
+  newSurface._sm = _sm
+  renderNode.add(_sm).add(newSurface);
+
+  newSurface.on('click', function () {
+    var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
+    _sm.setTransform( Transform.scale(2, 2, 2), outTransitionObj)
+    //_sm.setTransform( Transform.rotate(0, 200, 0), { duration : 1000, curve: 'linear' })
+  });
+
+  return renderNode;
+}
+
+var scrollView = new FlexScrollView({
+  layout: CollectionLayout,
+  layoutOptions: {
+    itemSize: [262, 300],    // item has width and height of 100 pixels
+    margins: [10, 10, 10, 10], // outer margins
+    spacing: [15, 20],        // spacing between items
+    screenSizeOffset: [-325, 0],
+  },
+  flow: true
 });
-controller.hide();
 
 companyAds.fetch({
   success: function (models) {
     models.each(function(model) {
-      var companyAdView = new CompanyAdView({model: model});
-      var newSurface = new Surface({
-        size: [262, 300],
-        classes: ['company_ad'],
-        content: companyAdView.$el[0]
-      });
-
-      mainContext.add(stateModifier).add(newSurface);
+     scrollView.push(createSurface(model));
     });
   },
   error:   function (err) {
     console.log(err);
   }
 });
-
 mainContext.add(navbarSurface)
 
 var stateModifier2 = new StateModifier({
-  transform: Transform.translate(600, 50, 0)
+  transform: Transform.translate(325, 50, 0)
 });
-
 
 mainContext.add(stateModifier2).add(scrollView);
 
