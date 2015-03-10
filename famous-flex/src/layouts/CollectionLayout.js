@@ -162,10 +162,15 @@
      * Collection-layout
      */
     function CollectionLayout(context_, options) {
-
         // Prepare
         context = context_;
         size = context.size;
+
+        if (options.screenSizeOffset) {
+          size[0] = size[0] + options.screenSizeOffset[0];
+          size[1] = size[1] + options.screenSizeOffset[1];
+        }
+
         direction = context.direction;
         alignment = context.alignment;
         lineDirection = (direction + 1) % 2;
