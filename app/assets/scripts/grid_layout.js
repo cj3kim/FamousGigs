@@ -13,10 +13,13 @@ var cmod = new StateModifier({
   overlap: true
 });
 
+var LightBox = require('famous/views/LightBox');
+
 var controller = new LightBox({
   inTransition: true,
   outTransition: false,
   overlap: true
+
 });
 controller.hide();
 

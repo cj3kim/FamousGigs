@@ -61,29 +61,47 @@ var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
 var CompanyAdView = require('./views/company_ad');
 
+
 var dataSource = [];
 
-
+var rc = new LightBox({
+  inTransition: true,
+  outTransition: false,
+  overlap: true
+});
 
 function createSurface(model) {
   var companyAdView = new CompanyAdView({model: model});
   var newSurface = new Surface({
-    size: [262, 300],
     classes: ['company_ad'],
     content: companyAdView.$el[0]
   });
   var renderNode = new RenderNode();
+
   var _sm = new StateModifier({
+    size: [262, 300],
     origin: [0.5, 0.5],
     align: [0.5, 0.5]
   });
+
+  var _sm2 = new StateModifier({
+    size: [500, 500],
+    origin: [0.5, 0.5],
+    align: [0.5, 0.5]
+  });
+  var rn2 = new RenderNode();
+  rn2.add(_sm2).add(newSurface);
+
+
+  newSurface._renderNode = rn2;
+
+
   newSurface._sm = _sm
   renderNode.add(_sm).add(newSurface);
 
   newSurface.on('click', function () {
     var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
-    _sm.setTransform( Transform.scale(2, 2, 2), outTransitionObj)
-    //_sm.setTransform( Transform.rotate(0, 200, 0), { duration : 1000, curve: 'linear' })
+    rc.show(rn2, outTransitionObj);
   });
 
   return renderNode;
@@ -116,7 +134,18 @@ var stateModifier2 = new StateModifier({
   transform: Transform.translate(325, 50, 0)
 });
 
+var stateModifier3 = new StateModifier({
+  transform: Transform.translate(325, 50, 0)
+});
+
+
 mainContext.add(stateModifier2).add(scrollView);
 
+var cmod = new StateModifier({
+  inTransition: true,
+  outTransition: false,
+  overlap: true
+});
+mainContext.add(cmod).add(rc);
 
 
