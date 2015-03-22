@@ -6,6 +6,7 @@ var Engine           = require('famous/core/Engine');
 
 var RenderNode       = require('famous/core/RenderNode');
 var Surface          = require('famous/core/Surface');
+var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var ImageSurface = require('famous/surfaces/ImageSurface');
 
 var Modifier         = require('famous/core/Modifier');
@@ -21,7 +22,7 @@ var GridLayout       = require('famous/views/GridLayout');
 var LightBox         = require('famous/views/LightBox');
 var RenderController = require('famous/views/RenderController');
 
-
+var Entity = require('famous/core/Entity');
 
 var CollectionLayout = require('../../../famous-flex/src/layouts/CollectionLayout');
 var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
@@ -51,24 +52,19 @@ var navbarSurface = new Surface({
   }
 });
 
-var stateModifier = new StateModifier({
-  transform: Transform.translate(350, 50, 0)
-});
-
-
-
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
 var CompanyAdView = require('./views/company_ad');
 
 
-var dataSource = [];
-
-var rc = new LightBox({
+var lightbox = new RenderController({
   inTransition: true,
   outTransition: false,
   overlap: true
 });
+
+
+var surfaces = [];
 
 function createSurface(model) {
   var companyAdView = new CompanyAdView({model: model});
@@ -76,32 +72,43 @@ function createSurface(model) {
     classes: ['company_ad'],
     content: companyAdView.$el[0]
   });
+
+  surfaces.push(newSurface);
+
   var renderNode = new RenderNode();
+  var rc = new RenderController();
 
-  var _sm = new StateModifier({
+  var surfaceStateMod = new StateModifier({
     size: [262, 300],
-    origin: [0.5, 0.5],
-    align: [0.5, 0.5]
   });
 
-  var _sm2 = new StateModifier({
+  var selectedStateMod = new StateModifier({
     size: [500, 500],
-    origin: [0.5, 0.5],
-    align: [0.5, 0.5]
   });
+
   var rn2 = new RenderNode();
-  rn2.add(_sm2).add(newSurface);
+  rn2.add(selectedStateMod).add(newSurface);
 
 
   newSurface._renderNode = rn2;
+  newSurface._rc = rc;
 
+  newSurface._sm = surfaceStateMod
 
-  newSurface._sm = _sm
-  renderNode.add(_sm).add(newSurface);
-
+  renderNode.add(surfaceStateMod).add(rc);
+  rc.show(newSurface)
   newSurface.on('click', function () {
     var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
-    rc.show(rn2, outTransitionObj);
+
+    for (var i = 0; i < surfaces.length; i += 1) {
+      var s = surfaces[i];
+      if (s.id !== newSurface.id) {
+        var rc = s._rc;
+        rc.hide();
+      }
+    }
+    cmod.setTransform(Transform.translate(0,0, 0.0001));
+    lightbox.show(rn2);
   });
 
   return renderNode;
@@ -130,22 +137,20 @@ companyAds.fetch({
 });
 mainContext.add(navbarSurface)
 
-var stateModifier2 = new StateModifier({
+var scrollViewMod = new StateModifier({
   transform: Transform.translate(325, 50, 0)
 });
 
-var stateModifier3 = new StateModifier({
-  transform: Transform.translate(325, 50, 0)
-});
+var container = new ContainerSurface();
+container.add(scrollView);
+container.pipe(scrollView);
 
-
-mainContext.add(stateModifier2).add(scrollView);
+mainContext.add(scrollViewMod).add(container);
 
 var cmod = new StateModifier({
   inTransition: true,
   outTransition: false,
-  overlap: true
+  overlap: true,
 });
-mainContext.add(cmod).add(rc);
 
-
+mainContext.add(cmod).add(lightbox);
