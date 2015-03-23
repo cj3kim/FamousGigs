@@ -30,6 +30,11 @@ var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
 // Create scrollable layout where items have a fixed width/height
 
 
+var AdDetails = require('./views/ad_details');
+var adDetails = new AdDetails();
+var adDetailsNode = new RenderNode();
+
+adDetailsNode.add(new StateModifier({transform: Transform.translate(325,60,0)})).add(adDetails);
 
 var fs = require('fs');
 // create the main context
@@ -56,7 +61,6 @@ var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
 var CompanyAdView = require('./views/company_ad');
 
-
 var lightbox = new RenderController({
   inTransition: true,
   outTransition: false,
@@ -69,7 +73,7 @@ var surfaces = [];
 function createSurface(model) {
   var companyAdView = new CompanyAdView({model: model});
   var newSurface = new Surface({
-    classes: ['company_ad'],
+    classes: ['company-ad'],
     content: companyAdView.$el[0]
   });
 
@@ -82,33 +86,23 @@ function createSurface(model) {
     size: [262, 300],
   });
 
-  var selectedStateMod = new StateModifier({
-    size: [500, 500],
-  });
-
-  var rn2 = new RenderNode();
-  rn2.add(selectedStateMod).add(newSurface);
-
-
-  newSurface._renderNode = rn2;
   newSurface._rc = rc;
 
   newSurface._sm = surfaceStateMod
 
   renderNode.add(surfaceStateMod).add(rc);
-  rc.show(newSurface)
+  rc.show(newSurface);
+
   newSurface.on('click', function () {
     var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
 
     for (var i = 0; i < surfaces.length; i += 1) {
       var s = surfaces[i];
-      if (s.id !== newSurface.id) {
-        var rc = s._rc;
-        rc.hide();
-      }
+      s._rc.hide();
     }
     cmod.setTransform(Transform.translate(0,0, 0.0001));
-    lightbox.show(rn2);
+
+    lightbox.show(adDetailsNode);
   });
 
   return renderNode;
@@ -154,3 +148,4 @@ var cmod = new StateModifier({
 });
 
 mainContext.add(cmod).add(lightbox);
+

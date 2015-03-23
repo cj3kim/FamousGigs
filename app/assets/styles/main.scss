@@ -37,7 +37,14 @@ div.navbar {
   }
 }
 
-div.company_ad {
+div.rounded-corners{
+  background-color: white;
+  border-radius: 2.5%;
+  overflow: hidden;
+}
+
+
+div.company-ad {
   background-color: white;
   border-radius: 2.5%;
   padding: 10px;
@@ -53,6 +60,25 @@ div.company_ad {
   }
 }
 
+div.apply-now {
+  .apply-btn {
+    width: 233px;
+    height: 50px;
+    border-radius: 2.5%;
+
+    span {
+      background-color: #3b9eb7;
+      color: white;
+    }
+  }
+
+  .details {
+  }
+
+  .contact {
+
+  }
+}
 
 div.stop-gap-div {
   /*stop-gap-div defers the decision of how to interface famous and backbone surfaces and views. */
