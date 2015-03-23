@@ -1,21 +1,16 @@
-var Backbone = require('backbone');
-var $ = require('zepto-browserify').$;
-Backbone.$ = $;
-var fs = require('fs');
-var Mustache = require('mustache');
+var React = require('react');
 
-
-var templateString = fs.readFileSync(__dirname + '/../templates/company_ad.html', 'utf8');
-var $template = $(templateString);
-
-var CompanyAd = Backbone.View.extend({
-  initialize: function () {
-    this.el = Mustache.render(this.templateString, this.model.attributes)
-    this.$el = $(this.el);
-  },
-
-  el: templateString,
-  templateString: templateString
+var CompanyAd = React.createClass({
+  render: function () {
+    return (
+      <div className="stop-gap-div"> 
+        <h3 className='title'>{ this.props.title }</h3>
+        <p>{ this.props.job_location }</p>
+        <p>{ this.props.description }</p>
+      </div>
+    );
+  }
 });
+
 
 module.exports = CompanyAd;

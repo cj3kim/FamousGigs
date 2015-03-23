@@ -1,6 +1,8 @@
 // Load polyfills
 require('famous-polyfills');
 
+var React = require('react');
+var ReactSurface = require('./react_surface');
 // import dependencies
 var Engine           = require('famous/core/Engine');
 
@@ -42,16 +44,13 @@ var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
 
 
-var $ = require('zepto-browserify').$;
-var $template = $(fs.readFileSync( __dirname + '/templates/navbar.html', 'utf8'));
-
 var NavbarView = require('./views/navbar');
-var navbarView = new NavbarView();
 
 var navbarMod = new Modifier();
-var navbarSurface = new Surface({
+
+var navbarSurface = new ReactSurface({
   size: [300, undefined],
-  content: navbarView.$el[0],
+  content: <NavbarView />,
   properties: {
     backgroundColor: '#0a3650'
   }
@@ -71,10 +70,10 @@ var lightbox = new RenderController({
 var surfaces = [];
 
 function createSurface(model) {
-  var companyAdView = new CompanyAdView({model: model});
-  var newSurface = new Surface({
+
+  var newSurface = new ReactSurface({
     classes: ['company-ad'],
-    content: companyAdView.$el[0]
+    content: <CompanyAdView {...model.attributes} />
   });
 
   surfaces.push(newSurface);
@@ -87,7 +86,6 @@ function createSurface(model) {
   });
 
   newSurface._rc = rc;
-
   newSurface._sm = surfaceStateMod
 
   renderNode.add(surfaceStateMod).add(rc);
@@ -122,7 +120,9 @@ var scrollView = new FlexScrollView({
 companyAds.fetch({
   success: function (models) {
     models.each(function(model) {
-     scrollView.push(createSurface(model));
+      var rn = createSurface(model);
+      scrollView.push(rn);
+
     });
   },
   error:   function (err) {

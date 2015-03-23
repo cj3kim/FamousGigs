@@ -37,7 +37,7 @@ gulp.task('watch', function () {
 gulp.task('browserify-watch', function () {
   var b = browserify({ cache: {}, packageCache: {}, fullPaths: true })
   b = watchify(b);
-  b.transform('brfs');
+  b.transform('reactify');
 
   b.on('update', function() {
     bundle(b);
