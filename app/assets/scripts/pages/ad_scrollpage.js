@@ -15,12 +15,13 @@ module.exports = function (bodyRC, adDetails) {
       itemSize: [262, 300],    // item has width and height of 100 pixels
       margins: [10, 10, 10, 10], // outer margins
       spacing: [15, 20],        // spacing between items
-      //screenSizeOffset: [-325, 0],
+      //screenSizeOffset: [0,20], // hacked famous-flex to achieve this
     },
     flow: true
   });
 
-  var container = new ContainerSurface();
+  var container = new ContainerSurface({});
+
   container.add(scrollView);
   container.pipe(scrollView);
 

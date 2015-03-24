@@ -123,6 +123,17 @@ div.ad-information {
 
 }
 
+
+div.main-navbar {
+  div.navbar-btn {
+    width: 68px;
+    height: 68px;
+    border: solid 1px white;
+    float: right;
+  }
+}
+
+
 div.stop-gap-div {
   /*stop-gap-div defers the decision of how to interface famous and backbone surfaces and views. */
   /*use it as the first element in the javascript template you have. it will be the first child element of a famous surface. */

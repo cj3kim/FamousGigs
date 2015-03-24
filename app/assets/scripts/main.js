@@ -33,8 +33,21 @@ mainContext.setPerspective(1000);
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout();
 
-headerFooterLayout.header.add()
-headerFooterLayout.content.add();
+var NavbarReact = require('./react_views/navbar');
+
+var navbar = new ReactSurface({
+  size: [undefined, 68],
+  content: <NavbarReact />,
+  properties: {
+    backgroundColor: '#0d374f'
+  }
+});
+
+
+
+
+
+headerFooterLayout.header.add(navbar);
 mainContext.add(headerFooterLayout);
 
 // Create scrollable layout where items have a fixed width/height
