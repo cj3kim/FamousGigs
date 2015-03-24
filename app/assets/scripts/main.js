@@ -49,19 +49,13 @@ var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
 var CompanyAdView = require('./views/company_ad');
 
-var cmod = new StateModifier({
-  inTransition: true,
-  outTransition: false,
-  overlap: true,
-});
-
-var lightbox = new RenderController({
+var bodyRC = new RenderController({
   inTransition: true,
   outTransition: false,
   overlap: true
 });
 
-var generateAdSurface = require('./generators/generate_ads')(lightbox, adDetails);
+var generateAdSurface = require('./generators/generate_ads')(bodyRC, adDetails);
 
 var scrollViewMod = new StateModifier({
   transform: Transform.translate(325, 50, 0)
@@ -95,9 +89,9 @@ var container = new ContainerSurface();
 container.add(scrollView);
 container.pipe(scrollView);
 
-mainContext.add(scrollViewMod).add(container);
+var rn = new RenderNode();
+rn.add(scrollViewMod).add(container);
 
-
-
-mainContext.add(cmod).add(lightbox);
+mainContext.add(bodyRC);
+bodyRC.show(rn);
 

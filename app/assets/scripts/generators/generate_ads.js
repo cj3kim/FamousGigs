@@ -32,14 +32,7 @@ module.exports = function (viewRenderController, adDetails) {
     rc.show(adSurface);
 
     adSurface.on('click', function () {
-      var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
-
-      for (var i = 0; i < surfaces.length; i += 1) {
-        var s = surfaces[i];
-        s._rc.hide();
-      }
       adDetails._eventInput.emit('reset-ad-details', model);
-
       viewRenderController.show(adDetails.adDetailsNode);
     });
 
