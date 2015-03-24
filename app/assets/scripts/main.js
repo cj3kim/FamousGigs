@@ -100,6 +100,7 @@ function createSurface(model) {
     }
     cmod.setTransform(Transform.translate(0,0, 0.0001));
 
+    adDetails._eventInput.emit('reset-ad-details', model);
     lightbox.show(adDetailsNode);
   });
 
@@ -129,6 +130,7 @@ companyAds.fetch({
     console.log(err);
   }
 });
+
 mainContext.add(navbarSurface)
 
 var scrollViewMod = new StateModifier({

@@ -9,6 +9,33 @@ var ImageSurface  = require('famous/surfaces/ImageSurface');
 var Transform     = require('famous/core/Transform');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 
+var React = require('react');
+var ReactSurface = require('../react_surface');
+
+var AdInformation = React.createClass({
+  render: function () {
+    return (
+      <div className='ad-information stop-gap-div'>
+        <div className='details'> 
+          <span>DETAILS</span>
+          <ul>
+            <li><span className='ad-details-flaticon-building104 icon'></span> Company </li>
+            <li><span className='ad-details-flaticon-pin71 icon'></span> Oakland, CA</li>
+            <li><span className='ad-details-flaticon-wifi11 icon'></span> Remote Working Ok</li>
+          </ul>
+        </div>
+
+        <div className='contact'> 
+          <span>CONTACT</span>
+          <ul>
+            <li> <span className='ad-details-flaticon-user91 icon'></span> Chris Kim </li>
+            <li>  <span className='ad-details-flaticon-mail59 icon'></span> chris@wundercode.net </li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+});
 
 function ApplyNow () {
   View.apply(this, arguments);
@@ -29,7 +56,8 @@ function ApplyNow () {
 
   var applyBtn = new Surface({
     size: [233, 50],
-    content: 'Apply Now',
+    content: 'APPLY',
+    classes: ['apply-now-btn'],
     properties: {
       borderRadius: '2.5%',
       fontFamily: 'Raleway, serif',
@@ -39,28 +67,15 @@ function ApplyNow () {
     }
   });
 
-  var details = new Surface({
-    size: [233, 109],
-    properties: {
-      backgroundColor: 'red',
-    },
-    content: ""
+  var details = new ReactSurface({
+    size: [233, 200],
+    content: <AdInformation />
   });
-
-  var contact = new Surface({
-    size: [233, 80],
-    properties: {
-      backgroundColor: 'green',
-    },
-    content: ""
-  });
-
 
   var node = apply.add(baseStateMod);
   node.add(applyBtnStateMod).add(applyBtn);
 
   node.add(detailStateMod).add(details);
-  node.add(contactStateMod).add(contact);
 
   this._node.add(node);
 

@@ -13,6 +13,7 @@ function AdDetails() {
 
   this.initialize();
   this.setupEventListeners();
+  this.setupPiping();
 };
 
 AdDetails.prototype = Object.create(View.prototype);
@@ -23,7 +24,7 @@ AdDetails.prototype.initialize = function () {
   this.application = new Application();
 
   var applicationStateMod = new StateModifier({
-    transform: Transform.translate(600,0, 0)
+    transform: Transform.translate(525,0, 0)
   });
 
   this._node.add(this.largeAd);
@@ -31,10 +32,16 @@ AdDetails.prototype.initialize = function () {
 };
 
 AdDetails.prototype.setupEventListeners = function () {
-  this._eventInput.on('reset-ad-details', function (models) {
-
+  var _this = this;
+  this._eventInput.on('reset-ad-details', function (model) {
+    _this._eventOutput.emit('reset-ad-details', model)
   });
+};
 
+AdDetails.prototype.setupPiping = function () {
+  var _this = this;
+
+  _this._eventOutput.pipe(_this.largeAd._eventInput);
 };
 
 module.exports = AdDetails;
