@@ -33,7 +33,7 @@ module.exports = function (viewRenderController, adDetails) {
 
     adSurface.on('click', function () {
       adDetails._eventInput.emit('reset-ad-details', model);
-      viewRenderController.show(adDetails.adDetailsNode);
+      viewRenderController.show(adDetails);
     });
 
     return renderNode;

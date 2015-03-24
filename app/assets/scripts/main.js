@@ -9,7 +9,7 @@ var Engine           = require('famous/core/Engine');
 var RenderNode       = require('famous/core/RenderNode');
 var Surface          = require('famous/core/Surface');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
-var ImageSurface = require('famous/surfaces/ImageSurface');
+var ImageSurface     = require('famous/surfaces/ImageSurface');
 
 var Modifier         = require('famous/core/Modifier');
 var StateModifier    = require('famous/modifiers/StateModifier');
@@ -26,57 +26,37 @@ var RenderController = require('famous/views/RenderController');
 
 var Entity = require('famous/core/Entity');
 
-var CollectionLayout = require('../../../famous-flex/src/layouts/CollectionLayout');
-var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
+var mainContext = Engine.createContext();
+mainContext.setPerspective(1000);
+
+
+var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
+var headerFooterLayout = new HeaderFooterLayout();
+
+headerFooterLayout.header.add()
+headerFooterLayout.content.add();
+mainContext.add(headerFooterLayout);
 
 // Create scrollable layout where items have a fixed width/height
 
-
-
 var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails();
-var adDetailsNode = new RenderNode();
-
-adDetailsNode.add(new StateModifier({transform: Transform.translate(325,60,0)})).add(adDetails);
-adDetails.adDetailsNode = adDetailsNode;
 
 // create the main context
-var mainContext = Engine.createContext();
-mainContext.setPerspective(1000);
-mainContext.add(require('./surfaces/navbar_surface'));
-
-var CompanyAdCollection = require('./collections/company_ads');
-var companyAds = new CompanyAdCollection();
-var CompanyAdView = require('./views/company_ad');
-
 var bodyRC = new RenderController({
   inTransition: true,
   outTransition: false,
   overlap: true
 });
 
-var generateAdSurface = require('./generators/generate_ads')(bodyRC, adDetails);
 
-var scrollViewMod = new StateModifier({
-  transform: Transform.translate(325, 50, 0)
-});
+var adScrollPage = require('./pages/ad_scrollpage')(bodyRC, adDetails);
 
-var scrollView = new FlexScrollView({
-  layout: CollectionLayout,
-  layoutOptions: {
-    itemSize: [262, 300],    // item has width and height of 100 pixels
-    margins: [10, 10, 10, 10], // outer margins
-    spacing: [15, 20],        // spacing between items
-    screenSizeOffset: [-325, 0],
-  },
-  flow: true
-});
-
-companyAds.fetch({
+adScrollPage.companyAds.fetch({
   success: function (models) {
     models.each(function(model) {
-      var rn = generateAdSurface(model);
-      scrollView.push(rn);
+      var rn = adScrollPage.generateAdSurface(model);
+      adScrollPage.scrollView.push(rn);
     });
   },
   error:   function (err) {
@@ -84,14 +64,11 @@ companyAds.fetch({
   }
 });
 
+headerFooterLayout.content.add(bodyRC);
 
-var container = new ContainerSurface();
-container.add(scrollView);
-container.pipe(scrollView);
+bodyRC.show(adScrollPage);
 
-var rn = new RenderNode();
-rn.add(scrollViewMod).add(container);
 
-mainContext.add(bodyRC);
-bodyRC.show(rn);
+
+
 
