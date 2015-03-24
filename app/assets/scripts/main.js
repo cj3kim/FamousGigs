@@ -32,33 +32,28 @@ var FlexScrollView   = require('../../../famous-flex/src/FlexScrollView');
 // Create scrollable layout where items have a fixed width/height
 
 
+
 var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails();
 var adDetailsNode = new RenderNode();
 
 adDetailsNode.add(new StateModifier({transform: Transform.translate(325,60,0)})).add(adDetails);
+adDetails.adDetailsNode = adDetailsNode;
 
-var fs = require('fs');
 // create the main context
 var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
-
-
-var NavbarView = require('./views/navbar');
-
-var navbarMod = new Modifier();
-
-var navbarSurface = new ReactSurface({
-  size: [300, undefined],
-  content: <NavbarView />,
-  properties: {
-    backgroundColor: '#0a3650'
-  }
-});
+mainContext.add(require('./surfaces/navbar_surface'));
 
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection();
 var CompanyAdView = require('./views/company_ad');
+
+var cmod = new StateModifier({
+  inTransition: true,
+  outTransition: false,
+  overlap: true,
+});
 
 var lightbox = new RenderController({
   inTransition: true,
@@ -66,46 +61,11 @@ var lightbox = new RenderController({
   overlap: true
 });
 
+var generateAdSurface = require('./generators/generate_ads')(lightbox, adDetails);
 
-var surfaces = [];
-
-function createSurface(model) {
-
-  var newSurface = new ReactSurface({
-    classes: ['company-ad'],
-    content: <CompanyAdView {...model.attributes} />
-  });
-
-  surfaces.push(newSurface);
-
-  var renderNode = new RenderNode();
-  var rc = new RenderController();
-
-  var surfaceStateMod = new StateModifier({
-    size: [262, 300],
-  });
-
-  newSurface._rc = rc;
-  newSurface._sm = surfaceStateMod
-
-  renderNode.add(surfaceStateMod).add(rc);
-  rc.show(newSurface);
-
-  newSurface.on('click', function () {
-    var outTransitionObj = {curve: Easing.outElastic, duration: 1000 }
-
-    for (var i = 0; i < surfaces.length; i += 1) {
-      var s = surfaces[i];
-      s._rc.hide();
-    }
-    cmod.setTransform(Transform.translate(0,0, 0.0001));
-
-    adDetails._eventInput.emit('reset-ad-details', model);
-    lightbox.show(adDetailsNode);
-  });
-
-  return renderNode;
-}
+var scrollViewMod = new StateModifier({
+  transform: Transform.translate(325, 50, 0)
+});
 
 var scrollView = new FlexScrollView({
   layout: CollectionLayout,
@@ -121,9 +81,8 @@ var scrollView = new FlexScrollView({
 companyAds.fetch({
   success: function (models) {
     models.each(function(model) {
-      var rn = createSurface(model);
+      var rn = generateAdSurface(model);
       scrollView.push(rn);
-
     });
   },
   error:   function (err) {
@@ -131,11 +90,6 @@ companyAds.fetch({
   }
 });
 
-mainContext.add(navbarSurface)
-
-var scrollViewMod = new StateModifier({
-  transform: Transform.translate(325, 50, 0)
-});
 
 var container = new ContainerSurface();
 container.add(scrollView);
@@ -143,11 +97,7 @@ container.pipe(scrollView);
 
 mainContext.add(scrollViewMod).add(container);
 
-var cmod = new StateModifier({
-  inTransition: true,
-  outTransition: false,
-  overlap: true,
-});
+
 
 mainContext.add(cmod).add(lightbox);
 
