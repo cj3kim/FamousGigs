@@ -92,18 +92,6 @@ var bodyRC = new RenderController({
 
 var adScrollPage = require('./pages/ad_scrollpage')(bodyRC, adDetails);
 
-adScrollPage.companyAds.fetch({
-  success: function (models) {
-    models.each(function(model) {
-      var rn = adScrollPage.generateAdSurface(model);
-      adScrollPage.scrollView.push(rn);
-    });
-  },
-  error:   function (err) {
-    console.log(err);
-  }
-});
-
 headerFooterLayout.content.add(bodyRC);
 
 bodyRC.show(adScrollPage);

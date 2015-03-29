@@ -1,33 +1,45 @@
 var CompanyAdCollection = require('../collections/company_ads');
 var companyAds = new CompanyAdCollection();
 
+var Engine = require('famous/core/Engine');
 
+var Scrollview = require('famous/views/Scrollview');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var CollectionLayout = require('../../../../famous-flex/src/layouts/CollectionLayout');
+var FlexGrid = require('../views/FlexGrid');
 var FlexScrollView   = require('../../../../famous-flex/src/FlexScrollView');
 
 module.exports = function (bodyRC, adDetails) {
-
   var generateAdSurface = require('../generators/generate_ads')(bodyRC, adDetails);
-  var scrollView = new FlexScrollView({
-    layout: CollectionLayout,
-    layoutOptions: {
-      itemSize: [262, 300],    // item has width and height of 100 pixels
-      margins: [10, 10, 10, 10], // outer margins
-      spacing: [15, 20],        // spacing between items
-      //screenSizeOffset: [0,20], // hacked famous-flex to achieve this
-    },
-    flow: true
+  var scrollview = new Scrollview();
+
+  Engine.pipe(scrollview);
+
+  var flexGrid = new FlexGrid({
+      marginTop: 20,
+      marginSide: 20 ,
+      gutterCol: 40,
+      gutterRow: 20,
+      itemSize: [262, 300]
   });
 
-  var container = new ContainerSurface({});
+  scrollview.sequenceFrom([flexGrid]);
+  var surfaces = [];
 
-  container.add(scrollView);
-  container.pipe(scrollView);
+  companyAds.fetch({
+    success: function (models) {
+      models.each(function(model) {
+        var rn = generateAdSurface(model);
+        surfaces.push(rn);
+        flexGrid.resizeFlow();
+      });
+  },
+    error:   function (err) {
+      console.log(err);
+    }
+  });
 
-  container.companyAds = companyAds;
-  container.generateAdSurface = generateAdSurface;
-  container.scrollView = scrollView;
+  flexGrid.sequenceFrom(surfaces);
 
-  return container;
+  return scrollview;
 };
