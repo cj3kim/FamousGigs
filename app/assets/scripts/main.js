@@ -29,25 +29,59 @@ var Entity = require('famous/core/Entity');
 var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
 
-
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
-var headerFooterLayout = new HeaderFooterLayout();
-
-var NavbarReact = require('./react_views/navbar');
-
-var navbar = new ReactSurface({
-  size: [undefined, 68],
-  content: <NavbarReact />,
-  properties: {
-    backgroundColor: '#0d374f'
-  }
+var headerFooterLayout = new HeaderFooterLayout({
+  headerSize: 68
 });
 
 
+var FlexNavbar = require('./views/flex_navbar');
+var flexNavbar = new FlexNavbar();
+var containerSurface = new ContainerSurface({
+  size: [undefined, 56],
+  properties: {
+    backgroundColor: '0d283f'
+  }
+});
+containerSurface.add(flexNavbar);
+
+headerFooterLayout.header.add(containerSurface);
 
 
+var surfaceOne = new Surface({
+  size: [61, 56],
+  content: 'post',
+  properties: {
+    backgroundColor: 'red'
+  }
+});
 
-headerFooterLayout.header.add(navbar);
+var surfaceTwo = new Surface({
+  size: [61, 56],
+  content: 'about',
+  properties: {
+    backgroundColor: 'blue'
+  }
+});
+
+var surfaceThree = new Surface({
+  size: [61, 56],
+  content: 'menu',
+  properties: {
+    backgroundColor: 'blue'
+  }
+});
+
+var leftSurfaces = [surfaceThree];
+var rightSurfaces = [surfaceOne, surfaceTwo];
+
+var dock = {
+  left: leftSurfaces,
+  right: rightSurfaces
+};
+
+flexNavbar.linkDock(dock);
+
 mainContext.add(headerFooterLayout);
 
 // Create scrollable layout where items have a fixed width/height
@@ -83,5 +117,6 @@ bodyRC.show(adScrollPage);
 
 
 
+viewSequence = require('./practice/view_sequence');
 
 
