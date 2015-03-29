@@ -24,25 +24,9 @@ div.apply-now-btn {
   padding-top: 12px;
 }
 
-div.navbar {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
 
-  h1 {
-    color: #76a8c5;
-    text-align: center;
-    span { color: white; }
-  }
 
-  h3 {
-    padding-left: 30px;
-    color: #4d85a7;
-  }
-
-  .flaticon-gears3 {
-  }
-}
+k
 
 div.rounded-corners{
   background-color: white;
@@ -124,13 +108,26 @@ div.ad-information {
 }
 
 
-div.main-navbar {
-  div.navbar-btn {
-    width: 68px;
-    height: 68px;
-    border: solid 1px white;
-    float: right;
+div.flex-navbar {
+
+  span.menu-item {
+    width: 30px;
+    height: 30px;
+    margin-left: 17px;
+    margin-top: 15px;
+    display: inline-block;
+
+    color: #7aa7c4;
+    font-size: 25px;
   }
+}
+
+div.flex-navbar.right {
+  border-right: solid 1px #7aa7c4;
+}
+
+div.flex-navbar.left {
+  border-left: solid 1px #7aa7c4;
 }
 
 

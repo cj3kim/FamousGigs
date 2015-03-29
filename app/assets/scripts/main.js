@@ -48,32 +48,25 @@ containerSurface.add(flexNavbar);
 headerFooterLayout.header.add(containerSurface);
 
 
-var surfaceOne = new Surface({
+var postSurface = new Surface({
   size: [61, 56],
-  content: 'post',
-  properties: {
-    backgroundColor: 'red'
-  }
+  classes: ['flex-navbar', 'left'],
+  content: "<span class='menu-item flaticon-sheet3'></span>",
 });
 
-var surfaceTwo = new Surface({
+var menuSurface = new Surface({
   size: [61, 56],
-  content: 'about',
-  properties: {
-    backgroundColor: 'blue'
-  }
+  classes: ['flex-navbar', 'right'],
+  content: "<span class='menu-item flaticon-menu55'></span>",
+});
+var loginSurface = new Surface({
+  size: [61, 56],
+  classes: ['flex-navbar', 'left'],
+  content: "<span class='menu-item flaticon-login2'></span>",
 });
 
-var surfaceThree = new Surface({
-  size: [61, 56],
-  content: 'menu',
-  properties: {
-    backgroundColor: 'blue'
-  }
-});
-
-var leftSurfaces = [surfaceThree];
-var rightSurfaces = [surfaceOne, surfaceTwo];
+var leftSurfaces = [menuSurface];
+var rightSurfaces = [loginSurface, postSurface];
 
 var dock = {
   left: leftSurfaces,

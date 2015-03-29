@@ -8,23 +8,58 @@
 	font-weight: normal;
 	font-style: normal;
 }
+
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
-	  font-family: Flaticon;
-    font-size: 20px;
-    font-style: normal;
-}.flaticon-gears3:before {
+	font-family: Flaticon;
+  font-style: normal;
+}
+
+.flaticon-building104:before {
 	content: "\e000";
 }
-.flaticon-keyboard50:before {
+.flaticon-edit45:before {
 	content: "\e001";
 }
-.flaticon-list98:before {
+.flaticon-email5:before {
 	content: "\e002";
 }
-.flaticon-purchase1:before {
+.flaticon-facebook55:before {
 	content: "\e003";
 }
-.flaticon-sheet3:before {
+.flaticon-google116:before {
 	content: "\e004";
+}
+.flaticon-key162:before {
+	content: "\e005";
+}
+.flaticon-login2:before {
+	content: "\e006";
+}
+.flaticon-mail59:before {
+	content: "\e007";
+}
+.flaticon-menu55:before {
+	content: "\e008";
+}
+.flaticon-pin71:before {
+	content: "\e009";
+}
+.flaticon-settings21:before {
+	content: "\e00a";
+}
+.flaticon-sheet3:before {
+	content: "\e00b";
+}
+.flaticon-telephone5:before {
+	content: "\e00c";
+}
+.flaticon-triangle1:before {
+	content: "\e00d";
+}
+.flaticon-user91:before {
+	content: "\e00e";
+}
+.flaticon-wifi11:before {
+	content: "\e00f";
 }
