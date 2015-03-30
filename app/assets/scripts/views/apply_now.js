@@ -19,17 +19,17 @@ var AdInformation = React.createClass({
         <div className='details'> 
           <span>DETAILS</span>
           <ul>
-            <li><span className='ad-details-flaticon-building104 icon'></span> Company </li>
-            <li><span className='ad-details-flaticon-pin71 icon'></span> Oakland, CA</li>
-            <li><span className='ad-details-flaticon-wifi11 icon'></span> Remote Working Ok</li>
+            <li><span className='flaticon-building104 icon'></span> Company </li>
+            <li><span className='flaticon-pin71 icon'></span> Oakland, CA</li>
+            <li><span className='flaticon-wifi11 icon'></span> Remote Working Ok</li>
           </ul>
         </div>
 
         <div className='contact'> 
           <span>CONTACT</span>
           <ul>
-            <li> <span className='ad-details-flaticon-user91 icon'></span> Chris Kim </li>
-            <li>  <span className='ad-details-flaticon-mail59 icon'></span> chris@wundercode.net </li>
+            <li> <span className='flaticon-user91 icon'></span> Chris Kim </li>
+            <li>  <span className='flaticon-mail59 icon'></span> chris@wundercode.net </li>
           </ul>
         </div>
       </div>
@@ -41,7 +41,7 @@ function ApplyNow () {
   View.apply(this, arguments);
 
   var apply = new ContainerSurface({
-    size: [265, 284],
+    size: [265, 290],
     properties: {
       backgroundColor: 'white'
     }

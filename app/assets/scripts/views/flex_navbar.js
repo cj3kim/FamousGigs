@@ -9,7 +9,6 @@ var Easing = require('famous/transitions/Easing');
 function FlexNavbar(options) {
   View.apply(this, arguments);
 
-  this._height;
   this._modifiers = {left: [], right: []};
   this._states = {left: [], right:[]};
 
@@ -51,7 +50,7 @@ FlexNavbar.prototype.commit = function (context) {
 
 FlexNavbar.prototype.processSurfaces = function (surfaces, contextWidth, dockType) {
   for (var i = 0; i < surfaces.length; i++) {
-    surface = surfaces[i];
+    var surface = surfaces[i];
 
     if (this._modifiers[dockType][i] === undefined) {
      var modifier = _createModifier.call(this, i, surface, contextWidth, dockType);

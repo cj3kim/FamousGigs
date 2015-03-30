@@ -97,7 +97,3 @@ headerFooterLayout.content.add(bodyRC);
 bodyRC.show(adScrollPage);
 
 
-
-viewSequence = require('./practice/view_sequence');
-
-

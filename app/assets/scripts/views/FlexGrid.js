@@ -53,7 +53,6 @@ function _calcPositions(spacing) {
 
     for (var i = 0; i < this._items.length; i++) {
         xPos = spacing.marginSide + col * spacing.ySpacing;
-        if (i === 0) console.log(xPos);
 
         yPos = this.options.marginTop + row * (this.options.itemSize[1] + this.options.gutterRow);
         positions.push([xPos, yPos, 0]);
@@ -124,11 +123,7 @@ FlexGrid.prototype.resizeFlow = function () {
 
   var spacing = _calcSpacing.call(this, width);
   var size = this.options.itemSize;
-  if (spacing.numCols < 2) {
-      //spacing.numCols = 1;
-      //spacing.marginSide = 0;
-      //size = [width, size[1]];
-  }
+
   var positions = _calcPositions.call(this, spacing);
 
   for (var i = 0; i < this._items.length; i++) {
