@@ -54,14 +54,14 @@ FlexContent.prototype.commit = function (context) {
 FlexContent.prototype.resizeFlow = function (colIndex, surfaces, contextWidth) {
   for (var rowIndex = 0; rowIndex < surfaces.length; rowIndex += 1) {
     var surface = surfaces[i];
-    var position = _calculatePosition(colIndex, rowIndex, surface);
+    var position = _calculatePosition.apply(this, colIndex, rowIndex, surface);
 
     if (this._modifiers[colIndex][rowIndex] === undefined) {
-      var modifier = _createModifier(position, surface);
+      var modifier = _createModifier.apply(this, position, surface);
       this._modifiers[colIndex].push(modifier);
       surface._modifier = modifier;
     else {
-      _animateModifier(position, surface);
+      _animateModifier.apply(this, position, surface);
     }
   }
 };
@@ -71,7 +71,7 @@ function _calculatePosition (colIndex, rowIndex, surface, contextWidth) {
   var surfaceWidth = surfaceSize[0];
   var surfaceHeight = surfaceSize[1];
 
-  var midAlign = _calculateMidAlign(this._cols, contextWidth);
+  var midAlign = _calculateMidAlign.apply(this, this._cols, contextWidth);
   var x = colIndex * (surfaceWidth + this.options.gutterCol);
   var y = rowIndex * (surfaceHeight + this.options.gutterRow);
 
