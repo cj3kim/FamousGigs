@@ -6,6 +6,8 @@ var Transitionable = require('famous/transitions/Transitionable');
 var TransitionableTransform = require('famous/transitions/TransitionableTransform');
 var Easing = require('famous/transitions/Easing');
 
+var LargeAd     = require('./large_ad');
+var Application = require('./application');
 
 function FlexContent(options) {
   View.apply(this, arguments);
@@ -18,6 +20,7 @@ function FlexContent(options) {
     this._cols.push([]);
     this._modifiers.push([]);
   }
+  this.initialize();
  
   this.id = Entity.register(this);
 }
@@ -33,6 +36,15 @@ FlexContent.DEFAULT_OPTIONS = {
 FlexContent.prototype = Object.create(View.prototype);
 FlexContent.prototype.constructor = FlexContent;
 
+FlexContent.prototype.initialize = function () {
+  this.largeAd = new LargeAd();
+  this.application = new Application();
+
+  this._cols[0][0] = this.largeAd;
+  this._cols[1][0] = this.application;
+}
+
+
 FlexContent.prototype.render = function () {
   return this.id;
 }
@@ -47,6 +59,18 @@ FlexContent.prototype.commit = function (context) {
       this.resizeFlow(i, colSurfaces, contextWidth);
     }
   }
+
+  for (var i = 0; i < this._modifiers.length; i++) {
+    for (var j = 0; j < this._modifiers[i].length; j += 1) {
+
+      var modifier = this._modifiers[i][j];
+      var spec = modifier.modify({
+          target: modifier.surface.render()
+      });
+      specs.push(spec);
+    }
+  }
+
   return specs;
 };
 
@@ -59,7 +83,10 @@ FlexContent.prototype.resizeFlow = function (colIndex, surfaces, contextWidth) {
     if (this._modifiers[colIndex][rowIndex] === undefined) {
       var modifier = _createModifier.apply(this, position, surface);
       this._modifiers[colIndex].push(modifier);
+
+      modifier._surface = surface;
       surface._modifier = modifier;
+    }
     else {
       _animateModifier.apply(this, position, surface);
     }
@@ -82,7 +109,7 @@ function _calculatePosition (colIndex, rowIndex, surface, contextWidth) {
 
 function _createModifier(position, surface) {
   var transitionObj = {
-    transform: new TransitionableTransform(Transform.translate.apply(this, position));
+    transform: new TransitionableTransform(Transform.translate.apply(this, position))
   };
 
   var modifier = new Modifier(transitionObj);
@@ -120,3 +147,4 @@ function _calculateMidAlign (cols, contextWidth) {
 
 
 
+module.exports = FlexContent;
