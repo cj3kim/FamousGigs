@@ -18,7 +18,6 @@ function LargeAd() {
 
   var _this = this;
   this._eventInput.on('reset-ad-details', function (model) {
-    console.log(model);
     _this.setAdContent(model);
   });
 
@@ -31,8 +30,6 @@ LargeAd.prototype.constructor = View;
 
 
 LargeAd.prototype.setAdContent = function (model) {
-  console.log(model);
-  console.log(CompanyAd);
   this.ad.setContent(<CompanyAd {...model.attributes} />);
 };
 

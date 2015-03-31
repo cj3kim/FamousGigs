@@ -1,0 +1,203 @@
+var View = require('famous/core/View');
+var Entity = require('famous/core/Entity');
+var Modifier = require('famous/core/Modifier');
+var Transform = require('famous/core/Transform');
+var Transitionable = require('famous/transitions/Transitionable');
+var TransitionableTransform = require('famous/transitions/TransitionableTransform');
+var Easing = require('famous/transitions/Easing');
+var SpecParser = require('famous/core/SpecParser');
+
+var _ = require('underscore');
+var LargeAd     = require('./large_ad');
+var Application = require('./application');
+
+function FlexContent(options) {
+  View.apply(this, arguments);
+  this._states = [];
+  this._modifiers = [];
+  this._cols = [];
+  this._cachedWidth = undefined;
+
+  this.id = Entity.register(this);
+}
+
+FlexContent.DEFAULT_OPTIONS = {
+  colAmt: 2,
+  gutterCol: 0,
+  gutterRow: 0,
+  responsive: false,
+  transition: { curve: Easing.outBack, duration: 500 }
+};
+
+FlexContent.prototype = Object.create(View.prototype);
+FlexContent.prototype.constructor = FlexContent;
+
+FlexContent.prototype.createCol = function (width) {
+  function WidthException(message) {
+    this.message = message;
+    this.name = "WidthException";
+  }
+  if (width === undefined)
+    throw new WidthException("You must enter a width when you create a column");
+
+  var settings = {
+    width: width,
+    surfaces: [],
+    states: [],
+    modifiers: []
+  };
+  this._cols.push(settings);
+
+  return this;
+};
+
+
+FlexContent.prototype.addSurfaceToCol = function (colIndex, surface) {
+  function SizeException(message) {
+     this.message = message;
+     this.name = "SizeException";
+  }
+
+  var surfaceSize = surface.getSize();
+  var surfaceWidth = surfaceSize[0];
+
+  var colObj = this._cols[colIndex];
+  if (surfaceWidth > colObj.width) {
+    throw new SizeException("Surface width is greater than column width.");
+  } else {
+    colObj.surfaces.push(surface);
+  }
+  return this;
+};
+
+FlexContent.prototype.getCol = function (colIndex) {
+  return this._cols[colIndex];
+};
+
+
+FlexContent.prototype.render = function () {
+  return this.id;
+}
+
+FlexContent.prototype.commit = function (context) {
+  var contextWidth = context.size[0];
+
+  if (this._cachedWidth !== contextWidth) {
+    this._cachedWidth = contextWidth;
+    this.resizeFlow(contextWidth);
+  }
+
+  var specs = [];
+  for (var i = 0, l = this._modifiers.length; i < l; i ++) {
+    var modifier = this._modifiers[i];
+
+    console.log("i: " +i);
+    var surface = modifier._surface;
+    console.log(surface);
+    var spec = {
+      target: surface.render()
+    };
+
+    var result = SpecParser.parse(spec, context);
+    console.log(result);
+    var keys = Object.keys(result);
+
+    for (var i = 0, l = keys.length; i < l; i ++) {
+        var id = keys[i];
+        var childNode = Entity.get(id);
+        var commitParams = result[id];
+        commitParams.allocator = context.allocator;
+        commitParams.target = spec.target;
+    }
+
+    var spec = modifier.modify(commitParams);
+    specs.push(spec);
+  }
+
+  return specs;
+};
+
+
+FlexContent.prototype.resizeFlow = function (contextWidth) {
+  //The goal of this method is to generate a modifier or adjust the transform object on it.
+  var _this = this;
+
+  var previousWidth = 0;
+  _.each(this._cols, function (colObj, i) {
+    var surfaces = colObj.surfaces;
+    previousWidth += colObj.width;
+    _.each(surfaces, function (surface, j) {
+      var position = _calculatePosition.call(this, i, j, surface, previousWidth, contextWidth);
+
+      if (colObj.modifiers[j] === undefined) {
+        var transitionObj = _createState.call(this, position)
+        var mod = new Modifier(transitionObj);
+        console.log(surface);
+        mod._surface = surface;
+
+        colObj.modifiers[j] = mod;
+        colObj.states[j] = transitionObj;
+
+        _this._modifiers.push(mod);
+        _this._states.push(transitionObj);
+      } else {
+        _animateModifier.call(this, i,j, position)
+      }
+    }, _this);
+  }, _this);
+};
+
+function _calculatePosition (colIndex, rowIndex, surface, previousWidth, contextWidth) {
+  var surfaceSize  = surface.getSize();
+  console.log(surfaceSize);
+  var surfaceWidth = surfaceSize[0];
+  var surfaceHeight = surfaceSize[1];
+
+  var midAlign = _calculateMidAlign.call(this, contextWidth);
+
+  var x = colIndex * (previousWidth + this.options.gutterCol);
+  var y = rowIndex * (surfaceHeight + this.options.gutterRow);
+
+  x += midAlign;
+
+  return [x,y,0];
+}
+
+function _createState(position) {
+  var transitionObj = {
+    transform: new TransitionableTransform(Transform.translate.apply(this, position))
+  };
+  return transitionObj;
+}
+
+function _animateModifier(colIndex, rowIndex, position) {
+  var colObj = this.getCol(colIndex);
+  var transformTransitionable = colObj.states[rowIndex].transform;
+
+  transformTransitionable.halt();
+  transformTransitionable.setTranslate(position, this.options.transition);
+}
+
+function _calculateMidAlign (contextWidth) {
+  var contentWidth = 0;
+  //This  is a naive implementation below. It assumes that the largest width for content
+  //will be derived from the first row.
+
+  for (var i = 0; i < this._cols.length; i += 1) {
+    var colObj = this._cols[i];
+    contentWidth += colObj.width;
+  }
+  var midOffset =  (contextWidth - contentWidth) / 2;
+  return midOffset;
+}
+
+// What do I want this view to do achieve? 
+
+//1. I want to be able to place scrollable content of varying sizes within this view. 
+//2. I need it to be responsive. I should probably do a 3 or 4 column layout. 
+//3. What should the size of each column be? I'd like to simply declare this attribute.
+//4. Write out an API.
+
+
+
+module.exports = FlexContent;

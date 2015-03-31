@@ -79,8 +79,7 @@ mainContext.add(headerFooterLayout);
 
 // Create scrollable layout where items have a fixed width/height
 
-//var AdDetails = require('./views/ad_details');
-var AdDetails = require('./views/flex_ad_details');
+var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails();
 
 // create the main context

@@ -1,34 +1,30 @@
 
 var View        = require('famous/core/View');
 var LargeAd     = require('./large_ad');
-
 var Application = require('./application');
 
 var StateModifier    = require('famous/modifiers/StateModifier');
 var Transform        = require('famous/core/Transform');
 
+var FlexContent = require('./FlexContent');
 
 function AdDetails() {
-  View.apply(this, arguments);
+  FlexContent.apply(this, arguments);
 
   this.initialize();
   this.setupEventListeners();
   this.setupPiping();
 };
 
-AdDetails.prototype = Object.create(View.prototype);
-AdDetails.prototype.constructor = View;
+AdDetails.prototype = Object.create(FlexContent.prototype);
+AdDetails.prototype.constructor = FlexContent;
 
 AdDetails.prototype.initialize = function () {
   this.largeAd  = new LargeAd();
   this.application = new Application();
 
-  var applicationStateMod = new StateModifier({
-    transform: Transform.translate(525,0, 0)
-  });
-
-  this._node.add(this.largeAd);
-  this._node.add(applicationStateMod).add(this.application);
+  this.createCol(500).addSurfaceToCol(0, this.largeAd);
+  this.createCol(300).addSurfaceToCol(1, this.application);
 };
 
 AdDetails.prototype.setupEventListeners = function () {
