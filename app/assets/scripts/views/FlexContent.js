@@ -87,30 +87,19 @@ FlexContent.prototype.commit = function (context) {
     this.resizeFlow(contextWidth);
   }
 
+  console.log(this._modifiers);
   var specs = [];
-  for (var i = 0, l = this._modifiers.length; i < l; i ++) {
+  for (var i = 0; i < this._modifiers.length; i++) {
     var modifier = this._modifiers[i];
 
     console.log("i: " +i);
+
     var surface = modifier._surface;
-    console.log(surface);
-    var spec = {
-      target: surface.render()
-    };
+    var target = surface.render();
 
-    var result = SpecParser.parse(spec, context);
-    console.log(result);
-    var keys = Object.keys(result);
-
-    for (var i = 0, l = keys.length; i < l; i ++) {
-        var id = keys[i];
-        var childNode = Entity.get(id);
-        var commitParams = result[id];
-        commitParams.allocator = context.allocator;
-        commitParams.target = spec.target;
-    }
-
-    var spec = modifier.modify(commitParams);
+    var spec = modifier.modify({
+      target: target
+    });
     specs.push(spec);
   }
 
@@ -155,7 +144,7 @@ function _calculatePosition (colIndex, rowIndex, surface, previousWidth, context
 
   var midAlign = _calculateMidAlign.call(this, contextWidth);
 
-  var x = colIndex * (previousWidth + this.options.gutterCol);
+  var x = colIndex * (previousWidth - surfaceWidth + this.options.gutterCol);
   var y = rowIndex * (surfaceHeight + this.options.gutterRow);
 
   x += midAlign;
