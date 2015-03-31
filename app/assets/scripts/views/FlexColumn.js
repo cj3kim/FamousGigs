@@ -6,12 +6,9 @@ var Transitionable = require('famous/transitions/Transitionable');
 var TransitionableTransform = require('famous/transitions/TransitionableTransform');
 var Easing = require('famous/transitions/Easing');
 var SpecParser = require('famous/core/SpecParser');
-
 var _ = require('underscore');
-var LargeAd     = require('./large_ad');
-var Application = require('./application');
 
-function FlexContent(options) {
+function FlexColumn(options) {
   View.apply(this, arguments);
   this._states = [];
   this._modifiers = [];
@@ -21,18 +18,17 @@ function FlexContent(options) {
   this.id = Entity.register(this);
 }
 
-FlexContent.DEFAULT_OPTIONS = {
-  colAmt: 2,
+FlexColumn.DEFAULT_OPTIONS = {
   gutterCol: 0,
   gutterRow: 0,
   responsive: false,
   transition: { curve: Easing.outBack, duration: 500 }
 };
 
-FlexContent.prototype = Object.create(View.prototype);
-FlexContent.prototype.constructor = FlexContent;
+FlexColumn.prototype = Object.create(View.prototype);
+FlexColumn.prototype.constructor = FlexColumn;
 
-FlexContent.prototype.createCol = function (width) {
+FlexColumn.prototype.createCol = function (width) {
   function WidthException(message) {
     this.message = message;
     this.name = "WidthException";
@@ -52,7 +48,7 @@ FlexContent.prototype.createCol = function (width) {
 };
 
 
-FlexContent.prototype.addSurfaceToCol = function (colIndex, surface) {
+FlexColumn.prototype.addSurfaceToCol = function (colIndex, surface) {
   function SizeException(message) {
      this.message = message;
      this.name = "SizeException";
@@ -70,16 +66,16 @@ FlexContent.prototype.addSurfaceToCol = function (colIndex, surface) {
   return this;
 };
 
-FlexContent.prototype.getCol = function (colIndex) {
+FlexColumn.prototype.getCol = function (colIndex) {
   return this._cols[colIndex];
 };
 
 
-FlexContent.prototype.render = function () {
+FlexColumn.prototype.render = function () {
   return this.id;
 }
 
-FlexContent.prototype.commit = function (context) {
+FlexColumn.prototype.commit = function (context) {
   var contextWidth = context.size[0];
 
   if (this._cachedWidth !== contextWidth) {
@@ -87,27 +83,23 @@ FlexContent.prototype.commit = function (context) {
     this.resizeFlow(contextWidth);
   }
 
-  console.log(this._modifiers);
   var specs = [];
   for (var i = 0; i < this._modifiers.length; i++) {
     var modifier = this._modifiers[i];
 
-    console.log("i: " +i);
-
     var surface = modifier._surface;
     var target = surface.render();
 
-    var spec = modifier.modify({
-      target: target
-    });
+    var spec = modifier.modify(target);
+    spec.transform = Transform.multiply4x4(spec.transform, context.transform);
+
     specs.push(spec);
   }
-
   return specs;
 };
 
 
-FlexContent.prototype.resizeFlow = function (contextWidth) {
+FlexColumn.prototype.resizeFlow = function (contextWidth) {
   //The goal of this method is to generate a modifier or adjust the transform object on it.
   var _this = this;
 
@@ -121,7 +113,6 @@ FlexContent.prototype.resizeFlow = function (contextWidth) {
       if (colObj.modifiers[j] === undefined) {
         var transitionObj = _createState.call(this, position)
         var mod = new Modifier(transitionObj);
-        console.log(surface);
         mod._surface = surface;
 
         colObj.modifiers[j] = mod;
@@ -138,7 +129,6 @@ FlexContent.prototype.resizeFlow = function (contextWidth) {
 
 function _calculatePosition (colIndex, rowIndex, surface, previousWidth, contextWidth) {
   var surfaceSize  = surface.getSize();
-  console.log(surfaceSize);
   var surfaceWidth = surfaceSize[0];
   var surfaceHeight = surfaceSize[1];
 
@@ -169,8 +159,6 @@ function _animateModifier(colIndex, rowIndex, position) {
 
 function _calculateMidAlign (contextWidth) {
   var contentWidth = 0;
-  //This  is a naive implementation below. It assumes that the largest width for content
-  //will be derived from the first row.
 
   for (var i = 0; i < this._cols.length; i += 1) {
     var colObj = this._cols[i];
@@ -180,13 +168,11 @@ function _calculateMidAlign (contextWidth) {
   return midOffset;
 }
 
-// What do I want this view to do achieve? 
+// What do I want this view to do achieve?
 
-//1. I want to be able to place scrollable content of varying sizes within this view. 
-//2. I need it to be responsive. I should probably do a 3 or 4 column layout. 
+//1. I want to be able to place scrollable content of varying sizes within this view.
+//2. I need it to be responsive. I should probably do a 3 or 4 column layout.
 //3. What should the size of each column be? I'd like to simply declare this attribute.
 //4. Write out an API.
 
-
-
-module.exports = FlexContent;
+module.exports = FlexColumn;
