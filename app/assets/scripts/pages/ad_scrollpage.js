@@ -5,9 +5,7 @@ var Engine = require('famous/core/Engine');
 
 var Scrollview = require('famous/views/Scrollview');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
-var CollectionLayout = require('../../../../famous-flex/src/layouts/CollectionLayout');
 var FlexGrid = require('../views/FlexGrid');
-var FlexScrollView   = require('../../../../famous-flex/src/FlexScrollView');
 
 module.exports = function (bodyRC, adDetails) {
   var generateAdSurface = require('../generators/generate_ads')(bodyRC, adDetails);

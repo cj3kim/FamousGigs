@@ -1,4 +1,3 @@
-
 var View        = require('famous/core/View');
 var LargeAd     = require('./large_ad');
 var Application = require('./application');
@@ -6,18 +5,18 @@ var Application = require('./application');
 var StateModifier    = require('famous/modifiers/StateModifier');
 var Transform        = require('famous/core/Transform');
 
-var FlexContent = require('./FlexContent');
+var FlexColumns = require('flex-columns');
 
 function AdDetails() {
-  FlexContent.apply(this, arguments);
+  FlexColumns.apply(this, arguments);
 
   this.initialize();
   this.setupEventListeners();
   this.setupPiping();
 };
 
-AdDetails.prototype = Object.create(FlexContent.prototype);
-AdDetails.prototype.constructor = FlexContent;
+AdDetails.prototype = Object.create(FlexColumns.prototype);
+AdDetails.prototype.constructor = FlexColumns;
 
 AdDetails.prototype.initialize = function () {
   this.largeAd  = new LargeAd();

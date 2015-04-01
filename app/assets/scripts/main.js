@@ -2,7 +2,7 @@
 require('famous-polyfills');
 
 var React = require('react');
-var ReactSurface = require('./react_surface');
+var ReactSurface = require('react-surface');
 // import dependencies
 var Engine           = require('famous/core/Engine');
 
@@ -94,6 +94,9 @@ var adScrollPage = require('./pages/ad_scrollpage')(bodyRC, adDetails);
 
 headerFooterLayout.content.add(bodyRC);
 
-bodyRC.show(adScrollPage);
+//bodyRC.show(adScrollPage);
 
+var ProfileBasics = require('./views/dashboard/profile_basics');
+var pb = new ProfileBasics();
+bodyRC.show(pb);
 
