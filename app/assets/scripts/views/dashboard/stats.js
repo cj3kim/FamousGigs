@@ -7,22 +7,22 @@ var View = require('famous/core/View');
 var StatsReact = React.createClass({
   render: function () {
     return (
-      <div id='stats' className="dashboard stop-gap-div">
+      <div className="dashboard stop-gap-div">
         <div className="title row">
-          <span>Profile Basics</span>
+          <span>stats</span>
         </div>
 
-        <div className="form row">
+        <div id="stats" className="form row">
           <form action="">
             <table border="0">
               <tr>
                 <td><label for="posts">posts</label></td>
-                <td><input type="text" name="posts" value="" /></td>
+                <td>3</td>
               </tr>
 
               <tr>
                 <td><label for="balance">balance</label></td>
-                <td><input type="text" name="balance" value="" /></td>
+                <td>$50</td>
               </tr>
            </table>
           </form>
@@ -36,7 +36,8 @@ function Stats() {
   View.apply(this, arguments);
 
   this.surface = new ReactSurface({
-    size: [200, 100],
+    size: [200, 157],
+    classes: ['rounded-corners'],
     content: <StatsReact />
   });
 

@@ -10,7 +10,7 @@ var Transform     = require('famous/core/Transform');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 
 var React = require('react');
-var ReactSurface = require('../react_surface');
+var ReactSurface = require('react-surface');
 
 var AdInformation = React.createClass({
   render: function () {

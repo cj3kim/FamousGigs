@@ -9,7 +9,8 @@ function ProfileBasics() {
   View.apply(this, arguments);
 
   this.surface = new ReactSurface({
-    size: [450, 310],
+    size: [450, 315],
+    classes: ['rounded-corners'],
     content: <ProfileBasicsReact />
   });
 

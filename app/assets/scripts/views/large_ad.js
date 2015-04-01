@@ -5,7 +5,7 @@ var Surface = require('famous/core/Surface');
 var CompanyAd = require('./company_ad');
 
 var React = require('react');
-var ReactSurface = require('../react_surface');
+var ReactSurface = require('react-surface');
 
 function LargeAd() {
   View.apply(this, arguments);

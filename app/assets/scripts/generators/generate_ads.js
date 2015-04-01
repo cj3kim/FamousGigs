@@ -1,6 +1,6 @@
 var React = require('react');
 
-var ReactSurface = require('../react_surface');
+var ReactSurface = require('react-surface');
 var RenderNode   = require('famous/core/RenderNode');
 var RenderController = require('famous/views/RenderController');
 var StateModifier    = require('famous/modifiers/StateModifier');

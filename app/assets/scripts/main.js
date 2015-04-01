@@ -114,5 +114,5 @@ var stats = new Stats();
 fc.createCol(450).addSurfaceToCol(0,pb);
 fc.createCol(200).addSurfaceToCol(1,stats);
 
-//bodyRC.show(fc);
+bodyRC.show(fc);
 
