@@ -99,3 +99,47 @@ div.dashboard {
 
 
 
+
+div.header {
+  padding-top: 20px;
+  span {
+    display: block;
+    margin-bottom: 10px;
+    margin-left: 40px;
+  }
+  span.title {
+    color: #40aac0;
+    font-size: 25px;
+  }
+  span.description {
+    color: #7a7a7a;
+  }
+
+}
+div.avatar-container {
+  text-align: center;
+  span.change-avatar {
+    color: #40aac0;
+  }
+}
+
+div.avatar {
+  width: 75px;
+  height: 75px;
+
+  margin: 20px auto 7px;
+  border-radius: 50%;
+  background-color: #e5e5e5;
+  overflow: hidden;
+
+  span.flaticon-user91 {
+    width: 25px;
+    height: 25px;
+    margin: 25px auto;
+    display: block;
+
+    font-size: 25px;
+    color: #40aac0;
+  }
+
+}

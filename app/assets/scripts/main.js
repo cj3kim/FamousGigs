@@ -31,7 +31,7 @@ mainContext.setPerspective(1000);
 
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout({
-  headerSize: 68
+  headerSize: 55 
 });
 
 
@@ -114,5 +114,49 @@ var stats = new Stats();
 fc.createCol(450).addSurfaceToCol(0,pb);
 fc.createCol(200).addSurfaceToCol(1,stats);
 
-bodyRC.show(fc);
+var hfl = new HeaderFooterLayout({
+  headerSize: 131
+});
+
+var subBodyRC = new RenderController({
+  inTransition: true,
+  outTransition: false,
+  overlap: true
+});
+
+var FlexibleLayout = require('famous/views/FlexibleLayout');
+
+var fl1 = new FlexibleLayout({
+  direction: 0,
+  ratios: [0.8237, 0.1763]
+});
+
+var fl2 = new FlexibleLayout({
+  direction: 1,
+  ratios: [0.7633, 0.2367]
+});
+
+var HeaderTitle = require('./views/dashboard/header_title');
+var Avatar = require('./views/avatar');
+
+var ht = new HeaderTitle();
+var avatar = new Avatar();
+
+var cs = new ContainerSurface({
+  size: [undefined, undefined],
+  properties: {
+    backgroundColor: 'white'
+  }
+});
+
+fl1._nodes.push(ht);
+fl1._nodes.push(avatar);
+
+cs.add(fl1);
+
+hfl.header.add(cs);
+hfl.content.add(fc);
+
+bodyRC.show(hfl);
+
 
