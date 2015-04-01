@@ -80,7 +80,9 @@ mainContext.add(headerFooterLayout);
 // Create scrollable layout where items have a fixed width/height
 
 var AdDetails = require('./views/ad_details');
-var adDetails = new AdDetails();
+var adDetails = new AdDetails({
+  gutterCol: 50
+});
 
 // create the main context
 var bodyRC = new RenderController({
@@ -94,9 +96,23 @@ var adScrollPage = require('./pages/ad_scrollpage')(bodyRC, adDetails);
 
 headerFooterLayout.content.add(bodyRC);
 
-//bodyRC.show(adScrollPage);
+bodyRC.show(adScrollPage);
+
+
+var FlexColumns = require('flex-columns');
+
+var fc = new FlexColumns({
+  gutterCol: 20
+});
 
 var ProfileBasics = require('./views/dashboard/profile_basics');
 var pb = new ProfileBasics();
-bodyRC.show(pb);
+var Stats = require('./views/dashboard/stats');
+var stats = new Stats();
+
+
+fc.createCol(450).addSurfaceToCol(0,pb);
+fc.createCol(200).addSurfaceToCol(1,stats);
+
+//bodyRC.show(fc);
 

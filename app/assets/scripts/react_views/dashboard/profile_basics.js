@@ -3,7 +3,7 @@ var React = require('react');
 var ProfileBasics = React.createClass({
   render: function () {
     return (
-      <div id='profile-basics' className="stop-gap-div">
+      <div id='profile-basics' className="dashboard stop-gap-div">
         <div className="title row">
           <span>Profile Basics</span>
         </div>
