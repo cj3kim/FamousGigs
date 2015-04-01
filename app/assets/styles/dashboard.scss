@@ -28,15 +28,17 @@ div.dashboard {
       height: 30px;
       margin-left: 20px;
       padding-left: 10px;
+      letter-spacing: 1px;
 
-      border: solid 1px #E5E5E5; 
+      border: none;
       outline: 0; 
       font: normal 13px/100% Verdana, Tahoma, sans-serif; 
       background: #FFFFFF; 
     } 
 
-    input:hover, input:focus, { 
-      border-color: #C9C9C9; 
+    input:hover { 
+      /*border: solid 1px #E5E5E5; */
+      border: solid 1px #c9c9c9; 
     } 
 
     tr {
