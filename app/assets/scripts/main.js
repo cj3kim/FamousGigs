@@ -102,6 +102,7 @@ bodyRC.show(adScrollPage);
 var FlexColumns = require('flex-columns');
 
 var fc = new FlexColumns({
+  marginTop: 30,
   gutterCol: 20
 });
 
@@ -157,6 +158,6 @@ cs.add(fl1);
 hfl.header.add(cs);
 hfl.content.add(fc);
 
-//bodyRC.show(hfl);
+bodyRC.show(hfl);
 
 
