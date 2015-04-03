@@ -25,6 +25,7 @@ var LightBox         = require('famous/views/LightBox');
 var RenderController = require('famous/views/RenderController');
 
 var Entity = require('famous/core/Entity');
+var page = require('page');
 
 var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
@@ -33,49 +34,12 @@ var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout({
   headerSize: 55 
 });
-
-
-var FlexNavbar = require('./views/flex_navbar');
-var flexNavbar = new FlexNavbar();
-var containerSurface = new ContainerSurface({
-  size: [undefined, 56],
-  properties: {
-    backgroundColor: '0d283f'
-  }
-});
-containerSurface.add(flexNavbar);
-
-headerFooterLayout.header.add(containerSurface);
-
-
-var postSurface = new Surface({
-  size: [61, 56],
-  classes: ['flex-navbar', 'left'],
-  content: "<span class='menu-item flaticon-sheet3'></span>",
-});
-
-var menuSurface = new Surface({
-  size: [61, 56],
-  classes: ['flex-navbar', 'right'],
-  content: "<span class='menu-item flaticon-menu55'></span>",
-});
-var loginSurface = new Surface({
-  size: [61, 56],
-  classes: ['flex-navbar', 'left'],
-  content: "<span class='menu-item flaticon-login2'></span>",
-});
-
-var leftSurfaces = [menuSurface];
-var rightSurfaces = [loginSurface, postSurface];
-
-var dock = {
-  left: leftSurfaces,
-  right: rightSurfaces
-};
-
-flexNavbar.linkDock(dock);
-
 mainContext.add(headerFooterLayout);
+
+var navbar = require('./views/nav_bar');
+headerFooterLayout.header.add(navbar);
+
+
 
 // Create scrollable layout where items have a fixed width/height
 
@@ -93,11 +57,7 @@ var bodyRC = new RenderController({
 
 
 var adScrollPage = require('./pages/ad_scrollpage')(bodyRC, adDetails);
-
 headerFooterLayout.content.add(bodyRC);
-
-bodyRC.show(adScrollPage);
-
 
 var FlexColumns = require('flex-columns');
 
@@ -158,6 +118,16 @@ cs.add(fl1);
 hfl.header.add(cs);
 hfl.content.add(fc);
 
-bodyRC.show(hfl);
+//bodyRC.show(hfl);
+
+
+page('/', function () {
+  bodyRC.show(adScrollPage);
+})
+page.show('/');
+
+page('/ad-details', function () {
+
+});
 
 
