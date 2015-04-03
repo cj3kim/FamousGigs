@@ -26,7 +26,6 @@ var RenderController = require('famous/views/RenderController');
 
 var Entity = require('famous/core/Entity');
 var page = require('page');
-
 var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
 
@@ -45,6 +44,7 @@ headerFooterLayout.header.add(navbar);
 
 var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails({
+  marginTop: 30,
   gutterCol: 50
 });
 
@@ -55,22 +55,32 @@ var bodyRC = new RenderController({
   overlap: true
 });
 
-
-var adScrollPage = require('./pages/ad_scrollpage')(bodyRC, adDetails);
 headerFooterLayout.content.add(bodyRC);
-
-//Profile stuff
 
 var dashboard = require('./views/dashboard');
 
-page('/', function () {
-  bodyRC.show(adScrollPage);
+var CompanyAdCollection = require('./collections/company_ads');
+var companyAds = new CompanyAdCollection; 
+
+//TODO redo this area of code.
+companyAds.fetch({
+  success: function (collection) {
+    var adScrollPage = require('./pages/ad_scrollpage')(collection.models);
+
+    page('/', function () {
+      bodyRC.show(adScrollPage);
+    });
+    page.show('/');
+  }, 
+  error: function (models) {
+  }
 });
 
-page.show('/');
-
-page('/ad-details', function () {
-
+page('/ad-details/:id', function (ctx) {
+  var id = ctx.params.id;
+  var ad = companyAds.get(id);
+  adDetails.trigger('reset-ad-details', ad);
+  bodyRC.show(adDetails);
 });
 
 

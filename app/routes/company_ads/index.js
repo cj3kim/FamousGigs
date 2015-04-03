@@ -10,4 +10,12 @@ module.exports = function (app) {
       console.log(err);
     });
   });
+
+  app.get('/ad-details/:id', function (req, res) {
+    CompanyAds.where({id: req.params.id })
+      .fetch()
+      .then(function (model) {
+        res.json(model.toJSON());
+      });
+  });
 }
