@@ -62,10 +62,21 @@ var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection; 
 
 var adScrollPage = require('./pages/ad_scrollpage');
+
 page('/', function () {
   bodyRC.show(adScrollPage);
 });
-page.show('/');
+
+
+var AdForm = require('./views/ad_form');
+
+var adForm = new AdForm({marginTop: 30 });
+page('/company_ads/new', function () {
+
+  bodyRC.show(adForm);
+});
+
+page.show('/company_ads/new');
 
 
 //TODO redo this area of code.

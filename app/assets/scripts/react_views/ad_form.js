@@ -1,43 +1,47 @@
 
-
+var React = require('react');
 
 var AdForm = React.createClass({
   render: function () {
     return (
-      <div  className="dashboard stop-gap-div">
+      <div  className="box stop-gap-div">
         <div className="title row">
-          <span>Profile Basics</span>
+          <span>Ad Form</span>
         </div>
-        <div id="profile-basics" className="form row">
+        <div id="" className="form row">
           <form action="">
             <table border="0">
               <tr>
-                <td><label for="name">name</label></td>
-                <td><input type="text" name="name" /></td>
+                <td><label for="title">Title</label></td>
+                <td><input type="text" name="title" /></td>
               </tr>
 
               <tr>
-                <td><label for="email">email</label></td>
-                <td><input type="text" name="email"  /></td>
+                <td><label for="description">Description</label></td>
+                <td><input type="text" name="description"  /></td>
               </tr>
 
               <tr>
-                <td><label for="password">password</label></td>
-                <td><input type="password" name="password" /></td>
+                <td><label for="location">location</label> </td>
+                <td><input type="text" name="location" /></td>
               </tr>
 
               <tr>
-                <td><label for="phone">phone</label></td>
-                <td><input type="text" name="phone" /></td>
+                <td><label for="remote">Remote?</label> </td>
+                <td><input type="text" name="remote" /></td>
               </tr>
 
               <tr>
-                <td><label for="company">company</label> </td>
-                <td><input type="text" name="company" /></td>
+                <td><label for="company_logo">Company Logo</label> </td>
+                <td><input type="text" name="company_logo" /></td>
               </tr>
+
             </table>
           </form>
         </div>
+      </div>
     );
   }
 });
+
+module.exports = AdForm;
