@@ -15,46 +15,46 @@ var FlexGrid = require('../views/FlexGrid');
 var CompanyAd = require('../views/company_ad');
 var page = require('page');
 
-module.exports = function (models) {
-  var scrollview = new Scrollview();
+var scrollview = new Scrollview();
 
-  Engine.pipe(scrollview);
+Engine.pipe(scrollview);
 
-  var flexGrid = new FlexGrid({
-      marginTop: 20,
-      marginSide: 20 ,
-      gutterCol: 40,
-      gutterRow: 20,
-      itemSize: [262, 300]
+var flexGrid = new FlexGrid({
+    marginTop: 20,
+    marginSide: 20 ,
+    gutterCol: 40,
+    gutterRow: 20,
+    itemSize: [262, 300]
+});
+var surfaces = [];
+
+scrollview.sequenceFrom([flexGrid]);
+flexGrid.sequenceFrom(surfaces);
+
+function _addSurface(model) {
+  var adSurface = new ReactSurface({
+    classes: ['company-ad'],
+    content: <CompanyAd {...model.attributes} />
   });
-  var surfaces = [];
+  var sm = new StateModifier({
+    size: [262, 300],
+  });
 
-  scrollview.sequenceFrom([flexGrid]);
-  flexGrid.sequenceFrom(surfaces);
+  adSurface.on('click', function () {
+    page.show('/ad-details/'+ model.id);
+  });
 
-  for (var i = 0; i < models.length; i += 1) {
-    var model = models[i]
-    var adSurface = new ReactSurface({
-      classes: ['company-ad'],
-      content: <CompanyAd {...model.attributes} />
-    });
-    var sm = new StateModifier({
-      size: [262, 300],
-    });
+  var rn = new RenderNode();
+  var rc = new RenderController();
+  rn.add(sm).add(rc);
+  rc.show(adSurface);
 
-    adSurface.on('click', function () {
-      page.show('/ad-details/'+ model.id);
-    });
-
-    var rn = new RenderNode();
-    var rc = new RenderController();
-    rn.add(sm).add(rc);
-    rc.show(adSurface);
-
-    surfaces.push(rn);
-    flexGrid.resizeFlow();
-  }
+  surfaces.push(rn);
+  flexGrid.resizeFlow();
+}
 
 
-  return scrollview;
-};
+
+scrollview._addSurface = _addSurface;
+
+module.exports = scrollview;

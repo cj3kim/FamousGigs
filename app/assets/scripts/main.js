@@ -39,7 +39,6 @@ var navbar = require('./views/nav_bar');
 headerFooterLayout.header.add(navbar);
 
 
-
 // Create scrollable layout where items have a fixed width/height
 
 var AdDetails = require('./views/ad_details');
@@ -62,15 +61,21 @@ var dashboard = require('./views/dashboard');
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection; 
 
+var adScrollPage = require('./pages/ad_scrollpage');
+page('/', function () {
+  bodyRC.show(adScrollPage);
+});
+page.show('/');
+
+
 //TODO redo this area of code.
 companyAds.fetch({
   success: function (collection) {
-    var adScrollPage = require('./pages/ad_scrollpage')(collection.models);
-
-    page('/', function () {
-      bodyRC.show(adScrollPage);
-    });
-    page.show('/');
+    var models = collection.models;
+    for (var i = 0; i < models.length; i += 1) {
+      var model = models[i];
+      adScrollPage._addSurface(model);
+    }
   }, 
   error: function (models) {
   }
@@ -82,5 +87,4 @@ page('/ad-details/:id', function (ctx) {
   adDetails.trigger('reset-ad-details', ad);
   bodyRC.show(adDetails);
 });
-
 
