@@ -72,12 +72,18 @@ var AdForm = require('./views/ad_form');
 
 var adForm = new AdForm({marginTop: 30 });
 page('/company_ads/new', function () {
-
   bodyRC.show(adForm);
 });
 
-page.show('/company_ads/new');
+var PaymentForm = require('./views/payment_form');;
 
+var paymentForm = new PaymentForm();
+
+page('/company_ads/payment', function () {
+  bodyRC.show(paymentForm);
+});
+
+page.show('/company_ads/payment');
 
 //TODO redo this area of code.
 companyAds.fetch({
