@@ -18,6 +18,11 @@ var postSurface = new Surface({
   content: "<span class='menu-item flaticon-sheet3'></span>",
 });
 
+var page = require('page');
+postSurface.on('click', function () {
+  page.show('/company_ads/payment');
+});
+
 var menuSurface = new Surface({
   size: [61, 56],
   classes: ['flex-navbar', 'right'],

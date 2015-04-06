@@ -85,7 +85,6 @@ var carousel = new Carousel([adForm, paymentForm]);
 
 
 page('/company_ads/payment', function () {
-
   bodyRC.show(carousel);
 });
 
@@ -99,5 +98,4 @@ page('/ad-details/:id', function (ctx) {
 });
 
 
-page.show('/company_ads/payment');
-//page.show('/');
+page.show('/');
