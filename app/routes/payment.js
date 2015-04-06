@@ -5,7 +5,6 @@ var stripe = require("stripe")("sk_test_1WASPwzkx5thPhUjyW06SYXb");
 
 module.exports = function (app) {
   app.post('/payment', function (req, res) {
-    console.log(req.body);
     var stripeToken = req.body.stripeToken;
 
     var charge = stripe.charges.create({
@@ -18,6 +17,7 @@ module.exports = function (app) {
         console.log('charge failed');
         // The card has been declined
       } else {
+        res.sendStatus(200);
         console.log('charge succeeded');
       }
     });

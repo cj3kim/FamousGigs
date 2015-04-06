@@ -1,31 +1,18 @@
 // Load polyfills
 require('famous-polyfills');
 
-var React = require('react');
-var ReactSurface = require('react-surface');
 // import dependencies
 var Engine           = require('famous/core/Engine');
+var Easing           = require('famous/transitions/Easing');
 
 var RenderNode       = require('famous/core/RenderNode');
-var Surface          = require('famous/core/Surface');
-var ContainerSurface = require('famous/surfaces/ContainerSurface');
-var ImageSurface     = require('famous/surfaces/ImageSurface');
-
-var Modifier         = require('famous/core/Modifier');
-var StateModifier    = require('famous/modifiers/StateModifier');
-var Transform        = require('famous/core/Transform');
-var Transitionable   = require('famous/transitions/Transitionable');
-
-var EventEmitter     = require('famous/core/EventEmitter');
-var Easing           = require('famous/transitions/Easing');
-var Timer            = require('famous/utilities/Timer');
-
-var GridLayout       = require('famous/views/GridLayout');
-var LightBox         = require('famous/views/LightBox');
 var RenderController = require('famous/views/RenderController');
-
 var Entity = require('famous/core/Entity');
+var Transform = require('famous/core/Transform');
+var Modifier = require('famous/core/Modifier');
+
 var page = require('page');
+
 var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
 
@@ -38,23 +25,23 @@ mainContext.add(headerFooterLayout);
 var navbar = require('./views/nav_bar');
 headerFooterLayout.header.add(navbar);
 
-
 // Create scrollable layout where items have a fixed width/height
 
 var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails({
-  marginTop: 30,
   gutterCol: 50
 });
 
 // create the main context
 var bodyRC = new RenderController({
-  inTransition: true,
-  outTransition: false,
-  overlap: true
+  overlap: false
 });
 
-headerFooterLayout.content.add(bodyRC);
+var mod = new Modifier({
+  transform: Transform.translate(0, 30, 0)
+});
+
+headerFooterLayout.content.add(mod).add(bodyRC);
 
 var dashboard = require('./views/dashboard');
 
@@ -63,29 +50,15 @@ var companyAds = new CompanyAdCollection;
 
 var adScrollPage = require('./pages/ad_scrollpage');
 
-page('/', function () {
-  bodyRC.show(adScrollPage);
-});
-
-
-var AdForm = require('./views/ad_form');
-
-var adForm = new AdForm({marginTop: 30 });
-page('/company_ads/new', function () {
-  bodyRC.show(adForm);
-});
-
-var PaymentForm = require('./views/payment_form');;
-
-var paymentForm = new PaymentForm();
-
-page('/company_ads/payment', function () {
-  bodyRC.show(paymentForm);
-});
-
-page.show('/company_ads/payment');
-
 //TODO redo this area of code.
+
+
+
+page('/', function () {
+  var transition = {duration: 1000, curve: Easing.inQuad };
+  bodyRC.show(adScrollPage, transition);
+});
+
 companyAds.fetch({
   success: function (collection) {
     var models = collection.models;
@@ -98,10 +71,33 @@ companyAds.fetch({
   }
 });
 
+var AdForm = require('./views/ad_form');
+var adForm = new AdForm({});
+page('/company_ads/new', function () {
+  bodyRC.show(adForm);
+});
+
+var PaymentForm = require('./views/payment_form');
+var paymentForm = new PaymentForm({ });
+
+var Carousel = require('./views/Carousel');
+var carousel = new Carousel([adForm, paymentForm]);
+
+
+page('/company_ads/payment', function () {
+
+  bodyRC.show(carousel);
+});
+
 page('/ad-details/:id', function (ctx) {
   var id = ctx.params.id;
   var ad = companyAds.get(id);
   adDetails.trigger('reset-ad-details', ad);
-  bodyRC.show(adDetails);
+
+  var transition = {duration: 1000, curve: Easing.inSine };
+  bodyRC.show(adDetails, transition); //Ad Details was built on top of flex columns so transitions don't work because of the custom commit method. 
 });
 
+
+page.show('/company_ads/payment');
+//page.show('/');

@@ -8,7 +8,6 @@ var FlexColumns = require('flex-columns');
 
 function AdForm () {
   FlexColumns.apply(this, arguments);
-
   this.createCol(500);
 
   var adForm = new ReactSurface({
@@ -16,6 +15,7 @@ function AdForm () {
     classes: ['rounded-corners'],
     content: <AdFormReact />
   });
+  this.surface = adForm;
 
   this.addSurfaceToCol(0, adForm)
 }

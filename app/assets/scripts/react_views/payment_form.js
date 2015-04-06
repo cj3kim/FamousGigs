@@ -31,38 +31,34 @@ var PaymentForm = React.createClass({
     //$form.find('button').prop('disabled', true);
     Stripe.card.createToken(obj, this.stripeResponseHandler);
     // Prevent the form from submitting with the default action
-    return false;
   },
 
   stripeResponseHandler: function (status, response) {
-    console.log(response);
     var $form = $('#payment-form');
 
+    console.log(response);
     if (response.error) {
-      // Show the errors on the form
       $form.find('.payment-errors').text(response.error.message);
       $form.find('button').prop('disabled', false);
     } else {
-      // response contains id and card, which contains additional card details
       var token = response.id;
-      // Insert the token into the form so it gets submitted to the server
-
-      $.post('/payment', { stripeToken: token}, function(response){
-        console.log(response);
-      });
-
+      function success(response) {
+        var $form = $('#payment-form');
+        $form.trigger('next-view');
+      }
+      $.post('/payment', {stripeToken: token}, success);
     }
   },
   render: function () {
     return (
       <div  className="box stop-gap-div">
-        <span className="payment-erros"> </span>
         <div className="title row">
           <span>Credit Card</span>
         </div>
 
         <div id="" className="form row" onSubmit={ this.handleSubmit }>
           <form id="payment-form" action="/payment">
+            <span className="payment-errors"> </span>
             <table border="0">
               <tr>
                 <td>
