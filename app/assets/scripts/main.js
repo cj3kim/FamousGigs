@@ -46,7 +46,7 @@ headerFooterLayout.content.add(mod).add(bodyRC);
 var dashboard = require('./views/dashboard');
 
 var CompanyAdCollection = require('./collections/company_ads');
-var companyAds = new CompanyAdCollection; 
+var companyAds = new CompanyAdCollection;
 
 var adScrollPage = require('./pages/ad_scrollpage');
 
@@ -66,23 +66,25 @@ companyAds.fetch({
       var model = models[i];
       adScrollPage._addSurface(model);
     }
-  }, 
+  },
   error: function (models) {
   }
 });
 
-var AdForm = require('./views/ad_form');
+//TODO FINISH POSTING FLOW
+var AdForm = require('./views/posting_flow/AdForm');
 var adForm = new AdForm({});
 page('/company_ads/new', function () {
   bodyRC.show(adForm);
 });
 
-var PaymentForm = require('./views/payment_form');
+var PaymentForm = require('./views/posting_flow/PaymentForm');
 var paymentForm = new PaymentForm({ });
 
 var Carousel = require('./views/Carousel');
 var carousel = new Carousel([adForm, paymentForm]);
 
+//END POSTING FLOW
 
 page('/company_ads/payment', function () {
   bodyRC.show(carousel);

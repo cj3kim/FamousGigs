@@ -29,14 +29,14 @@ function Carousel (array) {
 
   lightBox.show(view, {duration: 1000});
 
-  view.surface.on('click', function () {
-    _this._viewSequence = _this._viewSequence.getNext();
-    var view2 = _this._viewSequence.get();
-    console.log('view2');
-    console.log(view2);
+  //view.surface.on('click', function () {
+    //_this._viewSequence = _this._viewSequence.getNext();
+    //var view2 = _this._viewSequence.get();
+    //console.log('view2');
+    //console.log(view2);
 
-    lightBox.show(view2, {duration: 1000});
-  });
+    //lightBox.show(view2, {duration: 1000});
+  //});
 
 }
 

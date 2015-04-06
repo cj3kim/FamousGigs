@@ -2,7 +2,7 @@ var View = require('famous/core/view');
 var React = require('react');
 var ReactSurface = require('react-surface');
 
-var PaymentFormReact = require('../react_views/payment_form');
+var PaymentFormReact = require('../../react_views/payment_form');
 
 var FlexColumns = require('flex-columns');
 
