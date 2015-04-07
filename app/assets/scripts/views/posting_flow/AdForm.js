@@ -11,7 +11,7 @@ function AdForm () {
   this.createCol(425);
 
   var adForm = new ReactSurface({
-    size: [425, 550],
+    size: [425, 620],
     classes: ['rounded-corners'],
     content: <AdFormReact />
   });
