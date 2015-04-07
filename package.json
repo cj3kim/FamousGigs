@@ -33,6 +33,7 @@
     "page": "^1.6.2",
     "pg": "^4.3.0",
     "project-name-generator": "^2.0.0",
+    "quill": "^0.19.10",
     "react": "^0.13.1",
     "react-surface": "^0.3.0",
     "reactify": "^1.1.0",

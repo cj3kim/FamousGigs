@@ -48,7 +48,15 @@ div#ad-form {
       table-layout: fixed;
     }
 
-    tr {
+    tr.quill-row {
+      td.quill-ad-form {
+        height: 250px;
+        display:table-cell;
+
+      }
+    }
+
+    tr.normal {
       td {
         height:50px;
         border-bottom: solid 1px #e8e9e8;
