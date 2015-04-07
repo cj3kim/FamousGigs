@@ -6,8 +6,9 @@ var Toolbar = React.createClass({
     return (
       <div id="toolbar-toolbar" className="toolbar ql-toolbar ql-snow">
         <span className="ql-format-group">
-          <select title="Size" className="ql-size" defaultValue="16px">
-            <option value="16px">Normal</option>
+          <select title="Size" className="ql-size" defaultValue="13px" >
+            <option value="13px">Small</option>
+            <option value="16px" selected>Normal</option>
             <option value="25px">Large</option>
             <option value="32px">Huge</option>
           </select>

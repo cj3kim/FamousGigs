@@ -7,13 +7,12 @@ var Toolbar = require('./components/toolbar');
 var AdForm = React.createClass({
   componentDidMount: function (one, two) {
     var node = React.findDOMNode(this);
-    var td = node.getElementsByClassName('quill-ad-form')[0];
+    var div = node.getElementsByClassName('quill-ad-form')[0];
 
-    console.log(td);
-    var fullEditor = new Quill(td, {
+    var fullEditor = new Quill(div, {
       styles: {
         '.ql-editor': {
-          'font-family': "'Arial', san-serif"
+          'font-family': "Helvetica, 'Arial', san-serif;",
         }
       },
       modules: {
@@ -46,8 +45,8 @@ var AdForm = React.createClass({
             </tr>
 
             <tr className='quill-row'>
-              <td colSpan="2" className='quill-ad-form'> 
-
+              <td colSpan="2" className='quill-ad-column'> 
+                <div className='quill-ad-form'> </div>
               </td>
             </tr>
 

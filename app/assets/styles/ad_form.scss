@@ -49,10 +49,15 @@ div#ad-form {
     }
 
     tr.quill-row {
-      td.quill-ad-form {
+      td.quill-ad-column {
         height: 250px;
         display:table-cell;
 
+        div.quill-ad-form {
+          height: 100%;
+          overflow-y: scroll;
+          border: 1px solid black;
+        }
       }
     }
 
