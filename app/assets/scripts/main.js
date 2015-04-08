@@ -89,7 +89,9 @@ var carousel = new Carousel([adForm, companyDetails, paymentForm]);
 //END POSTING FLOW
 
 page('/company_ads/payment', function () {
-  bodyRC.show(carousel);
+  bodyRC.show(carousel, {duration: 1000}, function () {
+    carousel.showFirst();
+  });
 });
 
 page('/ad-details/:id', function (ctx) {
@@ -97,7 +99,7 @@ page('/ad-details/:id', function (ctx) {
   var ad = companyAds.get(id);
   adDetails.trigger('reset-ad-details', ad);
 
-  var transition = {duration: 1000, curve: Easing.inSine };
+  var transition = {duration: 200, curve: Easing.inSine };
   bodyRC.show(adDetails, transition); //Ad Details was built on top of flex columns so transitions don't work because of the custom commit method. 
 });
 

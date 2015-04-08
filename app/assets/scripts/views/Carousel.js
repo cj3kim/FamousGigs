@@ -27,6 +27,7 @@ function Carousel (array) {
     inTransform: Transform.multiply4x4(Transform.translate(-500, 0,-500), Transform.rotate(0,200,0)),
     outTransform: Transform.multiply4x4(Transform.translate(500, 0,-100), Transform.rotate(0,-200,0)),
   });
+  this._lightBox = lightBox;
 
   var transition = {duration: 500};
 
@@ -39,9 +40,15 @@ function Carousel (array) {
   });
 
   this._node.add(lightBox);
+  //var view = this._viewSequence.get();
+  //this._lightBox.show(view, transition);
+ 
+  this.showFirst = function () {
+    var transition = {duration: 500};
+    var view = this._viewSequence.get();
+    this._lightBox.show(view, transition);
+  };
 
-  var view = this._viewSequence.get();
-  lightBox.show(view, transition);
 }
 
 Carousel.DEFAULT_OPTIONS = {};
