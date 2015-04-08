@@ -4,10 +4,11 @@ var AdEditForm = require('./components/ad_edit_form');
 var AdForm = React.createClass({
   render: function () {
     return (
-      <div  id="ad-form" className="stop-gap-div">
-        <div className="title row">
+      <div className="form-content stop-gap-div">
+        <div className="content-header">
           <span>Ad Form</span>
         </div>
+
         <AdEditForm />
      </div>
     );

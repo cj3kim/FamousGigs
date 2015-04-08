@@ -18,21 +18,20 @@ div.dashboard, div.box {
     background-color: white;
     padding: 0 20 0 20;
 
-    input { 
-      width: 90%; 
+    input {
+      width: 90%;
       height: 30px;
       margin-left: 20px;
       padding-left: 10px;
       letter-spacing: 1px;
 
       border: none;
-      outline: 0; 
+      outline: 0;
       font: normal 13px/100% Verdana, Tahoma, sans-serif; 
-      background: #FFFFFF; 
+      background: #FFFFFF;
     } 
 
-    input:hover { 
-      /*border: solid 1px #E5E5E5; */
+    input:hover {
       border: solid 1px #c9c9c9; 
     }
 
@@ -91,9 +90,6 @@ div.dashboard, div.box {
   }
 
 }
-
-
-
 
 div.header {
   padding-top: 20px;

@@ -21,7 +21,7 @@ var AdEditForm = React.createClass({
   },
   render: function () {
     return (
-      <form className="row" action="">
+      <form action="">
         <table border="0">
           <tr className='table-header'>
             <td></td>

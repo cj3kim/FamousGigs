@@ -51,12 +51,12 @@ var PaymentForm = React.createClass({
   },
   render: function () {
     return (
-      <div  className="box stop-gap-div">
-        <div className="title row">
+      <div  className="text-content stop-gap-div">
+        <div className="content-header">
           <span>Credit Card</span>
         </div>
 
-        <div id="" className="form row" onSubmit={ this.handleSubmit }>
+        <div className="content-body" onSubmit={ this.handleSubmit }>
           <form id="payment-form" action="/payment">
             <span className="payment-errors"> </span>
             <table border="0">
@@ -79,7 +79,7 @@ var PaymentForm = React.createClass({
                   <input className='month' type="text"  name="exp_month" data-stripe="exp-month"/>/
                   <input className='year'  type="text"  name="exp_year"  data-stripe="exp-year"/>
                 </td>
-              </tr> 
+              </tr>
 
               <tr>
                 <td><button type="submit">Submit Payment</button></td>
