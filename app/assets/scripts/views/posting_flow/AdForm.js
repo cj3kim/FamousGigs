@@ -8,6 +8,9 @@ var FlexColumns = require('flex-columns');
 
 function AdForm () {
   FlexColumns.apply(this, arguments);
+
+  var _this = this;
+
   this.createCol(425);
 
   var adForm = new ReactSurface({
@@ -17,12 +20,17 @@ function AdForm () {
   });
   this.surface = adForm;
 
-  var _this = this;
+  function stampTableName (tableName, data) {
+    data.tableName = tableName;
+    return data
+  }
   adForm.on('next-view', function (event) {
     event.stopPropagation();
-    _this._eventOutput.trigger('next-view', event.data);
+    var data = stampTableName("company_ad", event.data)
+    _this._eventOutput.trigger('next-view', data);
   });
   this.addSurfaceToCol(0, adForm)
+
 }
 
 AdForm.prototype = Object.create(FlexColumns.prototype);

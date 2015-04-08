@@ -5,22 +5,20 @@ var LightBox = require('famous/views/LightBox');
 var Transform = require('famous/core/Transform');
 
 var RenderController = require('famous/views/RenderController');
+var FormFairy = require('../lib/FormFairy');
+
 
 function Carousel (array) {
   View.apply(this, arguments);
 
   var _this = this;
-  this._viewSequence = new ViewSequence(array);
+  this._viewSequence = new ViewSequence({array:array, loop: true});
+  this.formFairy = new FormFairy();
 
   for (var i = 0, l = array.length; i < l; i ++) {
     var view = array[i];
     _this._eventInput.subscribe(view._eventOutput)
   }
-
-  _this._eventInput.on('next-view', function (data) {
-    console.log("In carousel");
-    console.log(data);
-  });
 
   var lightBox = new LightBox({
     inAlign: [0,0],
@@ -29,13 +27,21 @@ function Carousel (array) {
     inTransform: Transform.multiply4x4(Transform.translate(-500, 0,-500), Transform.rotate(0,200,0)),
     outTransform: Transform.multiply4x4(Transform.translate(500, 0,-100), Transform.rotate(0,-200,0)),
   });
-  //var lightBox = new RenderController();
+
+  var transition = {duration: 500};
+
+  _this._eventInput.on('next-view', function (data) {
+    _this.formFairy.addData(data);
+    _this._viewSequence = _this._viewSequence.getNext();
+
+    console.log(_this.formFairy);
+    lightBox.show(_this._viewSequence.get(), transition);
+  });
 
   this._node.add(lightBox);
 
   var view = this._viewSequence.get();
-
-  lightBox.show(view, {duration: 1000});
+  lightBox.show(view, transition);
 }
 
 Carousel.DEFAULT_OPTIONS = {};
