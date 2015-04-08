@@ -79,10 +79,12 @@ page('/company_ads/new', function () {
 });
 
 var PaymentForm = require('./views/posting_flow/PaymentForm');
-var paymentForm = new PaymentForm({ });
+var paymentForm = new PaymentForm({});
+var CompanyDetails = require('./views/posting_flow/CompanyDetails');
 
+var companyDetails =  new CompanyDetails();
 var Carousel = require('./views/Carousel');
-var carousel = new Carousel([adForm, paymentForm]);
+var carousel = new Carousel([adForm, companyDetails, paymentForm]);
 
 //END POSTING FLOW
 
