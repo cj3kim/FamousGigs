@@ -2,7 +2,8 @@ var View = require('famous/core/view');
 var React = require('react');
 var ReactSurface = require('react-surface');
 
-var AdFormReact = require('../../react_views/ad_form');
+var FormContent = require('../../react_views/form_content');
+var AdEditForm =  require('../../react_views/components/ad_edit_form');
 
 var FlexColumns = require('flex-columns');
 
@@ -13,10 +14,15 @@ function AdForm () {
 
   this.createCol(425);
 
+  var settings = {
+    headerName: "Ad Post Form",
+    reactClass: AdEditForm
+  };
+
   var adForm = new ReactSurface({
     size: [425, 620],
     classes: ['rounded-corners'],
-    content: <AdFormReact />
+    content: <FormContent {...settings} />
   });
   this.surface = adForm;
 
