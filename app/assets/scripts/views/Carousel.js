@@ -8,9 +8,19 @@ var RenderController = require('famous/views/RenderController');
 
 function Carousel (array) {
   View.apply(this, arguments);
-  this._viewSequence = new ViewSequence(array);
 
   var _this = this;
+  this._viewSequence = new ViewSequence(array);
+
+  for (var i = 0, l = array.length; i < l; i ++) {
+    var view = array[i];
+    _this._eventInput.subscribe(view._eventOutput)
+  }
+
+  _this._eventInput.on('next-view', function (data) {
+    console.log("In carousel");
+    console.log(data);
+  });
 
   var lightBox = new LightBox({
     inAlign: [0,0],
@@ -24,20 +34,8 @@ function Carousel (array) {
   this._node.add(lightBox);
 
   var view = this._viewSequence.get();
-  console.log('view1');
-  console.log(view);
 
   lightBox.show(view, {duration: 1000});
-
-  //view.surface.on('click', function () {
-    //_this._viewSequence = _this._viewSequence.getNext();
-    //var view2 = _this._viewSequence.get();
-    //console.log('view2');
-    //console.log(view2);
-
-    //lightBox.show(view2, {duration: 1000});
-  //});
-
 }
 
 Carousel.DEFAULT_OPTIONS = {};

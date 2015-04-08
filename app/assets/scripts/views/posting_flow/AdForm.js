@@ -17,6 +17,11 @@ function AdForm () {
   });
   this.surface = adForm;
 
+  var _this = this;
+  adForm.on('next-view', function (event) {
+    event.stopPropagation();
+    _this._eventOutput.trigger('next-view', event.data);
+  });
   this.addSurfaceToCol(0, adForm)
 }
 
