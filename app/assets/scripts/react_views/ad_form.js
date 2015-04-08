@@ -1,14 +1,12 @@
 var React = require('react');
+var ContentHeader = require('./components/content_header');
 var AdEditForm = require('./components/ad_edit_form');
 
 var AdForm = React.createClass({
   render: function () {
     return (
       <div className="form-content stop-gap-div">
-        <div className="content-header">
-          <span>Ad Form</span>
-        </div>
-
+        <ContentHeader headerName={"Ad Form"}/>
         <AdEditForm />
      </div>
     );

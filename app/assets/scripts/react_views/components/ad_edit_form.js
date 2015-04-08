@@ -1,6 +1,8 @@
 var React = require('react');
 var Quill = require('quill');
 var Toolbar = require('./toolbar');
+var TableHeader = require('./table_header');
+var NextButton = require('./next_button');
 
 var AdEditForm = React.createClass({
   componentDidMount: function () {
@@ -19,20 +21,14 @@ var AdEditForm = React.createClass({
       theme: 'snow'
     });
   },
+
   render: function () {
     return (
-      <form action="">
+      <form>
         <table border="0">
-          <tr className='table-header'>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          <TableHeader amount={6} />
 
-          <tr >
+          <tr>
             <td colSpan="1"> <label for="title">Title</label> </td>
             <td colSpan="5"> <input type="text" name="title" /> </td>
           </tr>
@@ -67,7 +63,7 @@ var AdEditForm = React.createClass({
             <td colSpan="1"> <input type="checkbox" name="onsite" /> </td>
             <td colSpan="1"> <label for="remote">Remote?</label> </td>
             <td colSpan="1"> <input type="checkbox" name="remote" /> </td>
-            <td colSpan="2"><div className='next'><span>Next</span></div></td>
+            <td colSpan="2"> <NextButton /> </td>
           </tr>
         </table>
       </form>

@@ -1,6 +1,7 @@
 var React = require('react');
 var $ = require('zepto-browserify').$;
 
+var ContentHeader = require('./components/content_header');
 Stripe.setPublishableKey('pk_test_8vofNFraEETbkErpKImun5jZ');
 
 function serializeObject($form) {
@@ -36,7 +37,6 @@ var PaymentForm = React.createClass({
   stripeResponseHandler: function (status, response) {
     var $form = $('#payment-form');
 
-    console.log(response);
     if (response.error) {
       $form.find('.payment-errors').text(response.error.message);
       $form.find('button').prop('disabled', false);
@@ -52,9 +52,7 @@ var PaymentForm = React.createClass({
   render: function () {
     return (
       <div  className="text-content stop-gap-div">
-        <div className="content-header">
-          <span>Credit Card</span>
-        </div>
+        <ContentHeader headerName={"Payment Form"} />
 
         <div className="content-body" onSubmit={ this.handleSubmit }>
           <form id="payment-form" action="/payment">
