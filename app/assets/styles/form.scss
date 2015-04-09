@@ -15,6 +15,13 @@ div.form-content {
       background: #FFFFFF;
 
       &:hover { border: solid 1px #E5E5E5; }
+
+      &.month {
+        width: 40px;
+      }
+      &.year {
+        width: 60px;
+      }
     }
 
     table {
@@ -69,6 +76,10 @@ div.form-content {
         color: #41aec2;
         font-size: 13px;
         text-align: left;
+      }
+
+      td span.slash {
+        color: #41aec2;
       }
 
       div.next {

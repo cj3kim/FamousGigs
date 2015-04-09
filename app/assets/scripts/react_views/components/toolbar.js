@@ -4,7 +4,7 @@ var React = require('react');
 var Toolbar = React.createClass({
   render: function () {
     return (
-      <div id="toolbar-toolbar" className="toolbar ql-toolbar ql-snow">
+      <div id={this.props.toolbarId} className="toolbar ql-toolbar ql-snow">
         <span className="ql-format-group">
           <select title="Size" className="ql-size" defaultValue="13px" >
             <option value="13px">Small</option>
