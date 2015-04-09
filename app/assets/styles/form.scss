@@ -14,7 +14,9 @@ div.form-content {
       outline: 0;
       background: #FFFFFF;
 
-      &:hover { border: solid 1px #E5E5E5; }
+      border: solid 1px #E5E5E5; 
+
+      /*&:hover { border: solid 1px #E5E5E5; }*/
 
       &.month {
         width: 40px;

@@ -29,6 +29,10 @@ var menuSurface = new Surface({
   content: "<span class='menu-item flaticon-menu55'></span>",
 });
 
+menuSurface.on('click', function () {
+  page.show('/');
+});
+
 var loginSurface = new Surface({
   size: [61, 56],
   classes: ['flex-navbar', 'left'],

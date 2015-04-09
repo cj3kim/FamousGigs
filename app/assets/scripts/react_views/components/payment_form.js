@@ -13,6 +13,8 @@ var PaymentForm = React.createClass({
 
     var $form = $('#payment-form')
     var obj = serializeObject($form);
+    console.log('handle-submit');
+    console.log(obj);
 
     // Disable the submit button to prevent repeated clicks
     //$form.find('button').prop('disabled', true);
@@ -47,19 +49,20 @@ var PaymentForm = React.createClass({
             </tr>
 
           <tr>
-            <td colSpan="1"><label for="cvc">CVC</label></td>
-            <td colSpan="1"><input type="text" name="cvc" /></td>
             <td colSpan="2"><label>Expiration (MM/YYYY)</label></td>
             <td colSpan="2">
                 <input className='month' type="text"  name="exp_month" data-stripe="exp-month"/>
                 <span>/</span>
                 <input className='year'  type="text"  name="exp_year"  data-stripe="exp-year"/>
                 </td>
+            <td colSpan="1"><label for="cvc">CVC</label></td>
+            <td colSpan="1"><input type="text" name="cvc" /></td>
+
             </tr>
 
           <tr>
             <td colSpan="5"></td>
-            <td colSpan="1"><button type="submit">Submit Payment</button></td>
+            <td colSpan="1"><button type="submit">Submit</button></td>
             </tr>
         </table>
       </form>
