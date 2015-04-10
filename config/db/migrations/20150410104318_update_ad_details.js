@@ -14,14 +14,13 @@ exports.up = function(knex, Promise) {
 
     t.string('logo_url').nullable()
 
-    // Since rows already exist in the table, the ALTER statment is attempting 
-    // to insert NULL values for columsn with existing rows.
-    // Not nullable but fix at a later point. 
-
     t.string('company_name'); 
     t.string('company_email');
     t.string('company_link');
     t.text('additional_notes');;
+    // Since rows already exist in the table, the ALTER statment is attempting 
+    // to insert NULL values for columsn with existing rows.
+    // Not nullable but fix at a later point. 
   });
 };
 
