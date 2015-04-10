@@ -10,16 +10,11 @@ var serializeObject = require('./SerializeObject');
 var PaymentForm = React.createClass({
   handleSubmit: function (event) {
     event.preventDefault();
-
+    event.stopPropagation();
     var $form = $('#payment-form')
     var obj = serializeObject($form);
-    console.log('handle-submit');
-    console.log(obj);
 
-    // Disable the submit button to prevent repeated clicks
-    //$form.find('button').prop('disabled', true);
     Stripe.card.createToken(obj, this.stripeResponseHandler);
-    // Prevent the form from submitting with the default action
   },
 
   stripeResponseHandler: function (status, response) {
@@ -30,16 +25,13 @@ var PaymentForm = React.createClass({
       $form.find('button').prop('disabled', false);
     } else {
       var token = response.id;
-      function success(response) {
-        var $form = $('#payment-form');
-        $form.trigger('next-view');
-      }
-      $.post('/payment', {stripeToken: token}, success);
+
+      $form.trigger('stripe-payment',[{stripe_token: token}]);
     }
   },
   render: function () {
     return (
-      <form id="payment-form" onSubmit={this.handleSubmit} action="/payment">
+      <form id="payment-form" onSubmit={this.handleSubmit}>
         <span className="payment-errors"> </span>
         <table>
           <TableHeader amount="6" />

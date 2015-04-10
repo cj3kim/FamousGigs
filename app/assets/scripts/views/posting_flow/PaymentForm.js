@@ -25,9 +25,10 @@ function PaymentForm () {
     content: <FormContent {...settings} />
   });
 
-  paymentForm.on('next-view', function (event) {
+  paymentForm.on('stripe-payment', function (event, data) {
     event.stopPropagation();
-    _this._eventOutput.trigger('next-view');
+
+    _this._eventOutput.trigger('stripe-payment', event._args[0]);
   });
 
   this.addSurfaceToCol(0, paymentForm)

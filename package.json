@@ -31,6 +31,7 @@
     "multer": "^0.1.8",
     "mustache": "^1.1.0",
     "name-generator": "^0.1.1",
+    "object-merge": "^2.5.1",
     "page": "^1.6.2",
     "pg": "^4.3.0",
     "project-name-generator": "^2.0.0",

@@ -1,3 +1,5 @@
+var stripe = require("stripe")("sk_test_1WASPwzkx5thPhUjyW06SYXb");
+
 module.exports = function (app) {
   var CompanyAds = require('../../models/company_ads');
 
@@ -8,6 +10,26 @@ module.exports = function (app) {
     })
     .catch(function (err) {
       console.log(err);
+    });
+  });
+
+  app.post('/company_ads/create', function (req, res) {
+    var stripeToken = req.body.stripe_token;
+    var contactEmail = req.body.contact_email;
+
+    var charge = stripe.charges.create({
+      amount: 1000, // amount in cents, again
+      currency: "usd",
+      source: stripeToken,
+      description: contactEmail
+    }, function(err, charge) {
+      if (err && err.type === 'StripeCardError') {
+        console.log('charge failed');
+        console.log(err);
+      } else {
+        res.sendStatus(200);
+        console.log('charge succeeded');
+      }
     });
   });
 

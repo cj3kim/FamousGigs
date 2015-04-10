@@ -34,7 +34,7 @@ var CompanyDetails = React.createClass({
   retrieveFormData: function ($form, quillEditor) {
     var data = serializeObject($form);
     var html = quillEditor.getHTML();
-    data.description = html;
+    data.additional_notes = html;
     data = this.cleanFormData(data);
 
     return data;

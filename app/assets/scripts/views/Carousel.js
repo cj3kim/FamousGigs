@@ -7,7 +7,9 @@ var Transform = require('famous/core/Transform');
 var RenderController = require('famous/views/RenderController');
 var FormFairy = require('../lib/FormFairy');
 var page = require('page');
+var $ = require('zepto-browserify').$;
 
+var objectMerge = require('object-merge');
 
 function Carousel (array) {
   View.apply(this, arguments);
@@ -29,8 +31,19 @@ function Carousel (array) {
     outTransform: Transform.multiply4x4(Transform.translate(500, 0,-100), Transform.rotate(0,-200,0)),
   });
   this._lightBox = lightBox;
-
   var transition = {duration: 500};
+
+  _this._eventInput.on('stripe-payment', function (stripeObject) {
+    //Compile all form fairy data collected so far and merge it with stripe token data.
+    var companyAds = _this.formFairy.data['company_ads'];
+    var postObj = objectMerge(companyAds, stripeObject);
+
+    console.log('stripe-payment');
+    console.log(postObj);
+    $.post('/company_ads/create', postObj, function () {
+      _this._eventInput.trigger('next-view');
+    });
+  });
 
   _this._eventInput.on('next-view', function (data) {
     if (data) _this.formFairy.addData(data);

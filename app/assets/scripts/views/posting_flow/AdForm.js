@@ -32,7 +32,7 @@ function AdForm () {
   }
   adForm.on('next-view', function (event) {
     event.stopPropagation();
-    var data = stampTableName("company_ad", event.data)
+    var data = stampTableName("company_ads", event.data)
     _this._eventOutput.trigger('next-view', data);
   });
   this.addSurfaceToCol(0, adForm)

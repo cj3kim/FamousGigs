@@ -23,7 +23,6 @@ app.get('/', function(req, res) {
 })
 
 require('./app/routes/company_ads/index')(app);
-require('./app/routes/payment')(app);
 
 var port = 1337;
 console.log('Starting server at port ' + port + '.');
