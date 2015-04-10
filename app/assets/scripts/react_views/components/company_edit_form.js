@@ -67,8 +67,8 @@ var CompanyDetails = React.createClass({
           </tr>
 
           <tr>
-            <td colSpan="2"><label for="company_site">Company Link</label></td>
-            <td colSpan="4"><input type="text" name="company_site" /></td>
+            <td colSpan="2"><label for="company_link">Company Link</label></td>
+            <td colSpan="4"><input type="text" name="company_link" /></td>
           </tr>
 
           <tr>

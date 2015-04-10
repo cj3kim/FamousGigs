@@ -16,6 +16,7 @@ module.exports = function (app) {
   app.post('/company_ads/create', function (req, res) {
     var stripeToken = req.body.stripe_token;
     var contactEmail = req.body.contact_email;
+    console.log(req.body);
 
     var charge = stripe.charges.create({
       amount: 1000, // amount in cents, again
@@ -27,8 +28,9 @@ module.exports = function (app) {
         console.log('charge failed');
         console.log(err);
       } else {
-        res.sendStatus(200);
-        console.log('charge succeeded');
+        new CompanyAds(req.body).save().then(function () {
+          res.sendStatus(200);
+        });
       }
     });
   });

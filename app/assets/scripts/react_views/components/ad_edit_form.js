@@ -72,8 +72,8 @@ var AdEditForm = React.createClass({
           </tr>
 
           <tr >
-            <td colSpan="2"><label for="location">location</label></td>
-            <td colSpan="4"><input type="text" name="location" /></td>
+            <td colSpan="2"><label for="job_location">location</label></td>
+            <td colSpan="4"><input type="text" name="job_location" /></td>
           </tr>
 
           <tr className='checkboxes'>

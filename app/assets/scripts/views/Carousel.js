@@ -35,11 +35,9 @@ function Carousel (array) {
 
   _this._eventInput.on('stripe-payment', function (stripeObject) {
     //Compile all form fairy data collected so far and merge it with stripe token data.
-    var companyAds = _this.formFairy.data['company_ads'];
+    var companyAds = _this.formFairy.get('company_ads');
     var postObj = objectMerge(companyAds, stripeObject);
 
-    console.log('stripe-payment');
-    console.log(postObj);
     $.post('/company_ads/create', postObj, function () {
       _this._eventInput.trigger('next-view');
     });

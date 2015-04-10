@@ -1,4 +1,5 @@
 var objectMerge = require('object-merge');
+var deepcopy = require('deepcopy');
 
 function FormFairy () {
   this.data = {}
@@ -13,14 +14,21 @@ FormFairy.prototype.addData = function (obj) {
       this.data[tableName] = objectMerge(this.data[tableName], obj);
     } else {
       this.data[obj.tableName] = obj;
-      delete obj["tableName"]
     }
-
-    console.log('form fairy');
-    console.log(this.data);
     return this.data;
   }
 };
+FormFairy.prototype.get = function (tableName) {
+  var obj = deepcopy(this.data[tableName]);
+
+  for ( var key in obj) {
+    var value = obj[key];
+    if (value === "on") obj[key] = true;
+    if (key === 'tableName') 
+      delete obj[key];
+  }
+  return obj;
+}
 
 
 module.exports = FormFairy
