@@ -52,13 +52,13 @@ var CompanyDetails = React.createClass({
           <TableHeader amount={6} />
 
           <tr>
-            <td colSpan="1"> <label for="name">Name</label> </td>
-            <td colSpan="5"> <input type="text" name="name" /> </td>
+            <td colSpan="2"> <label for="contact_name">Contact Name</label> </td>
+            <td colSpan="4"> <input type="text" name="contact_name" /> </td>
           </tr>
 
           <tr>
-            <td colSpan="1"> <label for="email">Email</label> </td>
-            <td colSpan="5"> <input type="text" name="email" /> </td>
+            <td colSpan="2"> <label for="contact_email">Contact Email</label> </td>
+            <td colSpan="4"> <input type="text" name="contact_email" /> </td>
           </tr>
 
           <tr>
