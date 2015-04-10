@@ -13,7 +13,7 @@ var CompanyAd = React.createClass({
       <div className="stop-gap-div"> 
         <h3 className='title'>{ this.props.title }</h3>
         <p>{ this.props.job_location }</p>
-        <div dangerouslySetInnerHTML={createMarkup()} />
+        <div className="scrollable" dangerouslySetInnerHTML={createMarkup()} />
       </div>
     );
   }

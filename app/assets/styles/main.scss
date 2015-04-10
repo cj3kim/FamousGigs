@@ -17,6 +17,10 @@ div, p, span, ul, li, label, td, tr, input{
   font-family: Raleway, serif;
 }
 
+div.scrollable {
+  height: 380px;
+  overflow-y: scroll;
+}
 div.apply-now-btn {
   font-family: Raleway, serif;
   font-size: 24px;
