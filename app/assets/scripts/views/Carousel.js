@@ -6,6 +6,7 @@ var Transform = require('famous/core/Transform');
 
 var RenderController = require('famous/views/RenderController');
 var FormFairy = require('../lib/FormFairy');
+var page = require('page');
 
 
 function Carousel (array) {
@@ -32,11 +33,14 @@ function Carousel (array) {
   var transition = {duration: 500};
 
   _this._eventInput.on('next-view', function (data) {
-    _this.formFairy.addData(data);
+    if (data) _this.formFairy.addData(data);
     _this._viewSequence = _this._viewSequence.getNext();
 
-    console.log(_this.formFairy);
     lightBox.show(_this._viewSequence.get(), transition);
+  });
+
+  _this._eventInput.on('last-view', function () {
+    page.show('/')
   });
 
   this._node.add(lightBox);

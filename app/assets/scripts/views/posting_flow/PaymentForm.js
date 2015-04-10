@@ -9,6 +9,9 @@ var FlexColumns = require('flex-columns');
 
 function PaymentForm () {
   FlexColumns.apply(this, arguments);
+
+  var _this = this;
+
   this.createCol(500);
 
   var settings = {
@@ -22,8 +25,9 @@ function PaymentForm () {
     content: <FormContent {...settings} />
   });
 
-  paymentForm.on('next-view', function () {
-    console.log('Go to next view.');
+  paymentForm.on('next-view', function (event) {
+    event.stopPropagation();
+    _this._eventOutput.trigger('next-view');
   });
 
   this.addSurfaceToCol(0, paymentForm)
