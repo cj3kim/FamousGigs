@@ -1,0 +1,78 @@
+When I have two columns and the screen resizes to mobile,
+I want the surfaces to all be the same size.
+
+What should be the interface then?
+
+When I create a column, should I pass it an object to resize
+at certain values?
+
+var settings = {
+ mobile: {
+   size: 320,
+   trueSize: false,
+ },
+ tablet: {
+   size: 500,
+   trueSize: true,
+ }
+ desktop: {
+   size: 800,
+   trueSize: true
+ }
+};
+
+No, this doesn't work. This options object
+needs to be passed to Flex Columns.
+
+FlexColumns needs to be passed settings.
+
+FlexColumns.apply(this, settings);
+
+How about this code then?
+
+When I pass in a surface, its size is already set.
+How do I adjust the size of surface as the
+view port adjusts in size as well.
+
+We could do something hacky.
+
+For example,
+surface._size = [200, 300];
+or we can pass in the size as a parameter to the addColNode function
+function (colIndex, surface, size)
+
+I like the second option better.
+
+FlexColumns.prototype.addColNode = function (colIndex, surface, size) {
+
+  var surfaceSize = surface.getSize();
+  var surfaceWidth = surfaceSize[0];
+
+  var colObj = this._cols[colIndex];
+  if (surfaceWidth > colObj.width) {
+    throw new SizeException("Surface width is greater than column width.");
+  } else {
+    colObj.surfaces.push(surface);
+  }
+  return this;
+};
+
+How do I deal with initial column sizes?
+
+
+What is the simplest thing I can do?
+
+Two Scenarios:
+
+1. Two columns and one surface in each
+
+2. Two columns and one surface in the first column and two surfaces in the second column.
+
+Right now, flex-columns handles n number of colums with fixed sizes.
+I just need to handle two columns and I need them to stack and resize at different view port sizes.
+
+
+
+
+
+

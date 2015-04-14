@@ -8,6 +8,7 @@ var Transform        = require('famous/core/Transform');
 var FlexColumns = require('./flex-columns');
 
 function AdDetails() {
+
   FlexColumns.apply(this, arguments);
 
   this.initialize();
@@ -24,8 +25,8 @@ AdDetails.prototype.initialize = function () {
 
 
 
-  //this.createCol(500).addSurfaceToCol(0, this.largeAd);
-  //this.createCol(300).addSurfaceToCol(1, this.application);
+  this.createCol(500).addColNode(0, this.largeAd);
+  this.createCol(300).addColNode(1, this.application);
 };
 
 AdDetails.prototype.setupEventListeners = function () {

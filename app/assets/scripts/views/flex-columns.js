@@ -37,33 +37,42 @@ FlexColumns.prototype.createCol = function (width) {
   if (width === undefined)
     throw new WidthException("You must enter a width when you create a column");
 
-  var settings = {
+  var colObj = {
     width: width,
+    totalHeight: null,
     surfaces: [],
     states: [],
     modifiers: []
   };
-  this._cols.push(settings);
+  this._cols.push(colObj);
 
   return this;
 };
 
 
-FlexColumns.prototype.addSurfaceToCol = function (colIndex, surface) {
-  function SizeException(message) {
-     this.message = message;
-     this.name = "SizeException";
-  }
-
+FlexColumns.prototype.addColNode = function (colIndex, surface) {
   var surfaceSize = surface.getSize();
   var surfaceWidth = surfaceSize[0];
 
   var colObj = this._cols[colIndex];
-  if (surfaceWidth > colObj.width) {
-    throw new SizeException("Surface width is greater than column width.");
-  } else {
-    colObj.surfaces.push(surface);
+  colObj.surfaces.push(surface);
+
+  function calcTotalHeight (surfaces) {
+    var totalHeight = 0;
+    _.each(surfaces, function (surface, i ) {
+      var size = surface.getSize();
+      var surfaceHeight = size[1];
+      console.log('calcTotalHeight');
+      console.log(size);
+      totalHeight += surfaceHeight;
+    });
+    return totalHeight;
   }
+
+  colObj.totalHeight = calcTotalHeight(colObj.surfaces)
+  console.log('addColNode');
+  console.log(colObj);
+
   return this;
 };
 
@@ -105,20 +114,32 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
   var _this = this;
 
   var previousWidth = 0;
+  var totalHeight = 0;
 
   //Iterates through each column
   _.each(this._cols, function (colObj, i) {
     var surfaces = colObj.surfaces;
 
-    //TODO if context width is less than 321,
+    //TODO if context width is less than 500,
     //set previousWidth to zero and set trueSize to false.
 
-    previousWidth += colObj.width;
+    var resizeTestWidth = 500;
+    if (contextWidth < 900)  {
+      //previousWidth = 0;
+    } else {
+      previousWidth += colObj.width;
+      totalHeight = 0;
+    }
+
+    //Previous height can stay because stack surfaces in each column need to stay stacked.
     var previousHeight = 0;
 
     //Iterates through surfaces of each column
     _.each(surfaces, function (surface, j) {
-      var position = _calculatePosition.call(this, i, j, surface, colObj, previousWidth, previousHeight, contextWidth);
+      var position = _calculatePosition.call(this,
+                                             i, j, surface, colObj,
+                                             previousWidth, previousHeight, totalHeight,
+                                             contextWidth);
       previousHeight += surface.getSize()[1];
 
       if (colObj.modifiers[j] === undefined) {
@@ -136,21 +157,26 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
       }
 
     }, _this);
+
+    totalHeight += colObj.totalHeight;
+    console.log('resize-flow : totalHeight');
+    console.log(totalHeight);
   }, _this);
 };
 
-function _calculatePosition (colIndex, rowIndex, surface, colObj, previousWidth, previousHeight, contextWidth) {
+function _calculatePosition (colIndex, rowIndex, surface, colObj, previousWidth, previousHeight, totalHeight, contextWidth) {
   var surfaceSize  = surface.getSize();
   var surfaceWidth = surfaceSize[0];
   var surfaceHeight = surfaceSize[1];
 
-  var x = previousWidth - colObj.width + (colIndex * this.options.gutterCol);
-  var y = previousHeight + (rowIndex * this.options.gutterRow);
+  //var x = previousWidth - colObj.width + (colIndex * this.options.gutterCol);
+  var x = colObj.width + (colIndex * this.options.gutterCol);
+  var y = totalHeight + previousHeight + (rowIndex * this.options.gutterRow);
 
-  if (this.options.midAlign === true) {
-    var midAlign = _calculateMidAlign.call(this, contextWidth);
-    x += midAlign;
-  }
+  //if (this.options.midAlign === true) {
+    //var midAlign = _calculateMidAlign.call(this, contextWidth);
+    //x += midAlign;
+  //}
 
   y += this.options.marginTop;
 
