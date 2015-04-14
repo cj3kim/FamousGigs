@@ -124,22 +124,12 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
     //set previousWidth to zero and set trueSize to false.
 
     var resizeTestWidth = 500;
-    if (contextWidth < 900)  {
-      //previousWidth = 0;
-    } else {
-      previousWidth += colObj.width;
-      totalHeight = 0;
-    }
-
     //Previous height can stay because stack surfaces in each column need to stay stacked.
     var previousHeight = 0;
 
     //Iterates through surfaces of each column
     _.each(surfaces, function (surface, j) {
-      var position = _calculatePosition.call(this,
-                                             i, j, surface, colObj,
-                                             previousWidth, previousHeight, totalHeight,
-                                             contextWidth);
+      var position = _calculatePosition.call(this, i, j, surface, colObj, previousWidth, previousHeight, totalHeight, contextWidth);
       previousHeight += surface.getSize()[1];
 
       if (colObj.modifiers[j] === undefined) {
@@ -158,25 +148,30 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
 
     }, _this);
 
-    totalHeight += colObj.totalHeight;
-    console.log('resize-flow : totalHeight');
-    console.log(totalHeight);
+
+    if (contextWidth < 900)  {
+      previousWidth = 0;
+      totalHeight += colObj.totalHeight;
+    } else {
+      previousWidth += colObj.width;
+      totalHeight = 0;
+    }
   }, _this);
 };
+
 
 function _calculatePosition (colIndex, rowIndex, surface, colObj, previousWidth, previousHeight, totalHeight, contextWidth) {
   var surfaceSize  = surface.getSize();
   var surfaceWidth = surfaceSize[0];
   var surfaceHeight = surfaceSize[1];
 
-  //var x = previousWidth - colObj.width + (colIndex * this.options.gutterCol);
-  var x = colObj.width + (colIndex * this.options.gutterCol);
+  var x = previousWidth + (colIndex * this.options.gutterCol);
   var y = totalHeight + previousHeight + (rowIndex * this.options.gutterRow);
 
-  //if (this.options.midAlign === true) {
-    //var midAlign = _calculateMidAlign.call(this, contextWidth);
-    //x += midAlign;
-  //}
+  if (this.options.midAlign === true) {
+    var midAlign = _calculateMidAlign.call(this, contextWidth);
+    x += midAlign;
+  }
 
   y += this.options.marginTop;
 

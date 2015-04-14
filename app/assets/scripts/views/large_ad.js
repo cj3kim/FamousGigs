@@ -11,7 +11,7 @@ function LargeAd() {
   View.apply(this, arguments);
 
   this.ad = new ReactSurface({
-    size: [500, 500],
+    //size: [500, 500],
     classes: ['company-ad']
   });
 

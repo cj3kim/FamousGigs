@@ -15,7 +15,7 @@ function Application () {
   //We need to show the expanded ad and application view here
 
   var container = new ContainerSurface({
-    size: [265, 420],
+    //size: [265, 420],
     classes: ['rounded-corners']
   });
 
