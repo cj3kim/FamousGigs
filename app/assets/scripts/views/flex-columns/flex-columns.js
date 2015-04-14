@@ -75,7 +75,7 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
 
   var testResizeWidth = 900;
   if (contextWidth < testResizeWidth) {
-    _this.mobileFlow();
+    _this.mobileFlow(contextWidth);
   } else {
     _this.desktopFlow();
   }
@@ -105,7 +105,7 @@ FlexColumns.prototype.desktopFlow = function () {
 
 };
 
-FlexColumns.prototype.mobileFlow = function () {
+FlexColumns.prototype.mobileFlow = function (contextWidth) {
   var _this = this;
   var yColOffset = 0;
   //Iterate through each column
@@ -117,7 +117,7 @@ FlexColumns.prototype.mobileFlow = function () {
     _.each(nodes, function (node, rowIndex) {
       var size = colObj.sizes[rowIndex];
       var nodeHeight = size[1];
-      var position = Calculations.computeMobilePosition(yColOffset, yRowOffset, size);
+      var position = Calculations.computeMobilePosition.call(_this, yColOffset, yRowOffset, size, contextWidth);
       if (colObj.mods[rowIndex] === undefined ) {
         var transitionObj = _createState.call(_this, position, size);
         var mod = new Modifier(transitionObj);
@@ -129,6 +129,8 @@ FlexColumns.prototype.mobileFlow = function () {
       } else {
 
         var mobileSize = [268, size[1]];
+        var position = Calculations.computeMobilePosition.call(_this, yColOffset, yRowOffset, mobileSize, contextWidth);
+
         _animateModifier.call(_this, colIndex, rowIndex, position, mobileSize);
       }
       yRowOffset += nodeHeight;
