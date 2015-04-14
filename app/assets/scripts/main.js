@@ -22,9 +22,6 @@ var headerFooterLayout = new HeaderFooterLayout({
 });
 mainContext.add(headerFooterLayout);
 
-var navbar = require('./views/nav_bar');
-headerFooterLayout.header.add(navbar);
-
 // Create scrollable layout where items have a fixed width/height
 
 var AdDetails = require('./views/ad_details');
@@ -42,6 +39,9 @@ var mod = new Modifier({
   transform: Transform.translate(0, 30, 0)
 });
 
+var navbar = require('./views/nav_bar');
+headerFooterLayout.header.add(navbar);
+
 headerFooterLayout.content.add(mod).add(bodyRC);
 
 var dashboard = require('./views/dashboard');
@@ -50,9 +50,6 @@ var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection;
 
 var adScrollPage = require('./pages/ad_scrollpage');
-
-//TODO redo this area of code.
-
 
 
 page('/', function () {
@@ -85,10 +82,8 @@ var paymentForm = new PaymentForm({});
 var CompanyDetails = require('./views/posting_flow/CompanyDetails');
 var companyDetails =  new CompanyDetails();
 
-
 var PaymentThanks = require('./views/posting_flow/PaymentThanks');
 var paymentThanks = new PaymentThanks();
-
 
 var Carousel = require('./views/Carousel');
 var carousel = new Carousel([adForm, companyDetails, paymentForm, paymentThanks]);
@@ -101,14 +96,20 @@ page('/company_ads/payment', function () {
   });
 });
 
+var Scrollview = require('famous/views/Scrollview');
+var ad_detail_scrollview = new Scrollview();
+ad_detail_scrollview.sequenceFrom([adDetails]);
+Engine.pipe(ad_detail_scrollview);
+
 page('/ad-details/:id', function (ctx) {
   var id = ctx.params.id;
   var ad = companyAds.get(id);
   adDetails.trigger('reset-ad-details', ad);
 
   var transition = {duration: 200, curve: Easing.inSine };
-  bodyRC.show(adDetails, transition); //Ad Details was built on top of flex columns so transitions don't work because of the custom commit method. 
+  bodyRC.show(ad_detail_scrollview, transition); //Ad Details was built on top of flex columns so transitions don't work because of the custom commit method. 
 });
 
-
 page.show('/');
+
+

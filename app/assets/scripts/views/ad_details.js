@@ -25,8 +25,6 @@ AdDetails.prototype.initialize = function () {
   this.largeAd  = new LargeAd();
   this.application = new Application();
 
-
-
   this.createCol(500).addColNode(0, this.largeAd, [300, 300]);
   this.createCol(300).addColNode(1, this.application, [265, 420]);
 };
