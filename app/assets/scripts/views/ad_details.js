@@ -5,7 +5,7 @@ var Application = require('./application');
 var StateModifier    = require('famous/modifiers/StateModifier');
 var Transform        = require('famous/core/Transform');
 
-var FlexColumns = require('flex-columns');
+var FlexColumns = require('./flex-columns');
 
 function AdDetails() {
   FlexColumns.apply(this, arguments);
@@ -22,8 +22,10 @@ AdDetails.prototype.initialize = function () {
   this.largeAd  = new LargeAd();
   this.application = new Application();
 
-  this.createCol(500).addSurfaceToCol(0, this.largeAd);
-  this.createCol(300).addSurfaceToCol(1, this.application);
+
+
+  //this.createCol(500).addSurfaceToCol(0, this.largeAd);
+  //this.createCol(300).addSurfaceToCol(1, this.application);
 };
 
 AdDetails.prototype.setupEventListeners = function () {
