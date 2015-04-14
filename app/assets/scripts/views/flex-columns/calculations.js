@@ -22,11 +22,11 @@ module.exports = {
     return [x, y, 0];
   },
 
-  computeMobilePosition: function (yColOffset, yRowOffset, size, contextWidth) {
+  computeMobilePosition: function (colIndex, rowIndex, yColOffset, yRowOffset, size, contextWidth) {
     //TODO add midAlign computations to x here. 
     var width = size[0];
     var x = 0;
-    var y = yColOffset + yRowOffset; 
+    var y = yColOffset + yRowOffset + (rowIndex * this.options.gutterRow) + (colIndex * this.options.gutterRow); 
 
     if (this.options.midAlign) {
       x += (contextWidth/2) - (width/2);

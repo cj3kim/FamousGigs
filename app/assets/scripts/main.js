@@ -29,7 +29,8 @@ headerFooterLayout.header.add(navbar);
 
 var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails({
-  gutterCol: 50
+  gutterCol: 50,
+  gutterRow: 30
 });
 
 // create the main context

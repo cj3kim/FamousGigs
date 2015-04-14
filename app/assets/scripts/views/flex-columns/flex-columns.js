@@ -117,7 +117,7 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
     _.each(nodes, function (node, rowIndex) {
       var size = colObj.sizes[rowIndex];
       var nodeHeight = size[1];
-      var position = Calculations.computeMobilePosition.call(_this, yColOffset, yRowOffset, size, contextWidth);
+      var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, size, contextWidth);
       if (colObj.mods[rowIndex] === undefined ) {
         var transitionObj = _createState.call(_this, position, size);
         var mod = new Modifier(transitionObj);
@@ -129,7 +129,7 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
       } else {
 
         var mobileSize = [268, size[1]];
-        var position = Calculations.computeMobilePosition.call(_this, yColOffset, yRowOffset, mobileSize, contextWidth);
+        var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, mobileSize, contextWidth);
 
         _animateModifier.call(_this, colIndex, rowIndex, position, mobileSize);
       }
