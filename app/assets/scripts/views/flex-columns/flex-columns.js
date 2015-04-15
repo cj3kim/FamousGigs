@@ -13,6 +13,7 @@ var Calculations = require('./calculations');
 function FlexColumns(options) {
   View.apply(this, arguments);
 
+  this.totalWidth = null;
   this._mods = [];
   this._cols = [];
   this.id = Entity.register(this);
@@ -26,8 +27,6 @@ FlexColumns.DEFAULT_OPTIONS = {
   gutterRow: 0,
   transition: { curve: Easing.outBack, duration: 500 }
 };
-
-
 
 FlexColumns.prototype = Object.create(View.prototype);
 FlexColumns.prototype.constructor = FlexColumns;
@@ -64,6 +63,14 @@ FlexColumns.prototype.addColNode = function (colIndex, node, size) {
   colObj.nodes.push(node);
   colObj.sizes.push(size);
 
+  function computeTotalWidth (cols) {
+    var totalWidth = 0;
+    _.each(cols, function (colObj, colIndex) {
+      totalWidth += colObj.initialWidth;
+    });
+    return totalWidth;
+  }
+  this.totalWidth = computeTotalWidth(this._cols);
 
   return this;
 };
@@ -73,36 +80,15 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
 
   //TODO temporary solution to dynamic resizing
 
-  var testResizeWidth = 900;
+  var testResizeWidth = 700;
   if (contextWidth < testResizeWidth) {
     _this.mobileFlow(contextWidth);
   } else {
-    _this.desktopFlow();
+    console.log('trigger desktop reflow');
+    _this.desktopFlow(contextWidth);
   }
 
   //Iterate through each column
-};
-
-FlexColumns.prototype.desktopFlow = function () {
-  var xColOffset = 0;
-  //Iterate through each column
-  _.each(_this._cols, function (colObj, colIndex) {
-    //Iterate through each row/node
-    var nodes = colObj.nodes;
-    var yRowOffset = 0;
-
-    _.each(nodes, function (node, rowIndex) {
-      console.log('desktop flow shouldnt be running right now');
-      //var size = colObj.sizes[rowIndex];
-      //var position = Calculations.computeDesktopPosition(xColOffset, yRowOffset, size);
-
-      //_animateModifier.call(this, colIndex, rowIndex, position, size);
-      //yRowOffset += nodeHeight;
-    });
-
-    xColOffset += colObj.initialWidth;
-  });
-
 };
 
 FlexColumns.prototype.mobileFlow = function (contextWidth) {
@@ -130,7 +116,6 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
 
         var mobileSize = [268, size[1]];
         var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, mobileSize, contextWidth);
-
         _animateModifier.call(_this, colIndex, rowIndex, position, mobileSize);
       }
       yRowOffset += nodeHeight;
@@ -140,8 +125,37 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
   });
 };
 
-FlexColumns.prototype.desktopFlow = function () {
+FlexColumns.prototype.desktopFlow = function (contextWidth) {
+  var _this = this;
 
+
+  var xColOffset = 0;
+  // Iterate through each column
+  _.each(_this._cols, function (colObj, colIndex) {
+    var nodes = colObj.nodes;
+    var yRowOffset = 0;
+
+    // Iterate through each row/node
+    _.each(nodes, function (node, rowIndex) {
+      var size     = colObj.sizes[rowIndex];
+      var position = Calculations.computeDesktopPosition.call(_this, colIndex, rowIndex, xColOffset, yRowOffset, size, contextWidth)
+      var nodeHeight = size[1];
+
+      if (colObj.mods[rowIndex] === undefined ) {
+        var transitionObj = _createState.call(_this, position, size);
+        var mod = new Modifier(transitionObj);
+        mod._node = node;
+
+        colObj.mods[rowIndex] = mod;
+        colObj.states[rowIndex] = transitionObj;
+        _this._mods.push(mod);
+      } else {
+        _animateModifier.call(_this, colIndex, rowIndex, position, size);
+      }
+      yRowOffset += nodeHeight;
+    });
+    xColOffset += colObj.initialWidth;
+  });
 };
 
 FlexColumns.prototype.render = function () {
@@ -186,9 +200,6 @@ function _animateModifier(colIndex, rowIndex, position, size) {
   transformTransitionable.halt();
 
   transformTransitionable.setTranslate(position, this.options.transition);
-
-  console.log('_animateModifier');
-  console.log(size);
   sizeTransitionable.set(size, this.options.transition);
 }
 
