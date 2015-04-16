@@ -27,19 +27,20 @@ AdDetails.prototype.initialize = function () {
 
   this.createCol(500).addColNode(0, this.largeAd, [500, 500]);
   this.createCol(300).addColNode(1, this.application, [265, 420]);
-  var s = new Surface({
-    properties: {
-      backgroundColor: 'red'
-    }
-  });
-  var b = new Surface({
-    properties: {
-      backgroundColor: 'blue'
-    }
-  });
 
-  this.addColNode(1, b, [200, 200]);
-  this.createCol(200).addColNode(2,s, [100,100] );
+  //var s = new Surface({
+    //properties: {
+      //backgroundColor: 'red'
+    //}
+  //});
+  //var b = new Surface({
+    //properties: {
+      //backgroundColor: 'blue'
+    //}
+  //});
+
+  //this.addColNode(1, b, [200, 200]);
+  //this.createCol(200).addColNode(2,s, [100,100] );
 };
 
 AdDetails.prototype.setupEventListeners = function () {

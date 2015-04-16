@@ -17,7 +17,6 @@ function FlexColumns(options) {
   this._mods = [];
   this._cols = [];
   this.id = Entity.register(this);
-  console.log(this.options);
 }
 
 FlexColumns.DEFAULT_OPTIONS = {
