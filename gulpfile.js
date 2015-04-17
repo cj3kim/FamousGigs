@@ -6,6 +6,7 @@ var   gulp       = require('gulp')
     , source     = require("vinyl-source-stream")
     , path       = require('path')
     , _          = require('underscore')
+    , browserSync = require('browser-sync').create();
     ;
 
 var sass = require('gulp-sass');
@@ -16,6 +17,7 @@ gulp.task('default',['fonts', 'sass', 'browserify-watch', 'watch', 'start-dev-se
 
 gulp.task('start-dev-server', function () {
   require('./app.js');
+  exec("browser-sync start --proxy localhost:1337  --files 'public/**/*.*'");
 });
 
 gulp.task('fonts', function () {
