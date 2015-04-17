@@ -7,11 +7,11 @@ var Easing           = require('famous/transitions/Easing');
 
 var RenderNode       = require('famous/core/RenderNode');
 var RenderController = require('famous/views/RenderController');
-var Entity = require('famous/core/Entity');
-var Surface = require('famous/core/Surface');
-var Modifier = require('famous/core/Modifier');
-var Transform = require('famous/core/Transform');
-var FlexibleLayout = require('famous/views/FlexibleLayout');
+var Entity           = require('famous/core/Entity');
+var Surface          = require('famous/core/Surface');
+var Modifier         = require('famous/core/Modifier');
+var Transform        = require('famous/core/Transform');
+var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 
 var page = require('page');
@@ -24,28 +24,34 @@ var headerFooterLayout = new HeaderFooterLayout({headerSize: 55});
 
 var flexibleLayout = new FlexibleLayout({
   direction: 0,
-  transition: {duration: 500, curve: Easing.inOutElastic },
-  ratios: [undefined, 0.8]
+  transition: {duration: 200, curve: Easing.inSine },
+  ratios: [0.175, 0.825]
 });
 
 var SidebarMenu = require('./views/sidebar-menu/index');
-
 var sidebarMenu = new SidebarMenu();
 var containerSurface = new ContainerSurface({
-  size: [250, undefined],
+  size: [undefined, undefined],
   properties: {
     backgroundColor: "#0d283f"
   }
 });
 
 containerSurface.add(sidebarMenu);
-
 flexibleLayout.sequenceFrom([containerSurface, headerFooterLayout]);
-
-
 
 mainContext.add(flexibleLayout);
 
+Engine.on('resize', function () {
+  var size = mainContext.getSize();
+  var width = size[0];
+
+  if (width < 700) {
+    flexibleLayout.setRatios([0, 1]);
+  } else {
+    flexibleLayout.setRatios([0.175, 0.825]);
+  }
+});
 
 // Create scrollable layout where items have a fixed width/height
 var AdDetails = require('./views/ad_details');
@@ -63,12 +69,15 @@ headerFooterLayout.content.add(mod).add(bodyRC);
 
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection;
-
 var adScrollPage = require('./pages/ad_scrollpage');
 
 page('/', function () {
-  var transition = {duration: 1000, curve: Easing.inQuad };
+  var transition = { duration: 1000, curve: Easing.inQuad };
   bodyRC.show(adScrollPage, transition);
+});
+
+page('/mobile-menu', function () {
+  flexibleLayout.setRatios([1,0]);
 });
 
 companyAds.fetch({
@@ -79,8 +88,7 @@ companyAds.fetch({
       adScrollPage._addSurface(model);
     }
   },
-  error: function (models) {
-  }
+  error: function (models) {}
 });
 
 var carousel = require('./views/postify')();

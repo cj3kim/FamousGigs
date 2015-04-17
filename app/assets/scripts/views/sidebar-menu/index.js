@@ -2,6 +2,7 @@
 var Surface = require('famous/core/Surface');
 var Modifier = require('famous/core/Modifier');
 var View = require('famous/core/View');
+var page = require('page');
 
 var FlexibleLayout = require('famous/views/FlexibleLayout');
 
@@ -34,6 +35,10 @@ function SidebarMenu() {
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
     content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Gigs/Jobs</span> </span>",
+  });
+
+  gigs.on('click', function () {
+    page.show('/');
   });
 
   flexibleLayout.sequenceFrom([menuHeader, gigs, posts]);

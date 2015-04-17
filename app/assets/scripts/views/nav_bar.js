@@ -30,7 +30,8 @@ var menuSurface = new Surface({
 });
 
 menuSurface.on('click', function () {
-  page.show('/');
+
+  page.show('/mobile-menu');
 });
 
 var loginSurface = new Surface({
