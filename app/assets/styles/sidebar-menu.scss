@@ -1,0 +1,37 @@
+
+div.sidebar-header {
+
+  span { font-size: 25px; }
+
+  text-align: center;
+  span.first {
+    display: inline-block;
+    margin-top: 12px;
+    font-weight: 500;
+    span.second {
+      font-weight: 200;
+    }
+
+  }
+
+}
+
+div.sidebar-menu {
+  span {
+    color: white;
+  }
+  span.menu-item {
+    display: inline-block;
+    margin: 19px 0px 0px 20px;
+
+    span.icon {
+      font-size: 20px;
+    }
+    span.copy {
+      font-size: 16px;
+      margin-left: 14px;
+    }
+
+  }
+
+}

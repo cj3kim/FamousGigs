@@ -8,11 +8,13 @@ var Easing           = require('famous/transitions/Easing');
 var RenderNode       = require('famous/core/RenderNode');
 var RenderController = require('famous/views/RenderController');
 var Entity = require('famous/core/Entity');
-var Transform = require('famous/core/Transform');
-var Modifier = require('famous/core/Modifier');
-var FlexibleLayout = require('famous/views/FlexibleLayout');
-var page = require('page');
 var Surface = require('famous/core/Surface');
+var Modifier = require('famous/core/Modifier');
+var Transform = require('famous/core/Transform');
+var FlexibleLayout = require('famous/views/FlexibleLayout');
+var ContainerSurface = require('famous/surfaces/ContainerSurface');
+
+var page = require('page');
 
 var mainContext = Engine.createContext();
 mainContext.setPerspective(1000);
@@ -23,17 +25,24 @@ var headerFooterLayout = new HeaderFooterLayout({headerSize: 55});
 var flexibleLayout = new FlexibleLayout({
   direction: 0,
   transition: {duration: 500, curve: Easing.inOutElastic },
-  ratios: [0.2, 0.8]
+  ratios: [undefined, 0.8]
 });
 
-var s = new Surface({
+var SidebarMenu = require('./views/sidebar-menu/index');
+
+var sidebarMenu = new SidebarMenu();
+var containerSurface = new ContainerSurface({
+  size: [250, undefined],
   properties: {
-    backgroundColor: 'blue'
+    backgroundColor: "#0d283f"
   }
 });
 
+containerSurface.add(sidebarMenu);
 
-flexibleLayout.sequenceFrom([s, headerFooterLayout]);
+flexibleLayout.sequenceFrom([containerSurface, headerFooterLayout]);
+
+
 
 mainContext.add(flexibleLayout);
 
