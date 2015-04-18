@@ -30,7 +30,6 @@ var menuSurface = new Surface({
 });
 
 menuSurface.on('click', function () {
-
   page.show('/mobile-menu');
 });
 

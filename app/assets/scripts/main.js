@@ -22,10 +22,19 @@ mainContext.setPerspective(1000);
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout({headerSize: 55});
 
+function _resizeComputation() {
+  var size = mainContext.getSize();
+  var width = size[0];
+
+  return width < 700 ? [0,1] : [0.175, 0.825];
+}
+
+
+
 var flexibleLayout = new FlexibleLayout({
   direction: 0,
-  transition: {duration: 200, curve: Easing.inSine },
-  ratios: [0.175, 0.825]
+  transition: {duration: 400, curve: Easing.inOutSine },
+  ratios: _resizeComputation()
 });
 
 var SidebarMenu = require('./views/sidebar-menu/index');
@@ -41,7 +50,6 @@ containerSurface.add(sidebarMenu);
 flexibleLayout.sequenceFrom([containerSurface, headerFooterLayout]);
 
 mainContext.add(flexibleLayout);
-
 Engine.on('resize', function () {
   var size = mainContext.getSize();
   var width = size[0];
@@ -74,10 +82,19 @@ var adScrollPage = require('./pages/ad_scrollpage');
 page('/', function () {
   var transition = { duration: 1000, curve: Easing.inQuad };
   bodyRC.show(adScrollPage, transition);
+
+  sidebarMenu._lb.hide(function () {
+    flexibleLayout.setRatios([0,1]);
+  });
+
 });
 
 page('/mobile-menu', function () {
+  console.log('mobile menu was called');
+  var lb = sidebarMenu._lb;
+  var backButton = lb._backButton;
   flexibleLayout.setRatios([1,0]);
+  lb.show(backButton);
 });
 
 companyAds.fetch({

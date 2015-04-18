@@ -2,6 +2,14 @@
 var Surface = require('famous/core/Surface');
 var Modifier = require('famous/core/Modifier');
 var View = require('famous/core/View');
+var Easing = require('famous/transitions/Easing');
+var LightBox = require('famous/views/LightBox');
+
+var Transform = require('famous/core/Transform');
+var Modifier = require('famous/core/Modifier');
+var StateModifier = require('famous/modifiers/StateModifier');
+var RenderNode = require('famous/core/RenderNode');
+
 var page = require('page');
 
 var FlexibleLayout = require('famous/views/FlexibleLayout');
@@ -9,9 +17,8 @@ var FlexibleLayout = require('famous/views/FlexibleLayout');
 function SidebarMenu() {
   View.apply(this, arguments);
 
-  
   var flexibleLayout = new FlexibleLayout({
-    direction: 1, 
+    direction: 1,
     ratios: [undefined, undefined, undefined]
   });
 
@@ -23,8 +30,6 @@ function SidebarMenu() {
       color: "white"
     }
   });
-
-
   var posts = new Surface({
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
@@ -41,9 +46,40 @@ function SidebarMenu() {
     page.show('/');
   });
 
+  var backButton = new Surface({
+    size: [40, 40],
+    classes: ['circle-icon'],
+    content: "<span> < </span>"
+  });
+
+  backButton.on('click', function () {
+    page.show('/')
+  });
+
+  var lb = new LightBox({
+    inTransform: Transform.translate(15,-100,0),
+    outTransform: Transform.translate(15,-20,0),
+    inTransition:  {duration: 500, curve: Easing.inOutBounce },
+    outTransition: {duration: 400, curve: Easing.outElastic },
+    inAlign: [0,0],
+    outAlign: [0,0],
+    showAlign: [0,0],
+    showOrigin:[0,0]
+  });
+
+  this._lb = lb;
   flexibleLayout.sequenceFrom([menuHeader, gigs, posts]);
 
+  var mod = new Modifier({
+    transform: Transform.translate(15,10,0)
+  })
+  var rn = new RenderNode();
+  rn.add(mod).add(backButton);
+
+  lb._backButton = rn;
+
   this._node.add(flexibleLayout);
+  this._node.add(lb);
 }
 
 SidebarMenu.prototype = Object.create(View.prototype);
