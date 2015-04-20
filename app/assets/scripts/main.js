@@ -13,7 +13,10 @@ var Modifier         = require('famous/core/Modifier');
 var Transform        = require('famous/core/Transform');
 var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
+var StateModifier    = require('famous/modifiers/StateModifier');
 
+
+var GenSidebar       = require('./views/sidebar-menu/container');
 var page = require('page');
 
 var mainContext = Engine.createContext();
@@ -22,44 +25,46 @@ mainContext.setPerspective(1000);
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout({headerSize: 55});
 
-function _resizeComputation() {
+function _computeContextWidth() {
   var size = mainContext.getSize();
   var width = size[0];
 
-  return width < 700 ? [0,1] : [0.175, 0.825];
+  return width;
 }
-
-
+function _resizeComputation() {
+  var width = _computeContextWidth();
+  return width > 700 ? [0.185, 0.815] : [0,1] ;
+}
 
 var flexibleLayout = new FlexibleLayout({
   direction: 0,
-  transition: {duration: 400, curve: Easing.inOutSine },
+  transition: {duration: 200, curve: Easing.inOutSine },
   ratios: _resizeComputation()
 });
 
-var SidebarMenu = require('./views/sidebar-menu/index');
-var sidebarMenu = new SidebarMenu();
-var containerSurface = new ContainerSurface({
-  size: [undefined, undefined],
-  properties: {
-    backgroundColor: "#0d283f"
-  }
+
+var menuMod = new StateModifier({
+  transform: Transform.translate(-(_computeContextWidth()),0,0),
+});
+var mainMod = new StateModifier({
+  transform: Transform.translate(0,0,0)
 });
 
-containerSurface.add(sidebarMenu);
-flexibleLayout.sequenceFrom([containerSurface, headerFooterLayout]);
+var sidebar1 = GenSidebar();
+var sidebar2 = GenSidebar();
 
-mainContext.add(flexibleLayout);
+flexibleLayout.sequenceFrom([sidebar1, headerFooterLayout]);
+mainContext.add(menuMod).add(sidebar2);
+mainContext.add(mainMod).add(flexibleLayout);
+
 Engine.on('resize', function () {
-  var size = mainContext.getSize();
-  var width = size[0];
+  var contextWidth = (_computeContextWidth());
+  menuMod.setTransform(Transform.translate(-contextWidth,0,0));
 
-  if (width < 700) {
-    flexibleLayout.setRatios([0, 1]);
-  } else {
-    flexibleLayout.setRatios([0.175, 0.825]);
-  }
+  flexibleLayout.setRatios(_resizeComputation());
 });
+
+
 
 // Create scrollable layout where items have a fixed width/height
 var AdDetails = require('./views/ad_details');
@@ -67,9 +72,7 @@ var adDetails = new AdDetails({gutterCol: 50, gutterRow: 30 });
 
 // create the main context
 var bodyRC = new RenderController({overlap: false});
-
 var mod = new Modifier({transform: Transform.translate(0, 30, 0)});
-
 var navbar = require('./views/nav_bar');
 
 headerFooterLayout.header.add(navbar);
@@ -80,20 +83,28 @@ var companyAds = new CompanyAdCollection;
 var adScrollPage = require('./pages/ad_scrollpage');
 
 page('/', function () {
-  var transition = { duration: 1000, curve: Easing.inQuad };
+  var transition = { duration: 500, curve: Easing.inQuad };
   bodyRC.show(adScrollPage, transition);
 
-  sidebarMenu._lb.hide(function () {
-    flexibleLayout.setRatios([0,1]);
-  });
+  var lb = sidebar2._lb;
+  var backButton = lb._backButton;
+  var contextWidth = _computeContextWidth()
 
+  menuMod.setTransform(Transform.translate(-contextWidth,0,0), transition);
+  mainMod.setTransform(Transform.translate(0,0,0), transition);
+
+
+  flexibleLayout.setRatios(_resizeComputation());
 });
 
 page('/mobile-menu', function () {
-  console.log('mobile menu was called');
-  var lb = sidebarMenu._lb;
+  var transition = { duration: 500, curve: Easing.inQuad };
+  var lb = sidebar2._lb;
   var backButton = lb._backButton;
-  flexibleLayout.setRatios([1,0]);
+  var contextWidth = _computeContextWidth()
+
+  menuMod.setTransform(Transform.translate(0,0,0), transition);
+  mainMod.setTransform(Transform.translate(contextWidth, 0 ,0), transition);
   lb.show(backButton);
 });
 

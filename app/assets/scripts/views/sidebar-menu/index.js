@@ -60,7 +60,7 @@ function SidebarMenu() {
     inTransform: Transform.translate(15,-100,0),
     outTransform: Transform.translate(15,-20,0),
     inTransition:  {duration: 500, curve: Easing.inOutBounce },
-    outTransition: {duration: 400, curve: Easing.outElastic },
+    outTransition: {duration: 300, curve: Easing.outSine },
     inAlign: [0,0],
     outAlign: [0,0],
     showAlign: [0,0],
