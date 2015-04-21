@@ -50,11 +50,9 @@ function _addSurface(model) {
   rc.show(adSurface);
 
   surfaces.push(rn);
-  flexGrid.resizeFlow();
 }
 
-
-
+scrollview._resizeFlow = flexGrid.resizeFlow.bind(flexGrid);
 scrollview._addSurface = _addSurface;
 
 module.exports = scrollview;

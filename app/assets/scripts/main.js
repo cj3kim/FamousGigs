@@ -115,6 +115,7 @@ companyAds.fetch({
       var model = models[i];
       adScrollPage._addSurface(model);
     }
+    adScrollPage._resizeFlow();
   },
   error: function (models) {}
 });
