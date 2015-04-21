@@ -48,29 +48,27 @@ function _calcSpacing(width) {
 }
 
 function _calcPositions(spacing) {
-    var positions = [];
+  var positions = [];
 
-    var col = 0;
-    var row = 0;
-    var xPos;
-    var yPos;
+  var col = 0;
+  var row = 0;
+  var xPos, yPos;
 
-    for (var i = 0; i < this._items.length; i++) {
-        xPos = spacing.marginSide + col * spacing.ySpacing;
+  for (var i = 0; i < this._items.length; i++) {
+    xPos = spacing.marginSide + col * spacing.ySpacing;
+    yPos = this.options.marginTop + row * (this.options.itemSize[1] + this.options.gutterRow);
+    positions.push([xPos, yPos, 0]);
 
-        yPos = this.options.marginTop + row * (this.options.itemSize[1] + this.options.gutterRow);
-        positions.push([xPos, yPos, 0]);
-
-        col++
-        if (col === spacing.numCols) {
-            row++;
-            col = 0;
-        }
+    col++
+    if (col === spacing.numCols) {
+      row++;
+      col = 0;
     }
+  }
 
-    this._height = yPos + this.options.itemSize[1] + this.options.marginTop;
+  this._height = yPos + this.options.itemSize[1] + this.options.marginTop;
 
-    return positions;
+  return positions;
 }
 
 
@@ -82,12 +80,6 @@ function _animateModifier(modelId, position, size) {
     transformTransitionable.setTranslate(position, this.options.transition);
     sizeTransitionable.set(size, this.options.transition);
 }
-
-FlexGrid.prototype.sequenceFrom = function(items) {
-    //create the modifiers here.
-    this._items = items;
-};
-
 FlexGrid.prototype.render = function() {
     return this.id;
 };
@@ -102,8 +94,8 @@ FlexGrid.prototype.commit = function(context) {
 
   var modelIds = Object.keys(this._filterObj);
   var i = 0;
-
   var key, renderBool;
+
   var specs = []
   while (i < modelIds.length) {
     key = modelIds[i];
@@ -118,7 +110,7 @@ FlexGrid.prototype.commit = function(context) {
 
     i++;
   }
-
+  this._filterDirty = false;
 
   return specs;
 };
@@ -172,7 +164,22 @@ FlexGrid.prototype.addNode = function (model, surface) {
   this._models[modelId]    = model;
   this._filterObj[modelId] = true;
   this._items[modelId]     = rn;
+
+  this._filterDirty = true;
 };
+
+
+FlexGrid.prototype.filterCheck = function (string, attribute) {
+  var bool, modelId, model;
+  var re = new RegExp(string);
+
+  for (modelId in this._models) {
+    model = this._models[modelId];
+    bool  = re.test(model[attribute]);
+
+  }
+};
+
 
 FlexGrid.prototype.getSize = function() {
     if (!this._height) return;
