@@ -36,14 +36,12 @@ function _addSurface(model) {
     classes: ['company-ad'],
     content: <CompanyAd {...model.attributes} />
   });
-  var sm = new StateModifier({
-    size: [262, 300],
-  });
 
   adSurface.on('click', function () {
     page.show('/ad-details/'+ model.id);
   });
 
+  var sm = new StateModifier({size: [262, 300] });
   var rn = new RenderNode();
   var rc = new RenderController();
   rn.add(sm).add(rc);

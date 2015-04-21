@@ -11,7 +11,9 @@ function FlexGrid() {
 
     this._height;
     this._modifiers = {};
-    this._states = [];
+    this._states = {};
+    this._models = {};
+
     this._filterObj = {};
     this._filterDirty = null;
 
@@ -71,21 +73,10 @@ function _calcPositions(spacing) {
     return positions;
 }
 
-function _createModifier(index, position, size) {
-    var transitionItem = {
-        transform: new TransitionableTransform(Transform.translate.apply(null, position)),
-        size: new Transitionable((size || this.options.itemSize))
-    }
 
-    var modifier = new Modifier(transitionItem);
-
-    this._states[index] = transitionItem;
-    this._modifiers[index] = modifier;
-}
-
-function _animateModifier(index, position, size) {
-    var transformTransitionable = this._states[index].transform;
-    var sizeTransitionable = this._states[index].size;
+function _animateModifier(modelId, position, size) {
+    var transformTransitionable = this._states[modelId].transform;
+    var sizeTransitionable = this._states[modelId].size;
     transformTransitionable.halt();
     sizeTransitionable.halt();
     transformTransitionable.setTranslate(position, this.options.transition);
@@ -102,58 +93,85 @@ FlexGrid.prototype.render = function() {
 };
 
 FlexGrid.prototype.commit = function(context) {
-    var width = context.size[0];
+  var width = context.size[0];
+  var specs = [];
 
-    var specs = [];
+  if (this._cachedWidth !== width || this._filterDirty) {
+    this.animateFlow(width);
+  }
 
-    if (this._cachedWidth !== width || this._filterDirty) {
+  var modelIds = Object.keys(this._filterObj);
+  var i = 0;
 
-      this.resizeFlow(width);
+  var key, renderBool;
+  var specs = []
+  while (i < modelIds.length) {
+    key = modelIds[i];
+    renderBool = this._filterObj[key];
+
+    if (renderBool) {
+      var spec = this._modifiers[key].modify({
+        target: this._items[key];
+      });
+      specs.push(spec);
     }
 
-    for (var i = 0; i < this._modifiers.length; i++) {
-        var spec = this._modifiers[i].modify({
-            target: this._items[i].render()
-        });
+    i++;
+  }
 
-        specs.push(spec);
-    }
 
-    return specs;
+  return specs;
 };
 
-FlexGrid.prototype.resizeFlow = function () {
+FlexGrid.prototype.animateFlow = function () {
   var width = arguments[0] ? arguments[0] : this._cachedWidth;
 
   var spacing = _calcSpacing.call(this, width);
   var size = this.options.itemSize;
-
   var positions = _calcPositions.call(this, spacing);
 
   var keys = Object.keys(this._filterObj);
 
   var i,j,k = 0,0,0;
-  var modifier, showBool, key;
+  var modifier, position, showBool, modelId;
   while (i + j < keys.length) {
     k = i+j;
-    key = keys[k];
+    modelId = keys[k];
     showBool = this._filterObj[k]
     modifier = this._modifiers[key];
-
-    if (modifier === undefined) {
-      //_createModifier
-    }
+    position = positions[i];
 
     if (showBool) {
-      //animate in the surface.
+      _animateModifier.call(this, modelId, position, size);
       i++;
     } else {
       //fade in the surface.
       j++;
     }
   }
-
   this._cachedWidth = width;
+};
+
+FlexGrid.prototype.addNode = function (model, surface) {
+  var transitionItem = {
+    transform: new TransitionableTransform(Transform.translate(0,0,0)),
+    size: new Transitionable((size || this.options.itemSize))
+  };
+  var modifier = new Modifier(transitionItem);
+
+  var rn = new RenderNode();
+  var rc = new RenderController();
+  modifier._rc = rc;
+
+  rn.add(modifier).add(rc);
+  rc.show(surface);
+
+  this._states[modelId]    = transitionItem;
+  this._modifiers[modelId] = modifier;
+
+  this._models[modelId]    = model;
+  this._filterObj[modelId] = true;
+  this._items[modelId]     = rn;
 };
 
 FlexGrid.prototype.getSize = function() {
