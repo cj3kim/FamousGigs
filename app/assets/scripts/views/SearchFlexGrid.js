@@ -92,12 +92,12 @@ function _calcPositions(spacing) {
 
 function _animateModifier(modelId, position, size) {
     var transformTransitionable = this._states[modelId].transform;
-    //var sizeTransitionable = this._states[modelId].size;
+    var sizeTransitionable = this._states[modelId].size;
     transformTransitionable.halt();
-    //sizeTransitionable.halt();
-    //console.log(position);
+    sizeTransitionable.halt();
+    console.log(position);
     transformTransitionable.setTranslate(position, this.options.transition);
-    //sizeTransitionable.set(size, this.options.transition);
+    sizeTransitionable.set(size, this.options.transition);
 }
 SearchFlexGrid.prototype.render = function() {
     return this.id;
@@ -119,16 +119,13 @@ SearchFlexGrid.prototype.commit = function(context) {
   var specs = []
   while (i < modelIds.length) {
     key = modelIds[i];
-    renderBool = this._filterObj[key];
 
-    if (renderBool) {
-      var spec = this._modifiers[key].modify({
-        target: this._items[key].render()
-      });
-
-      spec.transform = Transform.multiply4x4(spec.transform, context.transform);
-      specs.push(spec);
-    }
+    var modifier = this._modifiers[key];
+    var spec = modifier.modify({
+      target: this._items[key].render()
+    });
+    spec.transform = Transform.multiply4x4(spec.transform, context.transform);
+    specs.push(spec);
     i++;
   }
   this._filterDirty = false;
@@ -156,11 +153,11 @@ SearchFlexGrid.prototype.animateFlow = function () {
       position = positions[i];
 
       if (showBool) {
-        console.log('_animateModifier called');
         _animateModifier.call(this, modelId, position, size);
         i++;
       } else {
-        //fade in the surface.
+        //TODO make this more polished
+        modifier._rc.hide();
         j++;
       }
     }
