@@ -15,6 +15,11 @@ var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var StateModifier    = require('famous/modifiers/StateModifier');
 
+var CompanyAd = require('./views/company_ad');
+var React = require('react');
+var ReactSurface = require('react-surface');
+
+
 
 var GenSidebar       = require('./views/sidebar-menu/container');
 var page = require('page');
@@ -42,7 +47,6 @@ var flexibleLayout = new FlexibleLayout({
   ratios: _resizeComputation()
 });
 
-
 var menuMod = new StateModifier({
   transform: Transform.translate(-(_computeContextWidth()),0,0),
 });
@@ -65,7 +69,6 @@ Engine.on('resize', function () {
 });
 
 
-
 // Create scrollable layout where items have a fixed width/height
 var AdDetails = require('./views/ad_details');
 var adDetails = new AdDetails({gutterCol: 50, gutterRow: 30 });
@@ -75,16 +78,24 @@ var bodyRC = new RenderController({overlap: false});
 var mod = new Modifier({transform: Transform.translate(0, 30, 0)});
 var navbar = require('./views/nav_bar');
 
+
 headerFooterLayout.header.add(navbar);
 headerFooterLayout.content.add(mod).add(bodyRC);
 
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection;
-var adScrollPage = require('./pages/ad_scrollpage');
+
+var searchInput = navbar._searchInput;
+//var adScrollPage = require('./pages/ad_scrollpage');
+
+var SearchFlexGrid = require('./views/SearchFlexGrid');
+var searchFlexGrid = new SearchFlexGrid();
+
 
 page('/', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
-  bodyRC.show(adScrollPage, transition);
+  //bodyRC.show(adScrollPage, transition);
+  bodyRC.show(searchFlexGrid, transition);
 
   var lb = sidebar2._lb;
   var backButton = lb._backButton;
@@ -92,7 +103,6 @@ page('/', function () {
 
   menuMod.setTransform(Transform.translate(-contextWidth,0,0), transition);
   mainMod.setTransform(Transform.translate(0,0,0), transition);
-
 
   flexibleLayout.setRatios(_resizeComputation());
 });
@@ -113,9 +123,17 @@ companyAds.fetch({
     var models = collection.models;
     for (var i = 0; i < models.length; i += 1) {
       var model = models[i];
-      adScrollPage._addSurface(model);
+      var adSurface = new ReactSurface({
+        classes: ['company-ad'],
+        content: <CompanyAd {...model.attributes} />
+      });
+
+      adSurface.on('click', function () {
+        page.show('/ad-details/'+ model.id);
+      });
+
+      searchFlexGrid.addNode(model, adSurface);
     }
-    adScrollPage._resizeFlow();
   },
   error: function (models) {}
 });

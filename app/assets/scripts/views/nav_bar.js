@@ -39,8 +39,10 @@ var loginSurface = new Surface({
   content: "<span class='menu-item flaticon-login2'></span>",
 });
 
-var leftSurfaces = [menuSurface];
+var searchInput = require('./SearchInput');
+var leftSurfaces = [menuSurface, searchInput];
 var rightSurfaces = [loginSurface, postSurface];
+
 
 var dock = {
   left: leftSurfaces,
@@ -49,6 +51,7 @@ var dock = {
 
 flexNavbar.linkDock(dock);
 containerSurface.add(flexNavbar);
+containerSurface._searchInput = searchInput;
 
 module.exports = containerSurface;
 

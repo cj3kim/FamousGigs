@@ -5,30 +5,39 @@ var Transform = require('famous/core/Transform');
 var Transitionable = require('famous/transitions/Transitionable');
 var TransitionableTransform = require('famous/transitions/TransitionableTransform');
 var Easing = require('famous/transitions/Easing');
+var RenderNode       = require('famous/core/RenderNode');
+var RenderController = require('famous/views/RenderController');
 
 function FlexGrid() {
-    View.apply(this, arguments);
+  View.apply(this, arguments);
+  var _this = this;
 
-    this._height;
-    this._modifiers = {};
-    this._states = {};
-    this._models = {};
+  this._height;
+  this._modifiers = {};
+  this._states = {};
+  this._models = {};
+  this._items = {};
 
-    this._filterObj = {};
-    this._filterDirty = null;
+  this._filterObj = {};
+  this._filterDirty = false;
 
-    this.id = Entity.register(this);
+  this.id = Entity.register(this);
+
+  this._eventInput.on("filter-string", function (filterString) {
+    _this._filterDirty = true;
+    _this.filterCheck(filterString)
+  });
 }
 
 FlexGrid.prototype = Object.create(View.prototype);
 FlexGrid.prototype.constructor = FlexGrid;
 
 FlexGrid.DEFAULT_OPTIONS = {
-    marginTop: undefined,
-    marginSide: undefined,
-    gutterCol: undefined,
-    gutterRow: undefined,
-    itemSize: undefined,
+    marginTop: 10,
+    marginSide: 20,
+    gutterCol: 20,
+    gutterRow: 20,
+    itemSize: [265, 300],
     transition: { curve: Easing.outBack, duration: 500 }
 };
 
@@ -38,13 +47,18 @@ function _calcSpacing(width) {
     var ySpacing = itemWidth + gutterCol;
     var margin = this.options.marginSide;
     var numCols = Math.floor((width - 2 * margin + gutterCol) / ySpacing);
-    numCols = Math.min(this._items.length, numCols);
+
+    var itemsLength = Object.keys(this._items).length;
+
+    numCols = Math.min(itemsLength, numCols);
     margin = (width - numCols * ySpacing + gutterCol)/2;
-    return {
+
+    var spacing = {
         numCols: numCols,
         marginSide: margin,
         ySpacing: ySpacing
     };
+    return spacing;
 }
 
 function _calcPositions(spacing) {
@@ -54,7 +68,8 @@ function _calcPositions(spacing) {
   var row = 0;
   var xPos, yPos;
 
-  for (var i = 0; i < this._items.length; i++) {
+  for (var i = 0; i < Object.keys(this._items).length; i++) {
+
     xPos = spacing.marginSide + col * spacing.ySpacing;
     yPos = this.options.marginTop + row * (this.options.itemSize[1] + this.options.gutterRow);
     positions.push([xPos, yPos, 0]);
@@ -77,6 +92,7 @@ function _animateModifier(modelId, position, size) {
     var sizeTransitionable = this._states[modelId].size;
     transformTransitionable.halt();
     sizeTransitionable.halt();
+    console.log("_animateModifier");
     transformTransitionable.setTranslate(position, this.options.transition);
     sizeTransitionable.set(size, this.options.transition);
 }
@@ -93,6 +109,7 @@ FlexGrid.prototype.commit = function(context) {
   }
 
   var modelIds = Object.keys(this._filterObj);
+
   var i = 0;
   var key, renderBool;
 
@@ -103,7 +120,7 @@ FlexGrid.prototype.commit = function(context) {
 
     if (renderBool) {
       var spec = this._modifiers[key].modify({
-        target: this._items[key];
+        target: this._items[key]
       });
       specs.push(spec);
     }
@@ -124,30 +141,33 @@ FlexGrid.prototype.animateFlow = function () {
 
   var keys = Object.keys(this._filterObj);
 
-  var i,j,k = 0,0,0;
+  var i = 0, j = 0, k = 0;
   var modifier, position, showBool, modelId;
-  while (i + j < keys.length) {
-    k = i+j;
-    modelId = keys[k];
-    showBool = this._filterObj[k]
-    modifier = this._modifiers[key];
-    position = positions[i];
+  if (positions.length > 0) {
+    while (i + j < keys.length) {
+      k = i+j;
+      modelId = keys[k];
+      showBool = this._filterObj[modelId]
+      modifier = this._modifiers[modelId];
+      position = positions[i];
 
-    if (showBool) {
-      _animateModifier.call(this, modelId, position, size);
-      i++;
-    } else {
-      //fade in the surface.
-      j++;
+      if (showBool) {
+        _animateModifier.call(this, modelId, position, size);
+        i++;
+      } else {
+        //fade in the surface.
+        j++;
+      }
     }
+    this._cachedWidth = width;
   }
-  this._cachedWidth = width;
 };
 
 FlexGrid.prototype.addNode = function (model, surface) {
+  var modelId = model.id;
   var transitionItem = {
-    transform: new TransitionableTransform(Transform.translate(0,0,0)),
-    size: new Transitionable((size || this.options.itemSize))
+    transform: new TransitionableTransform(Transform.translate.apply(null, [0,0,0])),
+    size: new Transitionable(this.options.itemSize)
   };
   var modifier = new Modifier(transitionItem);
 
@@ -170,13 +190,13 @@ FlexGrid.prototype.addNode = function (model, surface) {
 
 
 FlexGrid.prototype.filterCheck = function (string, attribute) {
-  var bool, modelId, model;
+  var match, modelId, model;
   var re = new RegExp(string);
 
   for (modelId in this._models) {
     model = this._models[modelId];
-    bool  = re.test(model[attribute]);
-
+    match  = re.test(model[attribute]);
+    this._filterObj[modelId] = match;
   }
 };
 

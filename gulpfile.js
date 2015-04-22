@@ -17,7 +17,7 @@ gulp.task('default',['fonts', 'sass', 'browserify-watch', 'watch', 'start-dev-se
 
 gulp.task('start-dev-server', function () {
   require('./app.js');
-  //exec("browser-sync start --proxy localhost:1337  --files 'public/**/*.*'");
+  exec("browser-sync start --proxy localhost:1337  --files 'public/**/*.*'");
 });
 
 gulp.task('fonts', function () {
