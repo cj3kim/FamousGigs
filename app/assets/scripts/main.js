@@ -92,9 +92,13 @@ var SearchFlexGrid = require('./views/SearchFlexGrid');
 var searchFlexGrid = new SearchFlexGrid();
 
 
+searchInput.pipe(searchFlexGrid._eventInput);
+console.log(searchInput);
+
+
+
 page('/', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
-  //bodyRC.show(adScrollPage, transition);
   bodyRC.show(searchFlexGrid, transition);
 
   var lb = sidebar2._lb;
@@ -157,7 +161,7 @@ page('/ad-details/:id', function (ctx) {
   adDetails.trigger('reset-ad-details', ad);
 
   var transition = {duration: 200, curve: Easing.inSine };
-  bodyRC.show(ad_detail_scrollview, transition); //Ad Details was built on top of flex columns so transitions don't work because of the custom commit method. 
+  bodyRC.show(ad_detail_scrollview, transition);
 });
 
 page.show('/');

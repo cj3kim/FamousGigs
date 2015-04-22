@@ -7,7 +7,6 @@ var TransitionableTransform = require('famous/transitions/TransitionableTransfor
 var Easing = require('famous/transitions/Easing');
 var RenderNode       = require('famous/core/RenderNode');
 var RenderController = require('famous/views/RenderController');
-var StateModifier = require('famous/modifiers/StateModifier');
 
 function SearchFlexGrid() {
   View.apply(this, arguments);
@@ -25,8 +24,11 @@ function SearchFlexGrid() {
   this.id = Entity.register(this);
 
   this._eventInput.on("filter-string", function (filterString) {
+    console.log('SearchFlexGrid');
+    console.log('filterString');
+    console.log(filterString);
     _this._filterDirty = true;
-    _this.filterCheck(filterString)
+    _this.filterCheck(filterString, 'job_location')
   });
 }
 
@@ -193,14 +195,19 @@ SearchFlexGrid.prototype.addNode = function (model, surface) {
 
 
 SearchFlexGrid.prototype.filterCheck = function (string, attribute) {
-  var match, modelId, model;
-  var re = new RegExp(string);
+  var match, modelId, model, modelAttr;
+  var re = new RegExp(string, 'i');
 
   for (modelId in this._models) {
     model = this._models[modelId];
-    match  = re.test(model[attribute]);
+    modelAttr = model.get(attribute);
+
+    match  = re.test(modelAttr);
+
+    console.log(match);
     this._filterObj[modelId] = match;
   }
+  console.log(this._filterObj);
 };
 
 

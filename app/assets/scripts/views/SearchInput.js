@@ -15,7 +15,8 @@ var delay = (function(){
 
 searchInput.on('keyup', function () {
   delay(function () {
-    searchInput.emit("filter-string", searchInput._value)
+    var inputValue = searchInput.getValue()
+    searchInput.emit("filter-string", inputValue)
   }, 1000);
 })
 
