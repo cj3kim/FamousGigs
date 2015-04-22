@@ -7,8 +7,9 @@ var TransitionableTransform = require('famous/transitions/TransitionableTransfor
 var Easing = require('famous/transitions/Easing');
 var RenderNode       = require('famous/core/RenderNode');
 var RenderController = require('famous/views/RenderController');
+var StateModifier = require('famous/modifiers/StateModifier');
 
-function FlexGrid() {
+function SearchFlexGrid() {
   View.apply(this, arguments);
   var _this = this;
 
@@ -29,10 +30,10 @@ function FlexGrid() {
   });
 }
 
-FlexGrid.prototype = Object.create(View.prototype);
-FlexGrid.prototype.constructor = FlexGrid;
+SearchFlexGrid.prototype = Object.create(View.prototype);
+SearchFlexGrid.prototype.constructor = SearchFlexGrid;
 
-FlexGrid.DEFAULT_OPTIONS = {
+SearchFlexGrid.DEFAULT_OPTIONS = {
     marginTop: 10,
     marginSide: 20,
     gutterCol: 20,
@@ -89,18 +90,18 @@ function _calcPositions(spacing) {
 
 function _animateModifier(modelId, position, size) {
     var transformTransitionable = this._states[modelId].transform;
-    var sizeTransitionable = this._states[modelId].size;
+    //var sizeTransitionable = this._states[modelId].size;
     transformTransitionable.halt();
-    sizeTransitionable.halt();
-    console.log("_animateModifier");
+    //sizeTransitionable.halt();
+    //console.log(position);
     transformTransitionable.setTranslate(position, this.options.transition);
-    sizeTransitionable.set(size, this.options.transition);
+    //sizeTransitionable.set(size, this.options.transition);
 }
-FlexGrid.prototype.render = function() {
+SearchFlexGrid.prototype.render = function() {
     return this.id;
 };
 
-FlexGrid.prototype.commit = function(context) {
+SearchFlexGrid.prototype.commit = function(context) {
   var width = context.size[0];
   var specs = [];
 
@@ -120,11 +121,12 @@ FlexGrid.prototype.commit = function(context) {
 
     if (renderBool) {
       var spec = this._modifiers[key].modify({
-        target: this._items[key]
+        target: this._items[key].render()
       });
+
+      spec.transform = Transform.multiply4x4(spec.transform, context.transform);
       specs.push(spec);
     }
-
     i++;
   }
   this._filterDirty = false;
@@ -132,7 +134,7 @@ FlexGrid.prototype.commit = function(context) {
   return specs;
 };
 
-FlexGrid.prototype.animateFlow = function () {
+SearchFlexGrid.prototype.animateFlow = function () {
   var width = arguments[0] ? arguments[0] : this._cachedWidth;
 
   var spacing = _calcSpacing.call(this, width);
@@ -152,6 +154,7 @@ FlexGrid.prototype.animateFlow = function () {
       position = positions[i];
 
       if (showBool) {
+        console.log('_animateModifier called');
         _animateModifier.call(this, modelId, position, size);
         i++;
       } else {
@@ -163,7 +166,7 @@ FlexGrid.prototype.animateFlow = function () {
   }
 };
 
-FlexGrid.prototype.addNode = function (model, surface) {
+SearchFlexGrid.prototype.addNode = function (model, surface) {
   var modelId = model.id;
   var transitionItem = {
     transform: new TransitionableTransform(Transform.translate.apply(null, [0,0,0])),
@@ -175,7 +178,7 @@ FlexGrid.prototype.addNode = function (model, surface) {
   var rc = new RenderController();
   modifier._rc = rc;
 
-  rn.add(modifier).add(rc);
+  rn.add(rc);
   rc.show(surface);
 
   this._states[modelId]    = transitionItem;
@@ -189,7 +192,7 @@ FlexGrid.prototype.addNode = function (model, surface) {
 };
 
 
-FlexGrid.prototype.filterCheck = function (string, attribute) {
+SearchFlexGrid.prototype.filterCheck = function (string, attribute) {
   var match, modelId, model;
   var re = new RegExp(string);
 
@@ -201,9 +204,9 @@ FlexGrid.prototype.filterCheck = function (string, attribute) {
 };
 
 
-FlexGrid.prototype.getSize = function() {
+SearchFlexGrid.prototype.getSize = function() {
     if (!this._height) return;
     return [this._cachedWidth, this._height];
 };
 
-module.exports = FlexGrid;
+module.exports = SearchFlexGrid;
