@@ -5,14 +5,11 @@ var ReactSurface = require('react-surface');
 var FormContent = require('../../react_views/form_content');
 var AdEditForm =  require('../../react_views/components/ad_edit_form');
 
-var FlexColumns = require('flex-columns');
+var FlexColumns = require('../flex-columns/flex-columns');
 
 function AdForm () {
   FlexColumns.apply(this, arguments);
-
   var _this = this;
-
-  this.createCol(425);
 
   var settings = {
     headerName: "Ad Post Form",
@@ -20,7 +17,6 @@ function AdForm () {
   };
 
   var adForm = new ReactSurface({
-    size: [425, 620],
     classes: ['rounded-corners'],
     content: <FormContent {...settings} />
   });
@@ -35,8 +31,9 @@ function AdForm () {
     var data = stampTableName("company_ads", event.data)
     _this._eventOutput.trigger('next-view', data);
   });
-  this.addSurfaceToCol(0, adForm)
 
+  this.createCol(425);
+  this.addColNode(0, adForm, [425, 620])
 }
 
 AdForm.prototype = Object.create(FlexColumns.prototype);

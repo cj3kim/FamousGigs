@@ -5,14 +5,11 @@ var ReactSurface = require('react-surface');
 var FormContent = require('../../react_views/form_content');
 var PaymentFormReact = require('../../react_views/components/payment_form');
 
-var FlexColumns = require('flex-columns');
+var FlexColumns = require('../flex-columns/flex-columns');
 
 function PaymentForm () {
   FlexColumns.apply(this, arguments);
-
   var _this = this;
-
-  this.createCol(500);
 
   var settings = {
     headerName: "Payment Form",
@@ -20,7 +17,6 @@ function PaymentForm () {
   };
 
   var paymentForm = new ReactSurface({
-    size: [500, 500],
     classes: ['rounded-corners'],
     content: <FormContent {...settings} />
   });
@@ -31,7 +27,8 @@ function PaymentForm () {
     _this._eventOutput.trigger('stripe-payment', event._args[0]);
   });
 
-  this.addSurfaceToCol(0, paymentForm)
+  this.createCol(500);
+  this.addColNode(0, paymentForm, [500,500]);
 }
 
 PaymentForm.prototype = Object.create(FlexColumns.prototype);

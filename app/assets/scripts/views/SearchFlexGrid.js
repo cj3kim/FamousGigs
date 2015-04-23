@@ -95,7 +95,6 @@ function _animateModifier(modelId, position, size) {
     var sizeTransitionable = this._states[modelId].size;
     transformTransitionable.halt();
     sizeTransitionable.halt();
-    console.log(position);
     transformTransitionable.setTranslate(position, this.options.transition);
     sizeTransitionable.set(size, this.options.transition);
 }

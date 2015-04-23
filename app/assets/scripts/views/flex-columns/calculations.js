@@ -10,18 +10,10 @@ module.exports = {
       totalHeight += height;
     });
 
-    console.log(states);
     return totalHeight;
   },
   computeDesktopPosition: function (colIndex, rowIndex, xColOffset, yRowOffset, size, contextWidth) {
     var width = size[0];
-    console.log('computeDesktopPosition');
-    console.log('xColOffset');
-    console.log(xColOffset);
-
-    console.log('size');
-    console.log(size);
-
     var colObj = this.getCol(colIndex);
 
     var gutterColOffset = colIndex * this.options.gutterCol;

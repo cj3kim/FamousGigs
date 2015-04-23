@@ -5,13 +5,11 @@ var ReactSurface = require('react-surface');
 var FormContent = require('../../react_views/form_content');
 var PaymentThanksReact =  require('../../react_views/components/payment_thanks');
 
-var FlexColumns = require('flex-columns');
+var FlexColumns     = require('../flex-columns/flex-columns');
 
 function PaymentThanks () {
   FlexColumns.apply(this, arguments);
   var _this = this;
-
-  this.createCol(425);
 
   var settings = {
     headerName: "Thank You",
@@ -19,7 +17,6 @@ function PaymentThanks () {
   };
 
   var paymentThanks = new ReactSurface({
-    size: [425, 320],
     classes: ['rounded-corners'],
     content: <FormContent {...settings} />
   });
@@ -29,7 +26,8 @@ function PaymentThanks () {
     _this._eventOutput.trigger('last-view');
   });
 
-  this.addSurfaceToCol(0, paymentThanks)
+  this.createCol(425);
+  this.addColNode(0, paymentThanks, [425, 320])
 };
 
 PaymentThanks.prototype = Object.create(FlexColumns.prototype);

@@ -120,8 +120,7 @@ page('/mobile-menu', function () {
 companyAds.fetch({
   success: function (collection) {
     var models = collection.models;
-    for (var i = 0; i < models.length; i += 1) {
-      var model = models[i];
+    function genAd(model) {
       var adSurface = new ReactSurface({
         classes: ['company-ad'],
         content: <CompanyAd {...model.attributes} />
@@ -130,7 +129,12 @@ companyAds.fetch({
       adSurface.on('click', function () {
         page.show('/ad-details/'+ model.id);
       });
+      return adSurface;
+    }
 
+    for (var i = 0; i < models.length; i += 1) {
+      var model = models[i];
+      var adSurface = genAd(model);
       searchFlexGrid.addNode(model, adSurface);
     }
   },

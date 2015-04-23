@@ -77,17 +77,12 @@ FlexColumns.prototype.addColNode = function (colIndex, node, size) {
 FlexColumns.prototype.resizeFlow = function (contextWidth) {
   var _this = this;
 
-  //TODO temporary solution to dynamic resizing
-
   var testResizeWidth = 700;
   if (contextWidth < testResizeWidth) {
     _this.mobileFlow(contextWidth);
   } else {
-    console.log('trigger desktop reflow');
     _this.desktopFlow(contextWidth);
   }
-
-  //Iterate through each column
 };
 
 FlexColumns.prototype.mobileFlow = function (contextWidth) {
@@ -103,6 +98,10 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
       var size = colObj.sizes[rowIndex];
       var nodeHeight = size[1];
       var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, size, contextWidth);
+
+      console.log('colObj');
+      console.log(colObj);
+      console.log(colObj.mods[rowIndex]);
       if (colObj.mods[rowIndex] === undefined ) {
         var transitionObj = _createState.call(_this, position, size);
         var mod = new Modifier(transitionObj);
@@ -112,7 +111,6 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
         colObj.states[rowIndex] = transitionObj;
         _this._mods.push(mod);
       } else {
-
         var mobileSize = [268, size[1]];
         var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, mobileSize, contextWidth);
         _animateModifier.call(_this, colIndex, rowIndex, position, mobileSize);
