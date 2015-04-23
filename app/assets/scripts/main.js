@@ -27,6 +27,7 @@ mainContext.setPerspective(1000);
 
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout({headerSize: 55});
+var ScrollView = require('famous/views/ScrollView');
 
 function _computeContextWidth() {
   var size = mainContext.getSize();
@@ -94,9 +95,16 @@ var searchFlexGrid = new SearchFlexGrid();
 
 //searchInput.pipe(searchFlexGrid._eventInput);
 
+var sfgScrollView = new ScrollView();
+
+sfgScrollView.sequenceFrom([searchFlexGrid]);
+
+Engine.pipe(sfgScrollView);
+
 page('/', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
-  bodyRC.show(searchFlexGrid, transition);
+  //bodyRC.show(searchFlexGrid, transition);
+  bodyRC.show(sfgScrollView, transition);
 
   var lb = sidebar2._lb;
   var backButton = lb._backButton;
@@ -151,8 +159,7 @@ page('/company_ads/payment', function () {
   });
 });
 
-var Scrollview = require('famous/views/Scrollview');
-var ad_detail_scrollview = new Scrollview();
+var ad_detail_scrollview = new ScrollView();
 
 ad_detail_scrollview.sequenceFrom([adDetails]);
 Engine.pipe(ad_detail_scrollview);

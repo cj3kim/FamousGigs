@@ -14,9 +14,11 @@ div.form-content {
       outline: 0;
       background: #FFFFFF;
 
-      border: solid 1px #E5E5E5; 
+      /*border: solid 1px #E5E5E5; */
+      border: solid 1px #d8d8d8; 
+      &:hover { border: solid 1px #d8d8d8; }
 
-      /*&:hover { border: solid 1px #E5E5E5; }*/
+
 
       &.month {
         width: 40px;
@@ -43,7 +45,7 @@ div.form-content {
         div.quill-ad-form {
           width: 100%;
           overflow-y: scroll;
-          border: solid 1px #e8e9e8
+          border: solid 1px #d8d8d8;
         }
       }
     }
