@@ -19,8 +19,6 @@ var CompanyAd = require('./views/company_ad');
 var React = require('react');
 var ReactSurface = require('react-surface');
 
-
-
 var GenSidebar       = require('./views/sidebar-menu/container');
 var page = require('page');
 
@@ -85,17 +83,14 @@ headerFooterLayout.content.add(mod).add(bodyRC);
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection;
 
-var searchInput = navbar._searchInput;
+//var searchInput = navbar._searchInput;
 //var adScrollPage = require('./pages/ad_scrollpage');
 
 var SearchFlexGrid = require('./views/SearchFlexGrid');
 var searchFlexGrid = new SearchFlexGrid();
 
 
-searchInput.pipe(searchFlexGrid._eventInput);
-console.log(searchInput);
-
-
+//searchInput.pipe(searchFlexGrid._eventInput);
 
 page('/', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
