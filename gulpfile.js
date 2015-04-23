@@ -13,11 +13,17 @@ var sass = require('gulp-sass');
 var uglify = require('gulp-uglify'),
     concatCSS = require('gulp-concat-css');
 
-gulp.task('default',['fonts', 'sass', 'browserify-watch', 'watch', 'start-dev-server'])
+gulp.task('default',['fonts', 'images', 'sass', 'browserify-watch', 'watch', 'start-dev-server'])
 
 gulp.task('start-dev-server', function () {
   require('./app.js');
   exec("browser-sync start --proxy localhost:1337  --files 'public/**/*.*'");
+});
+
+
+gulp.task('images', function () {
+    gulp.src('./app/assets/images/**/*')
+      .pipe(gulp.dest('./public/images'));
 });
 
 gulp.task('fonts', function () {

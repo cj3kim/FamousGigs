@@ -77,7 +77,10 @@ var mod = new Modifier({transform: Transform.translate(0, 30, 0)});
 var navbar = require('./views/nav_bar');
 
 
-headerFooterLayout.header.add(navbar);
+var navbarMod = new StateModifier({
+  transform: Transform.translate(0,0,1)
+});
+headerFooterLayout.header.add(navbarMod).add(navbar);
 headerFooterLayout.content.add(mod).add(bodyRC);
 
 var CompanyAdCollection = require('./collections/company_ads');
@@ -150,6 +153,7 @@ page('/company_ads/payment', function () {
 
 var Scrollview = require('famous/views/Scrollview');
 var ad_detail_scrollview = new Scrollview();
+
 ad_detail_scrollview.sequenceFrom([adDetails]);
 Engine.pipe(ad_detail_scrollview);
 

@@ -42,19 +42,24 @@ var PaymentForm = React.createClass({
 
           <tr>
             <td colSpan="2"><label>Expiration (MM/YYYY)</label></td>
-            <td colSpan="2">
+            <td colSpan="4">
                 <input className='month' type="text"  name="exp_month" data-stripe="exp-month"/>
-                <span>/</span>
+                <span> / </span>
                 <input className='year'  type="text"  name="exp_year"  data-stripe="exp-year"/>
                 </td>
-            <td colSpan="1"><label for="cvc">CVC</label></td>
-            <td colSpan="1"><input type="text" name="cvc" /></td>
-
+            </tr>
+          <tr>
+            <td colSpan="2"><label for="cvc">CVC</label></td>
+            <td colSpan="4"><input type="text" name="cvc" /></td>
             </tr>
 
           <tr>
-            <td colSpan="5"></td>
-            <td colSpan="1"><button type="submit">Submit</button></td>
+            <td colSpan="2"></td>
+            <td colSpan="2"></td>
+            <td colSpan="2">
+              <button className='pay-btn' type="submit">
+                <span> Pay $XX </span>
+              </button></td>
             </tr>
         </table>
       </form>

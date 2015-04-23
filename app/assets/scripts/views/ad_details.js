@@ -24,9 +24,11 @@ AdDetails.prototype.constructor = FlexColumns;
 AdDetails.prototype.initialize = function () {
   this.largeAd  = new LargeAd();
   this.application = new Application();
+  this.joinUs = require('./JoinUs');
 
   this.createCol(500).addColNode(0, this.largeAd, [500, 500]);
-  this.createCol(300).addColNode(1, this.application, [265, 420]);
+  this.createCol(300).addColNode(1, this.application, [265, 420])
+    .addColNode(1, this.joinUs, [265, 213]);
 };
 
 AdDetails.prototype.setupEventListeners = function () {

@@ -21,10 +21,12 @@ function Application () {
 
   var logo = new ImageSurface({
     size: [265, 136],
+
     properties: {
       backgroundColor: '#0d283e'
     }
   });
+  logo.setContent('/public/images/cats.jpg');
 
   var applyNow = new ApplyNow();
 

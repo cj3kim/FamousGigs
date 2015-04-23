@@ -1,0 +1,16 @@
+form#payment-form {
+
+  button.pay-btn {
+    width: 100%;
+    height: 35px;
+    background-color: #4b9ab2;
+    border: none;
+
+    span {
+      cursor: pointer;
+      font-size: 17px;
+      color: #fff;
+      text-shadow: 0 -1px 0 rgba(46,86,153,0.3);
+    }
+  }
+}

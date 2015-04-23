@@ -1,7 +1,6 @@
 var React = require('react');
 var ContentHeader = require('./components/content_header');
 
-
 var GeneralContent = React.createClass({
   render: function () {
     var ReactClass = this.props.reactClass; 

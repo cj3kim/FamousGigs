@@ -32,8 +32,8 @@ function AdForm () {
     _this._eventOutput.trigger('next-view', data);
   });
 
-  this.createCol(425);
-  this.addColNode(0, adForm, [425, 620])
+  this.createCol(600);
+  this.addColNode(0, adForm, [600, 620])
 }
 
 AdForm.prototype = Object.create(FlexColumns.prototype);

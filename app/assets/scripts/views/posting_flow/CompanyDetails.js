@@ -33,8 +33,8 @@ function CompanyDetails () {
     _this._eventOutput.trigger('next-view', data);
   });
 
-  this.createCol(425);
-  this.addColNode(0, companyDetailsForm, [425, 620])
+  this.createCol(600);
+  this.addColNode(0, companyDetailsForm, [600, 620])
 }
 
 CompanyDetails.prototype = Object.create(FlexColumns.prototype);
