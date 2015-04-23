@@ -2,6 +2,7 @@
 var Surface = require('famous/core/surface');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var FlexNavbar = require('./flex_navbar');
+var page = require('page');
 
 var flexNavbar = new FlexNavbar();
 
@@ -18,7 +19,7 @@ var postSurface = new Surface({
   content: "<span class='menu-item flaticon-sheet3'></span>",
 });
 
-var page = require('page');
+
 postSurface.on('click', function () {
   page.show('/company_ads/payment');
 });

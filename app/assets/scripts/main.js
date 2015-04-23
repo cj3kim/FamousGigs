@@ -154,6 +154,11 @@ companyAds.fetch({
 var carousel = require('./views/postify')();
 
 page('/company_ads/payment', function () {
+  var transition = { duration: 500, curve: Easing.inQuad };
+  var contextWidth = _computeContextWidth()
+  menuMod.setTransform(Transform.translate(-contextWidth,0,0), transition);
+  mainMod.setTransform(Transform.translate(0,0,0), transition);
+
   bodyRC.show(carousel, {duration: 1000}, function () {
     carousel.showFirst();
   });
