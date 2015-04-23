@@ -37,7 +37,7 @@ SearchFlexGrid.DEFAULT_OPTIONS = {
     marginSide: 20,
     gutterCol: 20,
     gutterRow: 20,
-    itemSize: [265, 300],
+    itemSize: [280, 300],
     transition: { curve: Easing.outBack, duration: 500 }
 };
 
