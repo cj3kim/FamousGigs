@@ -19,7 +19,6 @@ var postSurface = new Surface({
   content: "<span class='menu-item flaticon-sheet3'></span>",
 });
 
-
 postSurface.on('click', function () {
   page.show('/company_ads/payment');
 });
@@ -40,9 +39,9 @@ var loginSurface = new Surface({
   content: "<span class='menu-item flaticon-login2'></span>",
 });
 
-//var searchInput = require('./SearchInput');
-//var leftSurfaces = [menuSurface, searchInput];
-var leftSurfaces = [menuSurface];
+var searchInput = require('./SearchInput');
+var leftSurfaces = [menuSurface, searchInput];
+//var leftSurfaces = [menuSurface];
 var rightSurfaces = [loginSurface, postSurface];
 
 
@@ -53,7 +52,7 @@ var dock = {
 
 flexNavbar.linkDock(dock);
 containerSurface.add(flexNavbar);
-//containerSurface._searchInput = searchInput;
+containerSurface._searchInput = searchInput;
 
 module.exports = containerSurface;
 

@@ -24,9 +24,6 @@ function SearchFlexGrid() {
   this.id = Entity.register(this);
 
   this._eventInput.on("filter-string", function (filterString) {
-    console.log('SearchFlexGrid');
-    console.log('filterString');
-    console.log(filterString);
     _this._filterDirty = true;
     _this.filterCheck(filterString, 'job_location')
   });
@@ -98,6 +95,18 @@ function _animateModifier(modelId, position, size) {
     transformTransitionable.setTranslate(position, this.options.transition);
     sizeTransitionable.set(size, this.options.transition);
 }
+
+
+function _hideModifier(modelId, position, size) {
+  var transformTransitionable = this._states[modelId].transform;
+  var sizeTransitionable = this._states[modelId].size;
+  transformTransitionable.halt();
+  sizeTransitionable.halt();
+  transformTransitionable.setTranslate(position, this.options.transition);
+  sizeTransitionable.set(size, this.options.transition);
+}
+
+
 SearchFlexGrid.prototype.render = function() {
     return this.id;
 };
@@ -151,12 +160,13 @@ SearchFlexGrid.prototype.animateFlow = function () {
       modifier = this._modifiers[modelId];
       position = positions[i];
 
+      var rc = modifier._rc;
       if (showBool) {
+        rc.show(rc._surface);
         _animateModifier.call(this, modelId, position, size);
         i++;
       } else {
-        //TODO make this more polished
-        modifier._rc.hide();
+        rc.hide(rc._surface);
         j++;
       }
     }
@@ -175,6 +185,7 @@ SearchFlexGrid.prototype.addNode = function (model, surface) {
   var rn = new RenderNode();
   var rc = new RenderController();
   modifier._rc = rc;
+  rc._surface = surface;
 
   rn.add(rc);
   rc.show(surface);

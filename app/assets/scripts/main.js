@@ -87,13 +87,12 @@ headerFooterLayout.content.add(mod).add(bodyRC);
 var CompanyAdCollection = require('./collections/company_ads');
 var companyAds = new CompanyAdCollection;
 
-//var searchInput = navbar._searchInput;
-//var adScrollPage = require('./pages/ad_scrollpage');
+var searchInput = navbar._searchInput;
 
 var SearchFlexGrid = require('./views/SearchFlexGrid');
 var searchFlexGrid = new SearchFlexGrid();
 
-//searchInput.pipe(searchFlexGrid._eventInput);
+searchInput.pipe(searchFlexGrid._eventInput);
 
 var sfgScrollView = new ScrollView();
 
@@ -103,7 +102,6 @@ Engine.pipe(sfgScrollView);
 
 page('/', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
-  //bodyRC.show(searchFlexGrid, transition);
   bodyRC.show(sfgScrollView, transition);
 
   var lb = sidebar2._lb;
