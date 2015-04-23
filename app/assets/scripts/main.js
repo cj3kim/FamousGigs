@@ -89,7 +89,6 @@ var companyAds = new CompanyAdCollection;
 var SearchFlexGrid = require('./views/SearchFlexGrid');
 var searchFlexGrid = new SearchFlexGrid();
 
-
 //searchInput.pipe(searchFlexGrid._eventInput);
 
 page('/', function () {
