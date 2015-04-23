@@ -46,6 +46,9 @@ function SidebarMenu() {
     page.show('/');
   });
 
+  posts.on('click', function () {
+    page.show('/company_ads/payment');
+  });
   var backButton = new Surface({
     size: [40, 40],
     classes: ['circle-icon'],
