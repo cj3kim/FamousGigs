@@ -14,10 +14,7 @@ var Transform        = require('famous/core/Transform');
 var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var StateModifier    = require('famous/modifiers/StateModifier');
-
-var CompanyAd = require('./views/company_ad');
-var React = require('react');
-var ReactSurface = require('react-surface');
+var ScrollView = require('famous/views/ScrollView');
 
 var GenSidebar       = require('./views/sidebar-menu/container');
 var page = require('page');
@@ -27,7 +24,6 @@ mainContext.setPerspective(1000);
 
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var headerFooterLayout = new HeaderFooterLayout({headerSize: 55});
-var ScrollView = require('famous/views/ScrollView');
 
 function _computeContextWidth() {
   var size = mainContext.getSize();
@@ -35,6 +31,7 @@ function _computeContextWidth() {
 
   return width;
 }
+
 function _resizeComputation() {
   var width = _computeContextWidth();
   return width > 700 ? [0.185, 0.815] : [0,1] ;
@@ -84,21 +81,10 @@ var navbarMod = new StateModifier({
 headerFooterLayout.header.add(navbarMod).add(navbar);
 headerFooterLayout.content.add(mod).add(bodyRC);
 
-var CompanyAdCollection = require('./collections/company_ads');
-var companyAds = new CompanyAdCollection;
-
-var searchInput = navbar._searchInput;
-
-var SearchFlexGrid = require('./views/SearchFlexGrid');
-var searchFlexGrid = new SearchFlexGrid();
-
-searchInput.pipe(searchFlexGrid._eventInput);
-
-var sfgScrollView = new ScrollView();
-
-sfgScrollView.sequenceFrom([searchFlexGrid]);
-
-Engine.pipe(sfgScrollView);
+var searchAry = require('./starters/search')(navbar);
+var searchInput    = searchAry[0];
+var searchFlexGrid = searchAry[1];
+var sfgScrollView  = searchAry[2];
 
 page('/', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
@@ -116,54 +102,25 @@ page('/', function () {
 
 page('/mobile-menu', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
+
   var lb = sidebar2._lb;
   var backButton = lb._backButton;
-  var contextWidth = _computeContextWidth()
+  lb.show(backButton);
 
   menuMod.setTransform(Transform.translate(0,0,0), transition);
   mainMod.setTransform(Transform.translate(contextWidth, 0 ,0), transition);
-  lb.show(backButton);
-});
-
-companyAds.fetch({
-  success: function (collection) {
-    var models = collection.models;
-    function genAd(model) {
-      var adSurface = new ReactSurface({
-        classes: ['company-ad'],
-        content: <CompanyAd {...model.attributes} />
-      });
-
-      adSurface.on('click', function () {
-        page.show('/ad-details/'+ model.id);
-      });
-      return adSurface;
-    }
-
-    for (var i = 0; i < models.length; i += 1) {
-      var model = models[i];
-      var adSurface = genAd(model);
-      searchFlexGrid.addNode(model, adSurface);
-    }
-  },
-  error: function (models) {}
 });
 
 var carousel = require('./views/postify')();
 
 page('/company_ads/payment', function () {
   var transition = { duration: 500, curve: Easing.inQuad };
-  var contextWidth = _computeContextWidth()
-  menuMod.setTransform(Transform.translate(-contextWidth,0,0), transition);
-  mainMod.setTransform(Transform.translate(0,0,0), transition);
-
-  bodyRC.show(carousel, {duration: 1000}, function () {
+  bodyRC.show(carousel, transition,  function () {
     carousel.showFirst();
   });
 });
 
 var ad_detail_scrollview = new ScrollView();
-
 ad_detail_scrollview.sequenceFrom([adDetails]);
 Engine.pipe(ad_detail_scrollview);
 
