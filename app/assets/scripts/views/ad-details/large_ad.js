@@ -2,7 +2,7 @@
 
 var View    = require('famous/core/View');
 var Surface = require('famous/core/Surface');
-var CompanyAd = require('./company_ad');
+var CompanyAd = require('../company_ad');
 
 var React = require('react');
 var ReactSurface = require('react-surface');

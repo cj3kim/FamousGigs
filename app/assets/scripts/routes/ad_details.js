@@ -9,7 +9,7 @@ var Transform  = require('famous/core/Transform');
 module.exports = function (page, obj, companyAds) {
   var bodyRC = obj.bodyRC;
 
-  var AdDetails = require('../views/ad_details');
+  var AdDetails = require('../views/ad-details/index');
   var adDetails = new AdDetails({
     gutterCol: 30,
     gutterRow: 30,
@@ -21,7 +21,6 @@ module.exports = function (page, obj, companyAds) {
   Engine.pipe(adDetailScrollview);
 
   var renderNode = new RenderNode();
-
   var offsetMod = new Modifier({
     transform: Transform.translate(0,30,0)
   })

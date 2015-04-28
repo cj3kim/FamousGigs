@@ -5,7 +5,7 @@ var Application = require('./application');
 var StateModifier    = require('famous/modifiers/StateModifier');
 var Transform        = require('famous/core/Transform');
 
-var FlexColumns = require('./flex-columns/flex-columns');
+var FlexColumns = require('../flex-columns/flex-columns');
 
 var Surface = require('famous/core/Surface');
 

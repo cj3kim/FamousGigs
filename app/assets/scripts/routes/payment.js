@@ -6,7 +6,7 @@ var Transform  = require('famous/core/Transform');
 
 module.exports = function (page, obj ) {
   var bodyRC = obj.bodyRC;
-  var carousel = require('../views/postify')();
+  var carousel = require('../starters/post_payment_flow')();
 
   var renderNode = new RenderNode();
   var offsetMod = new Modifier({

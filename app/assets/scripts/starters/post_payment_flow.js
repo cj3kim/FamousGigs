@@ -1,8 +1,8 @@
-var AdForm = require('./posting_flow/AdForm');
-var PaymentForm = require('./posting_flow/PaymentForm');
-var CompanyDetails = require('./posting_flow/CompanyDetails');
-var PaymentThanks = require('./posting_flow/PaymentThanks');
-var Carousel = require('./Carousel');
+var AdForm         = require('../views/posting_flow/AdForm');
+var PaymentForm    = require('../views/posting_flow/PaymentForm');
+var CompanyDetails = require('../views/posting_flow/CompanyDetails');
+var PaymentThanks  = require('../views/posting_flow/PaymentThanks');
+var Carousel       = require('../views/Carousel');
 
 module.exports = function () {
 
