@@ -25,15 +25,11 @@ div.dashboard, div.box {
       padding-left: 10px;
       letter-spacing: 1px;
 
-      border: none;
+      border: solid 1px #c9c9c9; 
       outline: 0;
       font: normal 13px/100% Verdana, Tahoma, sans-serif; 
       background: #FFFFFF;
     } 
-
-    input:hover {
-      border: solid 1px #c9c9c9; 
-    }
 
     tr {
       td {

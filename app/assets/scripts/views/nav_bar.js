@@ -41,8 +41,8 @@ var loginSurface = new Surface({
 });
 
 var searchInput = require('./SearchInput');
-var leftSurfaces = [menuSurface, searchInput];
-//var leftSurfaces = [menuSurface];
+//var leftSurfaces = [menuSurface, searchInput];
+var leftSurfaces = [menuSurface];
 var rightSurfaces = [loginSurface, postSurface];
 
 

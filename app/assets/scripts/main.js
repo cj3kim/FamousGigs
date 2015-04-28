@@ -37,6 +37,7 @@ var companyAds     = searchAry[3];
 require('./routes/index')(page, mainContext, obj, sfgScrollView);
 require('./routes/payment')(page, obj);
 require('./routes/ad_details')(page, obj, companyAds);
+require('./routes/dashboard')(page, obj);
 
 page.show('/');
 

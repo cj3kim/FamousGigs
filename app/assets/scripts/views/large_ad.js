@@ -28,7 +28,6 @@ LargeAd.prototype.constructor = View;
 
 
 LargeAd.prototype.setAdContent = function (model) {
-  console.log(model);
   this.ad.setContent(<CompanyAd {...model.attributes} />);
 };
 

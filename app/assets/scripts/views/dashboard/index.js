@@ -1,12 +1,13 @@
-var FlexColumns = require('flex-columns');
+var FlexColumns    = require('flex-columns');
 var FlexibleLayout = require('famous/views/FlexibleLayout');
-var ProfileBasics = require('./dashboard/profile_basics');
-var Stats = require('./dashboard/stats');
-var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 
-var HeaderTitle = require('./dashboard/header_title');
-var ContainerSurface = require('famous/surfaces/ContainerSurface');
-var Avatar = require('./avatar');
+var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
+var ContainerSurface   = require('famous/surfaces/ContainerSurface');
+
+var ProfileBasics = require('./profile_basics');
+var HeaderTitle   = require('./header_title');
+var Avatar        = require('./avatar');
+var Stats         = require('./stats');
 
 var dashboardView = new FlexColumns({
   marginTop: 30,

@@ -14,10 +14,10 @@ module.exports = function (mainContext) {
   var navbarMod = new StateModifier({transform: Transform.translate(0,0,1) });
   headerFooterLayout.header.add(navbarMod).add(navbar);
 
-  var mod = new Modifier({transform: Transform.translate(0, 30, 0)});
+  //var mod = new Modifier({transform: Transform.translate(0, 30, 0)});
+  //headerFooterLayout.content.add(mod).add(bodyRC);
   var bodyRC = new RenderController({overlap: false});
-
-  headerFooterLayout.content.add(mod).add(bodyRC);
+  headerFooterLayout.content.add(bodyRC);
 
   var KaollaSu = require('../lib/KaollaSu')(mainContext);
   var _computeContextWidth = KaollaSu.computeContextWidth;

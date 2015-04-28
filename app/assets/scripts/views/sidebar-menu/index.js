@@ -19,7 +19,7 @@ function SidebarMenu() {
 
   var flexibleLayout = new FlexibleLayout({
     direction: 1,
-    ratios: [undefined, undefined, undefined]
+    ratios: [undefined, undefined, undefined, undefined]
   });
 
   var menuHeader = new Surface({
@@ -30,16 +30,23 @@ function SidebarMenu() {
       color: "white"
     }
   });
+
+  var gigs = new Surface({
+    size: [undefined, 60],
+    classes: ['sidebar-menu', 'stop-gap-div'],
+    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Gigs/Jobs</span> </span>",
+  });
+
   var posts = new Surface({
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
     content: "<span class='menu-item'><span class='icon flaticon-sheet3'></span><span class='copy'>Post</span> </span>",
   });
 
-  var gigs = new Surface({
+  var dashboard = new Surface({
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Gigs/Jobs</span> </span>",
+    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Dashboard</span> </span>",
   });
 
   gigs.on('click', function () {
@@ -49,6 +56,12 @@ function SidebarMenu() {
   posts.on('click', function () {
     page.show('/company_ads/payment');
   });
+
+  dashboard.on('click', function () {
+    page.show('/dashboard');
+  });
+
+
   var backButton = new Surface({
     size: [40, 40],
     classes: ['circle-icon'],
@@ -71,7 +84,10 @@ function SidebarMenu() {
   });
 
   this._lb = lb;
-  flexibleLayout.sequenceFrom([menuHeader, gigs, posts]);
+
+  //make sure to update the ratios array if you add a view here
+  flexibleLayout.sequenceFrom(
+    [menuHeader, gigs, posts, dashboard]);
 
   var mod = new Modifier({
     transform: Transform.translate(15,10,0)
