@@ -68,7 +68,7 @@ function SidebarMenu() {
   });
 
   register.on('click', function () {
-    page.show('/register');
+    page.show('/registration');
   });
 
   var backButton = new Surface({
