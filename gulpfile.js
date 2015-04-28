@@ -12,8 +12,8 @@ var   gulp       = require('gulp')
 var buffer = require('vinyl-buffer');
     
 var sass = require('gulp-sass');
-var uglify = require('gulp-uglify'),
-    concatCSS = require('gulp-concat-css');
+//var uglify = require('gulp-uglify'),
+var concatCSS = require('gulp-concat-css');
 
 gulp.task('default',['fonts', 'images', 'sass', 'browserify-watch', 'watch', 'start-dev-server'])
 
@@ -75,9 +75,6 @@ gulp.task('browserify-watch', function () {
         this.end();
       })
       .pipe(source(buildName))
-
-      .pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
-      .pipe(uglify())
       .pipe(gulp.dest(destinationPath));
 
     bundled.on('end', function () {

@@ -8,6 +8,7 @@ var SearchFlexGrid = require('../views/SearchFlexGrid');
 
 var React = require('react');
 var ReactSurface = require('react-surface');
+var page = require('page');
 
 module.exports = function (navbar) {
   var searchFlexGrid = new SearchFlexGrid();
@@ -20,7 +21,6 @@ module.exports = function (navbar) {
   searchInput.pipe(searchFlexGrid._eventInput);
 
   var promise = companyAds.fetch();
-  console.log(promise);
   promise.done(function (models) {
     function genAd(model) {
       var adSurface = new ReactSurface({
@@ -43,5 +43,5 @@ module.exports = function (navbar) {
 
 
 
-  return [searchInput, searchFlexGrid, sfgScrollView];
+  return [searchInput, searchFlexGrid, sfgScrollView, companyAds];
 }

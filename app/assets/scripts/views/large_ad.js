@@ -10,13 +10,11 @@ var ReactSurface = require('react-surface');
 function LargeAd() {
   View.apply(this, arguments);
 
+  var _this = this;
   this.ad = new ReactSurface({
-    //size: [500, 500],
     classes: ['company-ad']
   });
 
-
-  var _this = this;
   this._eventInput.on('reset-ad-details', function (model) {
     _this.setAdContent(model);
   });
@@ -30,6 +28,7 @@ LargeAd.prototype.constructor = View;
 
 
 LargeAd.prototype.setAdContent = function (model) {
+  console.log(model);
   this.ad.setContent(<CompanyAd {...model.attributes} />);
 };
 
