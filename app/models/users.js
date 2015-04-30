@@ -6,14 +6,12 @@ var bookshelf = require('bookshelf')(knex);
 var Users = bookshelf.Model.extend({
     tableName: 'users',
     initialize: function () {
-      this.on('saving', this.validateSave);
+      //this.on('saving', this.validateSave);
     },
-
-    validateSave: function () {
-      return checkit(rules).run(this.attributes);
-    },
-  }, 
-
+    //validateSave: function () {
+      //return checkit(rules).run(this.attributes);
+    //},
+  },
   {
     login: Promise.method(function (email, password) {
       if (!email || !password) throw new Error("Email and password are both required.");
@@ -25,7 +23,5 @@ var Users = bookshelf.Model.extend({
     })
   }
 );
-
-
 
 module.exports = Users;
