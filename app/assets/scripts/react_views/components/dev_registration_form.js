@@ -1,14 +1,24 @@
 var React = require('react');
 var TableHeader = require('./table_header');
 var $ = require('zepto-browserify').$;
+var serializeObject = require('./SerializeObject');
 
 var RegistrationReact = React.createClass({
   componentDidMount: function () {
   },
+  handleSubmit: function (event) {
+    console.log('handleSubmit: ' + event);
+    event.preventDefault();
+    event.stopPropagation();
+
+    var $form = $('#registration-form');
+    var obj   = serializeObject($form);
+    $form.trigger('user-registration', [{user: obj}]);
+  },
 
   render: function () {
     return (
-      <form>
+      <form id="registration-form" onSubmit={this.handleSubmit}>
         <table border="0">
           <TableHeader amount={6} />
           <tr>

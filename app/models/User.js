@@ -2,8 +2,9 @@ var env = process.env.NODE_ENV;
 var dbConfig = require('../../config/db/knexfile')[env];
 var knex = require('knex')(dbConfig);
 var bookshelf = require('bookshelf')(knex);
+var Promise = require('bluebird');
 
-var Users = bookshelf.Model.extend({
+var User = bookshelf.Model.extend({
     tableName: 'users',
     initialize: function () {
       //this.on('saving', this.validateSave);
@@ -24,4 +25,4 @@ var Users = bookshelf.Model.extend({
   }
 );
 
-module.exports = Users;
+module.exports = User;

@@ -1,13 +1,7 @@
-
-
-var redis       = require("redis"),
-    redisClient = redis.createClient(),
-    path        = require('path'),
+var path        = require('path'),
     fs          = require('fs'),
-    http_port   = process.env.HTTP_PORT || 1337,
-    https_port  = process.env.HTTPS_PORT || 3443,
     jwt         = require("express-jwt"),
-    utils       = require(path.join(__dirname, "app", "utils.js"));
+    utils       = require(path.join(__dirname, "app", "routes", "utils.js")),
     NotFoundError = require(path.join(__dirname, "app", "errors", "NotFoundError.js"));
     unless      = require('express-unless')
   ;
@@ -34,18 +28,17 @@ app.use(multer()); // for parsing multipart/form-data
 app.use(compression);
 app.use(responseTime);
 
+var jwtCheck = jwt({secret: "test"});
+jwtCheck.unless = unless;
+
 app.use('/public', serveIndex('public/'));
 app.use('/public', serveStatic('public/'));
 
-var jwtCheck = jwt({
-  secret: "asf09j20j0f-test"
-});
+var whitelist = '/api/registration';
+app.all('/api/*', jwtCheck.unless({path: whitelist}));
+app.all('/api/*', utils.middleware().unless({path: whitelist }));
 
-jwtCheck.unless = unless;
-app.use(jwtCheck.unless({path: ['/api/login', '/'] }));
-app.use(utils.middleware().unless({path: '/api/login' }));
-
-app.use("/api", require(path.join(__dirname, "app", "routes", "default.js"))());
+app.use('/api', require(path.join(__dirname, 'app', 'routes', 'authentication.js'))());
 
 app.get('/', function(req, res) {
   res.render('index')

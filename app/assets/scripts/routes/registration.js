@@ -12,13 +12,12 @@ module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
   var registration = new Registration();
 
-
   var renderNode = new RenderNode();
   var offsetMod = new Modifier({
     transform: Transform.translate(0,30,0)
-  })
-  renderNode.add(offsetMod).add(registration);
+  });
 
+  renderNode.add(offsetMod).add(registration);
 
   page('/registration', function (ctx) {
     var transition = {duration: 200, curve: Easing.inSine };
