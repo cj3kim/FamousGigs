@@ -9,8 +9,9 @@ var SpecParser = require('famous/core/SpecParser');
 var _ = require('underscore');
 var Calculations = require('./calculations');
 
+var objectMerge = require('object-merge');
 
-function FlexColumns(options) {
+function FlexColumns() {
   View.apply(this, arguments);
 
   this.totalWidth = null;

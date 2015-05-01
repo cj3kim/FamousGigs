@@ -20,13 +20,13 @@ var _resizeComputation   = KaollaSu.resizeComputation;
 var obj = require('./starters/index')(mainContext);
 
 var sidebar2 = obj.mobileMenu.node;
-var menuMod = obj.mobileMenu.mod;
-var mainMod = obj.containerShell.mod;
-var bodyRC  = obj.bodyRC;
-var navbar =  obj.navbar;
+var menuMod  = obj.mobileMenu.mod;
+var mainMod  = obj.containerShell.mod;
+var bodyRC   = obj.bodyRC;
+var navbar   = obj.navbar;
 var containerShell = obj.containerShell.node;
 
-var searchAry = require('./starters/search')(navbar);
+var searchAry      = require('./starters/search')(navbar);
 var searchInput    = searchAry[0];
 var searchFlexGrid = searchAry[1];
 var sfgScrollView  = searchAry[2];
@@ -39,6 +39,7 @@ require('./routes/payment')(page, obj);
 require('./routes/ad_details')(page, obj, companyAds);
 require('./routes/dashboard')(page, obj);
 require('./routes/registration')(page, obj);
+require('./routes/login')(page, obj);
 
 page.show('/');
 

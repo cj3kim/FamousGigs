@@ -11,7 +11,7 @@ var FormContent = React.createClass({
       <div className="form-content stop-gap-div">
         <ContentHeader headerName={ headerName }/>
         <div className="content-body"> 
-          <ReactClass />
+          <ReactClass {...this.props}/>
         </div>
      </div>
     );

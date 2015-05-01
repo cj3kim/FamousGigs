@@ -1,16 +1,16 @@
 var Easing     = require('famous/transitions/Easing');
 var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
-var Transform  = require('famous/core/Transform');
-
 var Registration = require('../views/registration/index');
+var Transform  = require('famous/core/Transform');
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
-  var registration = new Registration({
+  var login = new Registration({
     props: {
-      headerName: "Registration",
-      submitCopy: "Sign Up"
+      headerName: "Login",
+      submitCopy: "Sign in",
+      login: true
     },
     midAlign: true,
     marginTop: 0,
@@ -23,9 +23,9 @@ module.exports = function (page, obj) {
   var renderNode = new RenderNode();
   var offsetMod = new Modifier({transform: Transform.translate(0,30,0)});
 
-  renderNode.add(offsetMod).add(registration);
+  renderNode.add(offsetMod).add(login);
 
-  page('/registration', function (ctx) {
+  page('/login', function (ctx) {
     var transition = {duration: 200, curve: Easing.inSine };
     bodyRC.show(renderNode);
   });

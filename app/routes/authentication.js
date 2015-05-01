@@ -52,21 +52,14 @@ module.exports = function () {
 
   router.route("/registration").post(function (req, res, next) {
     var _user = req.body.user;
+
     new User({
       email:    _user.email,
       password: _user.password
     }).save().then(function (user) {
-      console.log('user had been created');
-      console.log('=============');
-      console.log(user);
-      console.log('=============');
-
       var func = function () {
-        res.status(200).json({
-          cool: "ready"
-        });
+        res.status(200).json({cool: "ready"});
       };
-
       utils.create(user.attributes, req, res, func);
     }).catch(function (err){
       console.log("There was an error with registration.");

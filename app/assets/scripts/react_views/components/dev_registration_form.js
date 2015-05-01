@@ -13,7 +13,11 @@ var RegistrationReact = React.createClass({
 
     var $form = $('#registration-form');
     var obj   = serializeObject($form);
-    $form.trigger('user-registration', [{user: obj}]);
+    if (this.props.login) {
+      $form.trigger('user-login', [{user: obj}]);
+    } else {
+      $form.trigger('user-registration', [{user: obj}]);
+    }
   },
 
   render: function () {
@@ -45,13 +49,10 @@ var RegistrationReact = React.createClass({
              <td colSpan="4"> <input type="text" name="password" /> </td>
           </tr>
 
-          <tr>
-             <td colSpan="2"> <label for="password_confirmation">password confirmation</label> </td>
-             <td colSpan="4"> <input type="text" name="password_confirmation" /> </td>
-          </tr>
+          { this.props.login ? undefined : <PasswordConfirmation />}
 
           <tr>
-             <td colSpan="6"><button><span>Sign Up</span></button></td>
+             <td colSpan="6"><button><span>{this.props.submitCopy}</span></button></td>
           </tr>
         </table>
       </form>
@@ -59,4 +60,14 @@ var RegistrationReact = React.createClass({
   }
 });
 
+var PasswordConfirmation = React.createClass({
+  render: function () {
+    return (
+      <tr>
+         <td colSpan="2"> <label for="password_confirmation">password confirmation</label> </td>
+         <td colSpan="4"> <input type="text" name="password_confirmation" /> </td>
+      </tr>
+    );
+  }
+});
 module.exports = RegistrationReact;
