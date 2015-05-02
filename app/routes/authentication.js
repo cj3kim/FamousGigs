@@ -1,18 +1,19 @@
 var debug  = require('debug')('app:routes:default' + process.pid),
     _      = require("lodash"),
     path   = require('path'),
-    bcrypt = require('bcryptjs'),
     utils  = require("./utils"),
     Router = require("express").Router,
     UnauthorizedAccessError = require(path.join(__dirname, "..", "errors", "UnauthorizedAccessError.js")),
     User  = require(path.join(__dirname, "..", "models", "User.js")),
     jwt    = require("express-jwt");
 
+
 var authenticate = function (req, res, next) {
   debug("Processing authenticate middleware");
 
-  var email = req.body.email
-    , password = req.body.password;
+  var user     = req.body.user;
+  var email    = user.email
+    , password = user.password;
 
   if (_.isEmpty(email) || _.isEmpty(password))
     return next(new UnauthorizedAccessError("401", { message: 'Invalid username or password' }));
@@ -23,6 +24,8 @@ var authenticate = function (req, res, next) {
         utils.create(user, req, res, next);
       })
       .catch(function (err) {
+        console.log('authenticate.js');
+        console.log(err);
         return next(new UnauthorizedAccessError("401", {
           message: "Invalid username or password"
         }));
@@ -52,19 +55,20 @@ module.exports = function () {
   router.route("/registration").post(function (req, res, next) {
     var _user = req.body.user;
 
-    User.register(_user.email, _user.password, _user.password_confirmation)
-      .then(function (user) {
-        var func = function () {
-          res.status(200).json({cool: "ready"});
-        };
-        utils.create(user.attributes, req, res, func);
-      })
-      .catch(function (err){
-        console.log("There was an error with registration.");
-        console.log(err);
-      });
+    process.nextTick(function () {
+      User.register(_user.email, _user.password, _user.password_confirmation)
+        .then(function (user) {
+          var func = function () {
+            res.status(200).json({cool: "ready"});
+          };
+          utils.create(user.attributes, req, res, func);
+        })
+        .catch(function (err){
+          console.log("There was an error with registration.");
+          console.log(err);
+        });
+    });
   });
-
 
   router.unless = require("express-unless");
   return router;

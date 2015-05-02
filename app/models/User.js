@@ -5,6 +5,8 @@ var bookshelf = require('bookshelf')(knex);
 var Promise = require('bluebird');
 var bcrypt = require('bcryptjs');
 
+Promise.promisifyAll(bcrypt);
+
 var User = bookshelf.Model.extend({
     tableName: 'users',
     initialize: function () {
@@ -21,13 +23,12 @@ var User = bookshelf.Model.extend({
       return new this({ email: email.toLowerCase().trim() })
         .fetch({ require: true })
         .tap(function (user) {
-          return bcrypt.compareAsync(user.get('password'), password);
+          return bcrypt.compareAsync(password, user.get('password'));
         });
     }),
 
     register: Promise.method(function(email, password, passwordConfirmation) {
       if (password !== passwordConfirmation) throw new Error("Passwords don't match.");
-
       //TODO Think about why it's important to implement this asynchronously.
       var salt = bcrypt.genSaltSync(10);
       var hash = bcrypt.hashSync(password, salt);
