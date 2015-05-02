@@ -6,7 +6,6 @@ var debug  = require('debug')('app:routes:default' + process.pid),
     Router = require("express").Router,
     UnauthorizedAccessError = require(path.join(__dirname, "..", "errors", "UnauthorizedAccessError.js")),
     User  = require(path.join(__dirname, "..", "models", "User.js")),
-    Users = require(path.join(__dirname, "..", "collections", "Users.js")),
     jwt    = require("express-jwt");
 
 var authenticate = function (req, res, next) {
@@ -53,18 +52,17 @@ module.exports = function () {
   router.route("/registration").post(function (req, res, next) {
     var _user = req.body.user;
 
-    new User({
-      email:    _user.email,
-      password: _user.password
-    }).save().then(function (user) {
-      var func = function () {
-        res.status(200).json({cool: "ready"});
-      };
-      utils.create(user.attributes, req, res, func);
-    }).catch(function (err){
-      console.log("There was an error with registration.");
-      console.log(err);
-    })
+    User.register(_user.email, _user.password, _user.password_confirmation)
+      .then(function (user) {
+        var func = function () {
+          res.status(200).json({cool: "ready"});
+        };
+        utils.create(user.attributes, req, res, func);
+      })
+      .catch(function (err){
+        console.log("There was an error with registration.");
+        console.log(err);
+      });
   });
 
 

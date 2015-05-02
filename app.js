@@ -7,6 +7,14 @@ var path        = require('path'),
   ;
 
 
+var repl = require('repl');
+
+repl.start({
+  prompt: "node via stdin> ",
+  input: process.stdin,
+  output: process.stdout
+});
+
 var express = require('express');
 var app = express();
 var serveIndex = require('serve-index');
