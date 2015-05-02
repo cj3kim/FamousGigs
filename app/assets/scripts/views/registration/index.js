@@ -27,19 +27,21 @@ function Registration () {
     content: <FormContent {...settings} />
   });
 
-  registration.on('user-registration', function (data) {
-    var obj = data._args[0]; //{ user: {} }
-    $.post('/api/registration', obj, function (response) {
-      page.show('/dashboard');
+  if (props.login) {
+    registration.on('user-login', function (data) {
+      var obj = data._args[0]; //{ user: {} }
+      $.post('/api/login', obj, function (response) {
+        page.show('/dashboard');
+      });
     });
-  });
-
-  registration.on('user-login', function (data) {
-    var obj = data._args[0]; //{ user: {} }
-    $.post('/api/login', obj, function (response) {
-      page.show('/dashboard');
+  } else {
+    registration.on('user-registration', function (data) {
+      var obj = data._args[0]; //{ user: {} }
+      $.post('/api/registration', obj, function (response) {
+        page.show('/dashboard');
+      });
     });
-  });
+  }
 
   this.createCol(425);
   this.addColNode(0, registration, [425, 500])
