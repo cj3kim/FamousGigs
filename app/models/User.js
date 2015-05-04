@@ -20,13 +20,20 @@ var User = bookshelf.Model.extend({
   {
     login: Promise.method(function (email, password) {
       if (!email || !password) throw new Error("Email and password are both required.");
-      return new this({ email: email.toLowerCase().trim() })
+      var storage = { user: null, samePassword: null };
+      var fetchPromise = new this({ email: email.toLowerCase().trim() })
+        .bind(storage)
         .fetch({ require: true })
-        .tap(function (user) {
-          return bcrypt.compareAsync(password, user.get('password'));
-        });
+        .then(function (user) {
+          this.user = user;
+          return bcrypt.compareAsync(password, user.get('password'))
+        })
+        .then(function (samePassword) {
+          if (!samePassword) throw new Error("Invalid email or password");
+          return Promise.resolve(this.user);
+        })
+        return fetchPromise;
     }),
-
     register: Promise.method(function(email, password, passwordConfirmation) {
       if (password !== passwordConfirmation) throw new Error("Passwords don't match.");
       //TODO Think about why it's important to implement this asynchronously.

@@ -32,26 +32,14 @@ module.exports.create = function (user, req, res, next) {
   if (_.isEmpty(user))
     return next(new Error('User data cannot be empty.'));
 
-  console.log('jsonwebtoken');
-  console.log("=============");
-  console.log(jsonwebtoken);
-  console.log(jsonwebtoken.sign);
-
-  console.log("=============");
-
+  var id = user.get('id');
   var data = {
-      id: user.id,
-      email: user.email,
-      token: jsonwebtoken.sign({ id: user.id }, "test", {
+      id:    id,
+      email: user.get('email'),
+      token: jsonwebtoken.sign({id: id }, "test", {
           expiresInMinutes: TOKEN_EXPIRATION
       })
   };
-
-  console.log('data');
-  console.log("=============");
-  console.log(data);
-  console.log("=============");
-
   var decoded = jsonwebtoken.decode(data.token);
   data.token_exp = decoded.exp;
   data.token_iat = decoded.iat;
@@ -67,10 +55,6 @@ module.exports.create = function (user, req, res, next) {
 
         if (reply) {
           req.user = data;
-          console.log('next');
-          console.log("=============");
-          console.log(next);
-          console.log("=============");
           next(); // we have succeeded
         } else {
           return next(new Error('Expiration not set on redis'));
