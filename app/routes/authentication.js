@@ -21,14 +21,9 @@ var authenticate = function (req, res, next) {
   process.nextTick(function () {
     User.login(email, password)
       .then(function (user) {
-        console.log(arguments);
-        console.log('we create a redis instance');
-        console.log(user);
         utils.create(user, req, res, next);
       })
       .catch(function (err) {
-        console.log('authenticate.js');
-        console.log(err);
         return next(new UnauthorizedAccessError("401", {
           message: "Invalid username or password"
         }));
