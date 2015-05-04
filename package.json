@@ -37,6 +37,7 @@
     "json-web-token": "^1.5.3",
     "jsonwebtoken": "^5.0.0",
     "knex": "^0.7.3",
+    "lodash": "^3.8.0",
     "lorem-ipsum": "^1.0.1",
     "mandrill-api": "^1.0.41",
     "morgan": "^1.5.2",
