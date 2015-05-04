@@ -7,6 +7,7 @@ var Modifier         = require('famous/core/Modifier');
 var RenderController = require('famous/views/RenderController');
 var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var Easing           = require('famous/transitions/Easing');
+var NotificationBox  = require('../views/notification/index');
 
 module.exports = function (mainContext) {
   var navbar = require('../views/nav_bar');
@@ -14,10 +15,10 @@ module.exports = function (mainContext) {
   var navbarMod = new StateModifier({transform: Transform.translate(0,0,1) });
   headerFooterLayout.header.add(navbarMod).add(navbar);
 
-  //var mod = new Modifier({transform: Transform.translate(0, 30, 0)});
-  //headerFooterLayout.content.add(mod).add(bodyRC);
   var bodyRC = new RenderController({overlap: false});
   headerFooterLayout.content.add(bodyRC);
+  var notificationBox = NotificationBox();
+  headerFooterLayout.content.add(notificationBox);
 
   var KaollaSu = require('../lib/KaollaSu')(mainContext);
   var _computeContextWidth = KaollaSu.computeContextWidth;
