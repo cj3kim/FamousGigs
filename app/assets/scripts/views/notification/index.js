@@ -4,6 +4,7 @@ var Surface          = require('famous/core/Surface');
 var RenderController = require('famous/views/RenderController');
 var Modifier         = require('famous/core/Modifier');
 var Transform        = require('famous/core/Transform');
+var RenderNode       = require('famous/core/RenderNode');
 
 function NotificationBox () {
   View.apply(this, arguments);
@@ -23,24 +24,44 @@ NotificationBox.prototype.initialize = function () {
     size: [undefined, 50],
     properties: {
       backgroundColor: 'red',
-      color: 'white'
+      color: 'white',
+      textAlign: 'center',
     }
   });
 
   var mod = new Modifier({
-    transform: Transform.translate(4,4,10)
+    transform: Transform.translate(0,0,1)
+  });
+  var rn = new RenderNode();
+  var exitBtn = new Surface({
+    size: [40,40],
+    content: 'x'
+  });
+  exitBtnMod = new Modifier({
+    transform: Transform.translate(0,10, 2)
   });
 
+
+  rn.add(notificationBox);
+  rn.add(exitBtnMod).add(exitBtn);
+
+  this.exitBtn = exitBtn;
+
+
   this.notificationBox  = notificationBox;
+  this.rn = rn
   this.renderController = renderController;
   this.add(mod).add(renderController);
 };
 
 NotificationBox.prototype.setupEventListeners = function () {
   var _this = this;
+  _this.exitBtn.on('click', function () {
+    _this.renderController.hide();
+  });
   _this.notificationBox.on('new-notification', function (xhr) {
     _this.notificationBox.setContent(xhr.responseText);
-    _this.renderController.show(_this.notificationBox);
+    _this.renderController.show(_this.rn);
   });
 };
 NotificationBox.prototype.setupPiping = function () {
