@@ -28,7 +28,7 @@ NotificationBox.prototype.initialize = function () {
   });
 
   var mod = new Modifier({
-    transform: Transform.translate(0,0,10)
+    transform: Transform.translate(4,4,10)
   });
 
   this.notificationBox  = notificationBox;
