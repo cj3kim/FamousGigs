@@ -33,7 +33,8 @@ var authenticate = function (req, res, next) {
 
 module.exports = function () {
   var router = new Router();
-  router.route("/verify").get(function (req, res, next) {
+  router.route("/verify").get(utils.verify, function (req, res, next) {
+
     return res.status(200).json(undefined);
   });
 

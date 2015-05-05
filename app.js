@@ -40,8 +40,7 @@ jwtCheck.unless = unless;
 
 app.use('/public', serveIndex('public/'));
 app.use('/public', serveStatic('public/'));
-
-var whitelist = ['/api/registration', '/api/login'];
+var whitelist = ['/api/registration', '/api/login', '/api/verify'];
 app.all('/api/*', jwtCheck.unless({path: whitelist}));
 app.all('/api/*', utils.middleware().unless({path: whitelist }));
 

@@ -97,9 +97,12 @@ module.exports.retrieve = function (id, done) {
 };
 
 module.exports.verify = function (req, res, next) {
-  debug("Verifying token");
+  console.log('utils.verify');
+  console.log(req.headers);
   var token = exports.fetch(req.headers);
-  jsonwebtoken.verify(token, config.secret, function (err, decode) {
+
+  console.log(token);
+  jsonwebtoken.verify(token, "secret", function (err, decode) {
     if (err) {
       req.user = undefined;
       return next(new UnauthorizedAccessError("invalid_token"));
