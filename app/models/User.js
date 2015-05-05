@@ -21,16 +21,16 @@ var User = bookshelf.Model.extend({
     login: Promise.method(function (email, password) {
       if (!email || !password) throw new Error("Email and password are both required.");
       var storage = { user: null, samePassword: null };
-      var fetchPromise = new this({ email: email.toLowerCase().trim() })
+      var fetchPromise = new this({email: email.toLowerCase().trim() })
         .bind(storage)
         .fetch({ require: true })
         .then(function (user) {
           this.user = user;
-          return bcrypt.compareAsync(password, user.get('password'))
+          return bcrypt.compareAsync(password, user.get('password'));
         })
         .then(function (samePassword) {
-          if (!samePassword) throw new Error("Invalid email or password");
-          return Promise.resolve(this.user);
+          if (!samePassword) throw new Error("Invalid email or password.");
+          return resolve(this.user);
         })
         return fetchPromise;
     }),

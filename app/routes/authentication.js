@@ -25,7 +25,7 @@ var authenticate = function (req, res, next) {
       })
       .catch(function (err) {
         return next(new UnauthorizedAccessError("401", {
-          message: "Invalid username or password"
+          message: err.message
         }));
       })
   });
@@ -59,7 +59,7 @@ module.exports = function () {
           var func = function () {
             res.status(200).json({cool: "ready"});
           };
-          utils.create(user.attributes, req, res, func);
+          utils.create(user, req, res, func);
         })
         .catch(function (err){
           console.log("There was an error with registration.");

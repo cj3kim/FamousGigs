@@ -1,7 +1,7 @@
 "use strict";
 function UnauthorizedAccessError(code, error) {
     Error.call(this, error.message);
-    Error.captureStackTrace(this, this.constructor);
+    //Error.captureStackTrace(this, this.constructor);
     this.name = "UnauthorizedAccessError";
     this.message = error.message;
     this.code = code;
