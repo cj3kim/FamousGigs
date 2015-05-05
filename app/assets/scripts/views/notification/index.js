@@ -22,6 +22,7 @@ NotificationBox.prototype.initialize = function () {
 
   var notificationBox = new Surface({
     size: [undefined, 50],
+    classes: ['notification-box'],
     properties: {
       backgroundColor: 'red',
       color: 'white',
@@ -35,19 +36,18 @@ NotificationBox.prototype.initialize = function () {
   var rn = new RenderNode();
   var exitBtn = new Surface({
     size: [40,40],
-    content: 'x'
-  });
-  exitBtnMod = new Modifier({
-    transform: Transform.translate(0,10, 2)
+    classes: ['circle-icon'],
+    content: '<span>x</span>'
   });
 
+  exitBtnMod = new Modifier({
+    transform: Transform.translate(10,5, 2)
+  });
 
   rn.add(notificationBox);
   rn.add(exitBtnMod).add(exitBtn);
 
   this.exitBtn = exitBtn;
-
-
   this.notificationBox  = notificationBox;
   this.rn = rn
   this.renderController = renderController;
@@ -56,11 +56,14 @@ NotificationBox.prototype.initialize = function () {
 
 NotificationBox.prototype.setupEventListeners = function () {
   var _this = this;
+  var errorMessage;
   _this.exitBtn.on('click', function () {
     _this.renderController.hide();
   });
   _this.notificationBox.on('new-notification', function (xhr) {
-    _this.notificationBox.setContent(xhr.responseText);
+    errorMessage = xhr.responseText.replace(/\w+:\s?(\w+)/i, "$1");
+
+    _this.notificationBox.setContent("<span>" + errorMessage + "</span>");
     _this.renderController.show(_this.rn);
   });
 };
