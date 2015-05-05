@@ -30,7 +30,7 @@ var User = bookshelf.Model.extend({
         })
         .then(function (samePassword) {
           if (!samePassword) throw new Error("Invalid email or password.");
-          return resolve(this.user);
+          return this.user
         })
         return fetchPromise;
     }),
