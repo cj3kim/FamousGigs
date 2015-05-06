@@ -29,7 +29,9 @@ function Registration () {
     content: <FormContent {...settings} />
   });
 
+  this.createCol(425);
   if (props.login) {
+    this.addColNode(0, registration, [425, 400])
     registration.on('user-login', function (data) {
       var obj = data._args[0]; //{ user: {} }
 
@@ -38,7 +40,9 @@ function Registration () {
         url: '/api/login',
         data: JSON.stringify(obj),
         contentType: 'application/json',
-        success: function (data) {
+        success: function (userData) {
+          sessionStorage.setItem("user", JSON.stringify(userData));
+          console.log(sessionStorage);
           page.show('/dashboard');
         },
         error: function (xhr, type) {
@@ -53,10 +57,9 @@ function Registration () {
         page.show('/dashboard');
       });
     });
+    this.addColNode(0, registration, [425, 500])
   }
 
-  this.createCol(425);
-  this.addColNode(0, registration, [425, 500])
 };
 
 Registration.prototype = Object.create(FlexColumns.prototype);

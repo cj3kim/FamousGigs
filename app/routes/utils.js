@@ -17,6 +17,12 @@ client.on('connect', function () {
 });
 
 module.exports.fetch = function (headers) {
+  console.log('utils.fetch');
+  console.log('------------');
+  console.log(headers);
+  console.log(headers.authorization);
+  console.log('------------');
+
   if (headers && headers.authorization) {
     var authorization = headers.authorization;
     var part   = authorization.split(' ');
@@ -36,7 +42,7 @@ module.exports.create = function (user, req, res, next) {
   var data = {
       id:    id,
       email: user.get('email'),
-      token: jsonwebtoken.sign({id: id }, "test", {
+      token: jsonwebtoken.sign({id: id }, "secret", {
           expiresInMinutes: TOKEN_EXPIRATION
       })
   };
@@ -97,21 +103,25 @@ module.exports.retrieve = function (id, done) {
 };
 
 module.exports.verify = function (req, res, next) {
-  console.log('utils.verify');
-  console.log(req.headers);
   var token = exports.fetch(req.headers);
 
-  console.log(token);
+  console.log("utils.verify");
+  console.log('token: ' + token);
   jsonwebtoken.verify(token, "secret", function (err, decode) {
+    console.log('jsonwebtoken.verify');
+    console.log('----------------');
+    console.log(err);
+    console.log(decode);
+    console.log('----------------');
     if (err) {
       req.user = undefined;
-      return next(new UnauthorizedAccessError("invalid_token"));
+      return next(new UnauthorizedAccessError("invalid_token", err));
     }
 
     exports.retrieve(token, function (err, data) {
       if (err) {
         req.user = undefined;
-        return next(new UnauthorizedAccessError("invalid_token", data));
+        return next(new UnauthorizedAccessError("invalid_token", err));
       }
       req.user = data;
       next();
