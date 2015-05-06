@@ -5,13 +5,18 @@ var ReactSurface = require('react-surface');
 var View = require('famous/core/View');
 var ProfileBasicsReact = require('../../react_views/dashboard/profile_basics');
 
+var User = require('../../models/user');
+
 function ProfileBasics() {
   View.apply(this, arguments);
+
+  var pbr = <ProfileBasicsReact />
+  console.log(pbr);
 
   this.surface = new ReactSurface({
     size: [450, 315],
     classes: ['rounded-corners'],
-    content: <ProfileBasicsReact />
+    content: pbr
   });
 
   this._node.add(this.surface);

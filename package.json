@@ -31,6 +31,7 @@
     "famous-flex": "^0.1.9",
     "famous-polyfills": "^0.3.0",
     "flex-columns": "^0.3.3",
+    "flux": "^2.0.3",
     "gulp": "^3.8.11",
     "gulp-concat-css": "^2.1.0",
     "gulp-sass": "^1.3.3",

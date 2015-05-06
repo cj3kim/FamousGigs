@@ -10,6 +10,7 @@ var objectMerge     = require('object-merge');
 var NotificationView = require('../notification/index');
 
 var RegistrationReact = require('../../react_views/components/dev_registration_form');
+var user = require("../../models/user");
 
 function Registration () {
   FlexColumns.apply(this, arguments);
@@ -35,31 +36,29 @@ function Registration () {
     registration.on('user-login', function (data) {
       var obj = data._args[0]; //{ user: {} }
 
-      var resolveLogin = Promise.resolve(
-        $.ajax({
-          type: 'POST',
-          url: '/api/login',
-          data: JSON.stringify(obj),
-          contentType: 'application/json',
-        }));
-
-      resolveLogin
+      user.login(obj)
         .then(function (userData) {
-          sessionStorage.setItem("user", JSON.stringify(userData));
           page.show('/dashboard');
         })
         .catch(function (err) {
-          console.log('login failed');
-          console.log(err);
           notificationView._eventInput.emit('new-notification', err)
         });
     });
   } else {
     registration.on('user-registration', function (data) {
       var obj = data._args[0]; //{ user: {} }
-      $.post('/api/registration', obj, function (response) {
-        page.show('/dashboard');
-      });
+
+      user.register(obj)
+        .then(function (data) {
+          console.log(data);
+          console.log('successfully registered');
+          page.show('/dashboard')
+        })
+        .catch(function(err) {
+          console.log('error with user registration');
+          console.log(err);
+          notificationView._eventInput.emit('new-notification', err)
+        });
     });
     this.addColNode(0, registration, [425, 500])
   }

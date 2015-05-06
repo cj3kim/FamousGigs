@@ -1,13 +1,25 @@
 var Backbone = require('backbone');
-var User = require('../models/user');
 var $ = require('zepto-browserify').$;
-
-
+var FamousGigsDispatcher = require('../dispatcher');
 Backbone.$ = $;
 
-var Users = Backbone.Collection.extend({
+var User = Backbone.Model.extend({});
+
+var UserCollection = Backbone.Collection.extend({
   model: User,
-  url: '/company_ads'
+  url: '/users'
+  initialize: function () {
+    this.dispatchToken = FamousGigsDispatcher.register(this.dispatchCallback);
+  },
+  dispatchCallback: function (payload) {
+    switch (payload.actionType) {
+      case 'case':
+        break;
+      default:
+    }
+  };
 });
 
-module.exports = CompanyAds;
+var Users = new UserCollection();
+
+module.exports = Users;

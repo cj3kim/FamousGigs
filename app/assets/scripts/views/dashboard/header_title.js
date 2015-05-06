@@ -19,7 +19,6 @@ var HeaderTitleReact = React.createClass({
 function HeaderTitle () {
   View.apply(this, arguments);
 
-
   var ht = new ReactSurface({
     size: [undefined, undefined],
     content: <HeaderTitleReact />

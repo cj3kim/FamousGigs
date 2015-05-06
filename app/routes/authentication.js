@@ -4,6 +4,9 @@ var debug  = require('debug')('app:routes:default' + process.pid),
     utils  = require("./utils"),
     Router = require("express").Router,
     UnauthorizedAccessError = require(path.join(__dirname, "..", "errors", "UnauthorizedAccessError.js")),
+    PasswordsDontMatch = require(path.join(__dirname, "..", "errors", "PasswordsDontMatch.js")),
+    AccountAlreadyExists = require(path.join(__dirname, "..", "errors", "AccountAlreadyExists.js")),
+    ServerError = require(path.join(__dirname, "..", "errors", "ServerError.js")),
     User  = require(path.join(__dirname, "..", "models", "User.js")),
     jwt    = require("express-jwt");
 
@@ -57,13 +60,22 @@ module.exports = function () {
       User.register(_user.email, _user.password, _user.password_confirmation)
         .then(function (user) {
           var func = function () {
-            res.status(200).json({cool: "ready"});
+            res.status(200).json(req.user);
           };
           utils.create(user, req, res, func);
         })
         .catch(function (err){
-          console.log("There was an error with registration.");
-          console.log(err);
+          var re1 = /passwords don't match/i;
+          var re2 = /unique constraint "users_email_unique"/i;
+          if (re1.test(err.message)) {
+            return next(new PasswordsDontMatch(403, {message: err.message}));
+          } else if (re2.test(err.message)) {
+            return next(new AccountAlreadyExists(403, {message: "Email already exists."}));
+          } else {
+            return next(new ServerError(501, {
+              message: "Something went wrong with the server"
+            }));
+          }
         });
     });
   });

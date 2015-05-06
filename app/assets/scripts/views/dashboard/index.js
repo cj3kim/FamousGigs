@@ -29,13 +29,8 @@ var fl1 = new FlexibleLayout({
   ratios: [0.8237, 0.1763]
 });
 
-var fl2 = new FlexibleLayout({
-  direction: 1,
-  ratios: [0.7633, 0.2367]
-});
-
 var headerTitle = new HeaderTitle();
-var avatar = new Avatar();
+var avatar      = new Avatar();
 
 var containerSurface = new ContainerSurface({
   size: [undefined, undefined],
