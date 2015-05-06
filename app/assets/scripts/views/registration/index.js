@@ -35,20 +35,24 @@ function Registration () {
     registration.on('user-login', function (data) {
       var obj = data._args[0]; //{ user: {} }
 
-      $.ajax({
-        type: 'POST',
-        url: '/api/login',
-        data: JSON.stringify(obj),
-        contentType: 'application/json',
-        success: function (userData) {
+      var resolveLogin = Promise.resolve(
+        $.ajax({
+          type: 'POST',
+          url: '/api/login',
+          data: JSON.stringify(obj),
+          contentType: 'application/json',
+        }));
+
+      resolveLogin
+        .then(function (userData) {
           sessionStorage.setItem("user", JSON.stringify(userData));
-          console.log(sessionStorage);
           page.show('/dashboard');
-        },
-        error: function (xhr, type) {
-          notificationView._eventInput.emit('new-notification', xhr)
-        }
-      })
+        })
+        .catch(function (err) {
+          console.log('login failed');
+          console.log(err);
+          notificationView._eventInput.emit('new-notification', err)
+        });
     });
   } else {
     registration.on('user-registration', function (data) {

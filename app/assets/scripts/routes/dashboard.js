@@ -1,5 +1,6 @@
 var dashboard = require('../views/dashboard/index');
 var $ = require('zepto-browserify').$;
+var Promise = require('bluebird');
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
@@ -7,30 +8,25 @@ module.exports = function (page, obj) {
   console.log($);
   //TODO do an api verificatio check
   page('/dashboard', function () {
-
-    console.log('attempting to show the dashboard');
-    console.log(sessionStorage.user);
-
     if (sessionStorage.user) {
-
       var user = JSON.parse(sessionStorage.user);
-      console.log(user);
 
-      $.ajax({
-        type: 'GET',
-        url: '/api/verify',
-        headers: {
-          'Authorization' : "Bearer " + user.token
-        },
-        success: function(data){
+      var resolveVerification = Promise.resolve(
+        $.ajax({
+          type: 'GET',
+          url: '/api/verify',
+          headers: { 'Authorization' : "Bearer " + user.token }})
+      );
+
+      resolveVerification
+        .then(function(data) {
           console.log('dashboard was successfully shown');
           bodyRC.show(dashboard);
-        },
-        error: function(xhr, type){
+        })
+        .catch(function (xhr) {
           console.log('dashboard was not shown');
           console.log(arguments);
-        }
-      });
+        });
     } else {
       throw new Error("You are not logged in");
     }
