@@ -1,6 +1,8 @@
 var React = require('react');
 
 var ProfileBasics = React.createClass({
+  componentDidMount: function () {
+  },
   render: function () {
     return (
       <div  className="dashboard stop-gap-div">
