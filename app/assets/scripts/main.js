@@ -42,6 +42,7 @@ require('./routes/dashboard')(page, obj);
 require('./routes/registration')(page, obj);
 require('./routes/login')(page, obj);
 require('./routes/developers')(page, obj);
+require('./routes/works')(page, obj)
 
 page.show('/');
 

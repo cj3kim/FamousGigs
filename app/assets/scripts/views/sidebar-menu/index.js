@@ -19,14 +19,25 @@ function SidebarMenu() {
 
   var flexibleLayout = new FlexibleLayout({
     direction: 1,
-    ratios: [undefined, undefined, undefined, undefined, undefined, undefined, undefined]
+    ratios: [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
   });
+
+
 
   var menuHeader = new Surface({
     size: [undefined, 56],
     content: "<div class='sidebar-header stop-gap-div'><span class='first'>famous<span class='second'>gigs</span></span></div>",
     properties: {
       backgroundColor: "#40adc2",
+      color: "white"
+    }
+  });
+
+  var works = new Surface({
+    size: [undefined, 56],
+    classes: ['sidebar-menu', 'stop-gap-div'],
+    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Works</span> </span>",
+    properties: {
       color: "white"
     }
   });
@@ -65,6 +76,10 @@ function SidebarMenu() {
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
     content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Login</span></span>",
+  });
+
+  works.on('click', function () {
+    page.show('/works');
   });
 
   gigs.on('click', function () {
@@ -115,7 +130,7 @@ function SidebarMenu() {
   this._lb = lb;
 
   //make sure to update the ratios array if you add a view here
-  flexibleLayout.sequenceFrom([menuHeader, gigs, developers, posts, dashboard, register, login]);
+  flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts, dashboard, register, login]);
 
   var mod = new Modifier({
     transform: Transform.translate(15,10,0)
