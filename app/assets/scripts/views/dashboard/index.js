@@ -18,7 +18,7 @@ var pb = new ProfileBasics();
 var stats = new Stats();
 
 dashboardView.createCol(450).addSurfaceToCol(0,pb);
-dashboardView.createCol(200).addSurfaceToCol(1,stats);
+//dashboardView.createCol(200).addSurfaceToCol(1,stats);
 
 var hfl = new HeaderFooterLayout({
   headerSize: 131

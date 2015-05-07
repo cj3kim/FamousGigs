@@ -41,6 +41,7 @@ require('./routes/ad_details')(page, obj, companyAds);
 require('./routes/dashboard')(page, obj);
 require('./routes/registration')(page, obj);
 require('./routes/login')(page, obj);
+require('./routes/developers')(page, obj);
 
 page.show('/');
 

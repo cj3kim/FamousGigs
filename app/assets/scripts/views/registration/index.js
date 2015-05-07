@@ -50,13 +50,9 @@ function Registration () {
 
       user.register(obj)
         .then(function (data) {
-          console.log(data);
-          console.log('successfully registered');
           page.show('/dashboard')
         })
         .catch(function(err) {
-          console.log('error with user registration');
-          console.log(err);
           notificationView._eventInput.emit('new-notification', err)
         });
     });

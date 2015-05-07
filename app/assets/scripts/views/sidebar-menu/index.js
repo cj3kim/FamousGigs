@@ -19,7 +19,7 @@ function SidebarMenu() {
 
   var flexibleLayout = new FlexibleLayout({
     direction: 1,
-    ratios: [undefined, undefined, undefined, undefined, undefined, undefined]
+    ratios: [undefined, undefined, undefined, undefined, undefined, undefined, undefined]
   });
 
   var menuHeader = new Surface({
@@ -41,6 +41,12 @@ function SidebarMenu() {
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
     content: "<span class='menu-item'><span class='icon flaticon-sheet3'></span><span class='copy'>Post</span> </span>",
+  });
+
+  var developers = new Surface({
+    size: [undefined, 60],
+    classes: ['sidebar-menu', 'stop-gap-div'],
+    content: "<span class='menu-item'><span class='icon flaticon-sheet3'></span><span class='copy'>Developers</span></span>",
   });
 
   var dashboard = new Surface({
@@ -67,6 +73,10 @@ function SidebarMenu() {
 
   posts.on('click', function () {
     page.show('/company_ads/payment');
+  });
+
+  developers.on('click', function () {
+    page.show('/developers');
   });
 
   dashboard.on('click', function () {
@@ -105,7 +115,7 @@ function SidebarMenu() {
   this._lb = lb;
 
   //make sure to update the ratios array if you add a view here
-  flexibleLayout.sequenceFrom([menuHeader, gigs, posts, dashboard, register, login]);
+  flexibleLayout.sequenceFrom([menuHeader, gigs, developers, posts, dashboard, register, login]);
 
   var mod = new Modifier({
     transform: Transform.translate(15,10,0)
