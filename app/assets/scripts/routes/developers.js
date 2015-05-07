@@ -3,6 +3,8 @@ var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
 
+var developerScrollView = require('../starters/developer_ads')();
+
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
@@ -10,6 +12,6 @@ module.exports = function (page, obj) {
   page('/developers', function (ctx) {
     var transition = {duration: 200, curve: Easing.inSine };
 
-    bodyRC.show();
+    bodyRC.show(developerScrollView);
   });
 }

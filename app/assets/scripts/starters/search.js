@@ -1,7 +1,8 @@
 var Engine           = require('famous/core/Engine');
 var CompanyAdCollection = require('../collections/company_ads');
 var companyAds = new CompanyAdCollection;
-var CompanyAd = require('../views/company_ad');
+
+var CompanyAdComponent = require('../react_views/components/company_ad');
 
 var ScrollView = require('famous/views/ScrollView');
 var SearchFlexGrid = require('../views/SearchFlexGrid');
@@ -25,7 +26,7 @@ module.exports = function (navbar) {
     function genAd(model) {
       var adSurface = new ReactSurface({
         classes: ['company-ad'],
-        content: <CompanyAd {...model} />
+        content: <CompanyAdComponent {...model} />
       });
 
       adSurface.on('click', function () {

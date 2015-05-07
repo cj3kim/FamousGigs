@@ -6,7 +6,7 @@ var Developer = Backbone.Model.extend({});
 
 var DeveloperCollection = Backbone.Collection.extend({
   model: Developer,
-  url: '/developers'
+  url: '/developers',
   initialize: function () {
     this.dispatchToken = FamousGigsDispatcher.register(this.dispatchCallback);
   },
@@ -16,7 +16,7 @@ var DeveloperCollection = Backbone.Collection.extend({
         break;
       default:
     }
-  };
+  }
 });
 
 var Developers = new DeveloperCollection();
