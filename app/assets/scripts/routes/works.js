@@ -8,7 +8,7 @@ var Works = require('../starters/works')
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
 
-  page('/works', function (ctx) {
+  page('/', function (ctx) {
     var transition = {duration: 200, curve: Easing.inSine };
     bodyRC.show(Works);
   });

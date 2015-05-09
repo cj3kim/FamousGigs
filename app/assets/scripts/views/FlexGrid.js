@@ -108,10 +108,12 @@ FlexGrid.prototype.commit = function(context) {
     }
 
     for (var i = 0; i < this._modifiers.length; i++) {
-        var spec = this._modifiers[i].modify({
-            target: this._items[i].render()
-        });
+        var renderable = this._items[i].render();
 
+        var spec = this._modifiers[i].modify({
+          target: renderable
+        });
+        spec.transform = Transform.multiply4x4(spec.transform, context.transform);
         specs.push(spec);
     }
 

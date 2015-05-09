@@ -11,6 +11,7 @@ var ReactSurface = require('react-surface');
 var page = require('page');
 
 var Promise = require('bluebird');
+var Work = require('../views/work');
 
 var flexGrid = new FlexGrid({
   marginTop:  20,
@@ -31,28 +32,13 @@ var videoLinks = [
   "http://video.capptivate.co/videos/KeezyMenu/KeezyMenu.mov"
 ];
 
+
 var surfaces = [];
-
-var func = function (s) {
-    s._element.play();
-};
-
-function genAd(videoLink) {
-  var surface = new VideoSurface({});
-  surface.setContent(videoLink)
-  surface.on('click', function () {
-    surface._element.play();
-  });
-  return surface;
-}
-
 for (var i = 0; i < videoLinks.length; i++) {
-  var surface = genAd(videoLinks[i]);
-
-  surfaces.push(surface);
+  var workSurface = Work(videoLinks[i]);
+  surfaces.push(workSurface);
 }
 
 flexGrid.sequenceFrom(surfaces);
 
 module.exports = scrollview;
-  
