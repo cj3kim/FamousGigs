@@ -42,7 +42,7 @@ function DevProfile () {
   });
 
   var surface = new ReactSurface({
-    size: [265, true],
+    size: [200, true],
     classes: ['rounded-corners'],
     content: <DevProfileComponent />,
     properties: {

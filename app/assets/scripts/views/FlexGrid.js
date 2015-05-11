@@ -34,8 +34,11 @@ function _calcSpacing(width) {
     var ySpacing = itemWidth + gutterCol;
     var margin = this.options.marginSide;
     var numCols = Math.floor((width - 2 * margin + gutterCol) / ySpacing);
+    if (numCols === 0)
+      numCols = 1;
     numCols = Math.min(this._items.length, numCols);
     margin = (width - numCols * ySpacing + gutterCol)/2;
+
     return {
         numCols: numCols,
         marginSide: margin,
