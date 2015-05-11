@@ -43,11 +43,11 @@ module.exports = function (videoLink) {
   videoSurface.setContent(videoLink)
   videoSurface.on('click', function () {
     this._element.play();
-  });
-
-  videoSurface.on('ended', function () {
     lb.show(hireNode);
   });
+
+  //videoSurface.on('ended', function () {
+  //});
 
   return renderNode;
 }

@@ -8,6 +8,7 @@ var RenderController = require('famous/views/RenderController');
 var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var Easing           = require('famous/transitions/Easing');
 var NotificationBox  = require('../views/notification/index');
+var LightBox         = require('famous/views/LightBox');
 
 module.exports = function (mainContext) {
   var navbar = require('../views/nav_bar');
@@ -15,7 +16,22 @@ module.exports = function (mainContext) {
   var navbarMod = new StateModifier({transform: Transform.translate(0,0,1) });
   headerFooterLayout.header.add(navbarMod).add(navbar);
 
-  var bodyRC = new RenderController({overlap: false});
+  var bodyRC = new RenderController({
+    overlap: true
+  });
+
+  //var lb = new LightBox({
+    //inTransform:   Transform.translate(-500,0,0),
+    //outTransform:  Transform.translate(500,0,0),
+    //inTransition:  {duration: 500, curve: Easing.inSine },
+    //outTransition: {duration: 500, curve: Easing.outSine },
+    //inAlign:   [0,0],
+    //outAlign:  [0,0],
+    //showAlign: [0,0],
+    //showOrigin:[0,0]
+  //});
+
+
   headerFooterLayout.content.add(bodyRC);
   var notificationBox = NotificationBox();
   headerFooterLayout.content.add(notificationBox);
