@@ -10,15 +10,15 @@ module.exports = function (page, mainContext, obj, sfgScrollView) {
   var mainMod  = obj.containerShell.mod;
   var bodyRC   = obj.bodyRC;
 
-  //page('/', function () {
-    //var transition = { duration: 500};
+  page('/gigs', function () {
+    var transition = { duration: 500};
 
-    //var contextWidth = _computeContextWidth()
-    //menuMod.setTransform(Transform.translate(-contextWidth,0,0), transition);
-    //mainMod.setTransform(Transform.translate(0,0,0), transition);
+    var contextWidth = _computeContextWidth()
+    menuMod.setTransform(Transform.translate(-contextWidth,0,0), transition);
+    mainMod.setTransform(Transform.translate(0,0,0), transition);
 
-    //bodyRC.show(sfgScrollView, transition);
-  //});
+    bodyRC.show(sfgScrollView, transition);
+  });
 
   page('/mobile-menu', function () {
     var lb = sidebar2._lb;

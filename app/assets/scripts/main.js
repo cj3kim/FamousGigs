@@ -32,8 +32,6 @@ var searchFlexGrid = searchAry[1];
 var sfgScrollView  = searchAry[2];
 var companyAds     = searchAry[3];
 
-//
-
 //Routing
 require('./routes/index')(page, mainContext, obj, sfgScrollView);
 require('./routes/payment')(page, obj);
@@ -44,6 +42,6 @@ require('./routes/login')(page, obj);
 require('./routes/developers')(page, obj);
 require('./routes/works')(page, obj)
 
-page.show('/');
+page.show('/developer/1');
 
 

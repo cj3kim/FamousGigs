@@ -79,11 +79,11 @@ function SidebarMenu() {
   });
 
   works.on('click', function () {
-    page.show('/works');
+    page.show('/');
   });
 
   gigs.on('click', function () {
-    page.show('/');
+    page.show('/gigs');
   });
 
   posts.on('click', function () {

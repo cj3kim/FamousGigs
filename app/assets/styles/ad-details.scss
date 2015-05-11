@@ -1,0 +1,51 @@
+div.ad-information {
+  div.details, div.contact {
+    margin: 10px 0px 10px 0px;
+  }
+  ul {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+
+    li {
+      width: 100%;
+      height: 23px;
+      margin: 5px 0px 5px 0px;
+      font-size: 14px;
+      overflow: hidden;
+
+      span.icon {
+        width:  20px;
+        height: 21px;
+        margin-top: 2px;
+
+        font-size: 15px;
+      }
+
+      span {
+        height: 21px;
+        color: #535353;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+
+}
+
+div.apply-now {
+  .apply-btn {
+    width: 233px;
+    height: 50px;
+    border-radius: 2.5%;
+
+    span {
+      background-color: #3b9eb7;
+      color: white;
+    }
+  }
+}
+
+

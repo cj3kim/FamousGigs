@@ -4,14 +4,19 @@ var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
 
 var developerScrollView = require('../starters/developer_ads')();
+var DevProfile = require('../views/developer-details/dev_profile');
 
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
 
   page('/developers', function (ctx) {
-    var transition = {duration: 200, curve: Easing.inSine };
-
     bodyRC.show(developerScrollView);
+  });
+
+  var devProfile = new DevProfile();
+
+  page('/developer/:id', function (ctx) {
+    bodyRC.show(devProfile);
   });
 }

@@ -6,6 +6,7 @@ var Modifier = require('famous/core/Modifier');
 var StateModifier = require('famous/modifiers/StateModifier');
 var Transform = require('famous/core/Transform');
 var LightBox = require('famous/views/LightBox');
+var page = require('page');
 
 var Easing = require('famous/transitions/Easing');
 
@@ -34,6 +35,10 @@ module.exports = function (videoLink) {
     content: "<span>Hire</span>",
   });
 
+  hire.on('click', function () {
+    page.show('/developer/1')
+  });
+
   var hireNode = new RenderNode();
   hireNode.add(hireMod).add(hire);
 
@@ -45,9 +50,6 @@ module.exports = function (videoLink) {
     this._element.play();
     lb.show(hireNode);
   });
-
-  //videoSurface.on('ended', function () {
-  //});
 
   return renderNode;
 }

@@ -1,12 +1,9 @@
 var View        = require('famous/core/View');
 var LargeAd     = require('./large_ad');
 var Application = require('./application');
-
 var StateModifier    = require('famous/modifiers/StateModifier');
 var Transform        = require('famous/core/Transform');
-
 var FlexColumns = require('../flex-columns/flex-columns');
-
 var Surface = require('famous/core/Surface');
 
 function AdDetails() {
