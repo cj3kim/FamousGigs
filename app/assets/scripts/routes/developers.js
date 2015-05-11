@@ -4,7 +4,7 @@ var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
 
 var developerScrollView = require('../starters/developer_ads')();
-var DevProfile = require('../views/developer-details/dev_profile');
+var DevAbout = require('../views/developer-details/dev_about');
 
 
 module.exports = function (page, obj) {
@@ -14,9 +14,10 @@ module.exports = function (page, obj) {
     bodyRC.show(developerScrollView);
   });
 
-  var devProfile = new DevProfile();
+  var devAbout = new DevAbout();
 
   page('/developer/:id', function (ctx) {
-    bodyRC.show(devProfile);
+
+    bodyRC.show(devAbout);
   });
 }

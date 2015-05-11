@@ -5,7 +5,7 @@ var React = require('react');
 var ReactSurface = require('react-surface');
 var Transform = require('famous/core/Transform');
 
-var DevProfileComponent = React.createClass({
+var DevAboutComponent = React.createClass({
   render: function () {
     return (
       <div className='dev-details stop-gap-div'>
@@ -34,7 +34,7 @@ var DevProfileComponent = React.createClass({
   }
 });
 
-function DevProfile () {
+function DevAbout () {
   View.apply(this, arguments);
 
   var mod = new Modifier({
@@ -44,7 +44,7 @@ function DevProfile () {
   var surface = new ReactSurface({
     size: [200, true],
     classes: ['rounded-corners'],
-    content: <DevProfileComponent />,
+    content: <DevAboutComponent />,
     properties: {
       backgroundColor: 'white'
     }
@@ -53,7 +53,7 @@ function DevProfile () {
   this._node.add(mod).add(surface);
 }
 
-DevProfile.prototype = Object.create(View.prototype);
-DevProfile.prototype.constructor = DevProfile;
+DevAbout.prototype = Object.create(View.prototype);
+DevAbout.prototype.constructor = DevAbout;
 
-module.exports = DevProfile;
+module.exports = DevAbout;
