@@ -1,7 +1,7 @@
 
 var Surface = require('famous/core/surface');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
-var FlexNavbar = require('./flex_navbar');
+var FlexNavbar = require('./FlexNavbar');
 var page = require('page');
 
 var flexNavbar = new FlexNavbar();
