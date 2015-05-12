@@ -94,7 +94,7 @@ FlexColumns.prototype.mobileFlow = function (contextWidth) {
   _.each(_this._cols, function (colObj, colIndex) {
     //Iterate through each row/node
     var nodes = colObj.nodes;
-    var yRowOffset = 0;
+    var yRowOffset = _this.options.marginTop;
 
     _.each(nodes, function (node, rowIndex) {
       var size = colObj.sizes[rowIndex];
@@ -127,7 +127,7 @@ FlexColumns.prototype.desktopFlow = function (contextWidth) {
   // Iterate through each column
   _.each(_this._cols, function (colObj, colIndex) {
     var nodes = colObj.nodes;
-    var yRowOffset = 0;
+    var yRowOffset = _this.options.marginTop;
 
     // Iterate through each row/node
     _.each(nodes, function (node, rowIndex) {
