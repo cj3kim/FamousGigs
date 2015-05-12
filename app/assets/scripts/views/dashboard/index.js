@@ -1,4 +1,4 @@
-var FlexColumns    = require('flex-columns');
+var FlexColumns    = require('../flex-columns/index');
 var FlexibleLayout = require('famous/views/FlexibleLayout');
 
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
@@ -10,15 +10,14 @@ var Avatar        = require('./avatar');
 var Stats         = require('./stats');
 
 var dashboardView = new FlexColumns({
-  marginTop: 30,
-  gutterCol: 20
+  gutterCol: 20,
+  gutterRow: 20
 });
 
 var pb = new ProfileBasics();
 var stats = new Stats();
 
-dashboardView.createCol(450).addSurfaceToCol(0,pb);
-//dashboardView.createCol(200).addSurfaceToCol(1,stats);
+dashboardView.createCol(450).addColNode(0,pb, 450);
 
 var hfl = new HeaderFooterLayout({
   headerSize: 131
