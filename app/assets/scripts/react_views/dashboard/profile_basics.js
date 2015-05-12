@@ -19,7 +19,7 @@ var ProfileBasics = React.createClass({
   render: function () {
     var email = this.state.email;
     return (
-      <div  className="dashboard stop-gap-div">
+      <div  className="profile stop-gap-div">
         <div className="title row">
           <span>Profile Basics</span>
         </div>
