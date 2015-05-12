@@ -19,6 +19,5 @@ var DeveloperCollection = Backbone.Collection.extend({
   }
 });
 
-var Developers = new DeveloperCollection();
 
-module.exports = Developers;
+module.exports = DeveloperCollection;

@@ -20,6 +20,5 @@ var UserCollection = Backbone.Collection.extend({
   };
 });
 
-var Users = new UserCollection();
 
-module.exports = Users;
+module.exports = UserCollection;

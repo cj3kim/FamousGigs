@@ -1,11 +1,27 @@
 var Backbone = require('backbone');
 var $ = require('zepto-browserify').$;
 Backbone.$ = $;
+require('backbone-relational')
 
 var FamousGigsDispatcher = require('../../dispatcher');
 var Promise = require('bluebird');
 
-var User = Backbone.Model.extend({
+var Work = require('../work');
+var WorkCollection = require('../../collections/works');
+
+var User = Backbone.RelationalModel.extend({
+  relations: [{
+		type: Backbone.HasMany,
+		key: 'user_id',
+		relatedModel: Work,
+		collectionType: WorkCollection,
+		reverseRelation: {
+			key: 'id',
+			includeInJSON: 'id'
+			// 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
+		}
+	}],
+
   urlRoot: '/user',
   initialize: function () {
     this.dispatchToken = FamousGigsDispatcher.register(this.dispatchCallback);
