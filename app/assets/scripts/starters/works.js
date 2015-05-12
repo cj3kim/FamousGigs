@@ -15,10 +15,10 @@ var Work = require('../views/work');
 
 var flexGrid = new FlexGrid({
   marginTop:  20,
-  marginSide: 20,
-  gutterCol:  30,
-  gutterRow:  20,
-  itemSize: [400, 600],
+  marginSide: 0,
+  gutterCol:  0,
+  gutterRow:  40,
+  itemSize: [320,500],
 });
 
 var scrollview = new ScrollView();

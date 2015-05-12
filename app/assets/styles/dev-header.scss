@@ -1,0 +1,31 @@
+
+div.dev-header {
+  img.profile-picture {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 30px auto 20px;
+    border-radius: 50%;
+    border: solid 1px #40adc2;
+
+  }
+  div.company-name {
+   width: 200px;
+   height: 20px;
+   text-align: center;
+   margin: 0px auto;
+  }
+
+  div.brief-description {
+    width: 50%;
+    text-align: center;
+    margin: 10px auto;
+  }
+
+  ul.company-info {
+    width: 200px;
+    height: 20px;
+    margin: 10px auto;
+    li { float: left; }
+  }
+}

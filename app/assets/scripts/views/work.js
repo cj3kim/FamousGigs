@@ -26,7 +26,7 @@ module.exports = function (videoLink) {
   });
 
   var hireMod = new Modifier({
-    transform: Transform.translate(270, 535, 0)
+    transform: Transform.translate(210, 445, 0)
   });
 
   var hire = new Surface({

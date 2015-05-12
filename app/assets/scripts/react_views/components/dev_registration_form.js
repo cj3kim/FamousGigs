@@ -35,11 +35,6 @@ var RegistrationReact = React.createClass({
           </tr>
 
           <tr>
-            <td colSpan="2"> <label for="user_name">User Name</label> </td>
-            <td colSpan="4"> <input type="text" name="user_name" /> </td>
-          </tr>
-
-          <tr>
              <td colSpan="2"> <label for="email">email</label> </td>
              <td colSpan="4"> <input type="text" name="email" /> </td>
           </tr>
