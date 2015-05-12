@@ -1,0 +1,22 @@
+ul.custom-navbar {
+  width: 163px;
+  height: 100%;
+  margin: 0px auto;
+  padding: 0;
+
+  li {
+    width:  75px;
+    height: 48px;
+    float: left;
+    border-left:  solid 1px #7a7a7a;
+    display: block;
+    text-align: center;
+    span {
+      display: inline-block;
+      margin-top: 14px;
+    }
+  }
+  li:last-child {
+    width: 1px;
+  }
+}
