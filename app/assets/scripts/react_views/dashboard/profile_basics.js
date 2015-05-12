@@ -1,6 +1,6 @@
 var React = require('react');
 var FamousGigsDispatcher = require('../../dispatcher');
-var user = require('../../models/user');
+var user = require('../../models/singleton/user');
 
 var ProfileBasics = React.createClass({
   componentDidMount: function () {

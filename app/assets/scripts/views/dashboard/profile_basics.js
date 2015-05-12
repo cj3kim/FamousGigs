@@ -5,7 +5,7 @@ var ReactSurface = require('react-surface');
 var View = require('famous/core/View');
 var ProfileBasicsReact = require('../../react_views/dashboard/profile_basics');
 
-var User = require('../../models/user');
+var User = require('../../models/singleton/user');
 
 function ProfileBasics() {
   View.apply(this, arguments);

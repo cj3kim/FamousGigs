@@ -1,7 +1,7 @@
 var dashboard = require('../views/dashboard/index');
 var $ = require('zepto-browserify').$;
 var Promise = require('bluebird');
-var user = require('../models/user');
+var user = require('../models/singleton/user');
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;

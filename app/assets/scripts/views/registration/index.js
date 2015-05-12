@@ -10,7 +10,7 @@ var objectMerge     = require('object-merge');
 var NotificationView = require('../notification/index');
 
 var RegistrationReact = require('../../react_views/components/dev_registration_form');
-var user = require("../../models/user");
+var user = require("../../models/singleton/user");
 
 function Registration () {
   FlexColumns.apply(this, arguments);
