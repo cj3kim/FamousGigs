@@ -2,7 +2,7 @@ var View = require('famous/core/view');
 var React = require('react');
 var ReactSurface = require('react-surface');
 
-var FlexColumns     = require('../flex-columns/flex-columns');
+var FlexColumns     = require('../flex-columns/index');
 var FormContent     = require('../../react_views/form_content');
 var CompanyEditForm = require('../../react_views/components/company_edit_form');
 

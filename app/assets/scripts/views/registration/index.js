@@ -4,7 +4,7 @@ var ReactSurface = require('react-surface');
 var page         = require('page');
 
 var FormContent  = require('../../react_views/form_content');
-var FlexColumns  = require('../flex-columns/flex-columns');
+var FlexColumns  = require('../flex-columns/index');
 var $ = require('zepto-browserify').$;
 var objectMerge     = require('object-merge');
 var NotificationView = require('../notification/index');

@@ -7,7 +7,7 @@ var FormContent             = require('../../react_views/form_content');
 var PaymentFormReact        = require('../../react_views/components/payment_form');
 var PaymentExplanationReact = require('../../react_views/components/payment_explanation');
 
-var FlexColumns = require('../flex-columns/flex-columns');
+var FlexColumns = require('../flex-columns/index');
 
 function PaymentForm () {
   FlexColumns.apply(this, arguments);

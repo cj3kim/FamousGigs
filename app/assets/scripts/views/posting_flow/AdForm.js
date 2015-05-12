@@ -5,7 +5,7 @@ var ReactSurface = require('react-surface');
 var FormContent = require('../../react_views/form_content');
 var AdEditForm =  require('../../react_views/components/ad_edit_form');
 
-var FlexColumns = require('../flex-columns/flex-columns');
+var FlexColumns = require('../flex-columns/index');
 
 function AdForm () {
   FlexColumns.apply(this, arguments);
