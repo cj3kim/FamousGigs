@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var $ = require('zepto-browserify').$;
 Backbone.$ = $;
 
-var FamousGigsDispatcher = require('../dispatcher');
+var FamousGigsDispatcher = require('../../dispatcher');
 var Promise = require('bluebird');
 
 var User = Backbone.Model.extend({
