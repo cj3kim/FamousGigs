@@ -1,5 +1,5 @@
 var Engine     = require('famous/core/Engine');
-var Developers = require('../collections/developers');
+var Developers = require('../collections/singleton/developers');
 var DeveloperAdComponent = require('../react_views/components/developer_ad');
 var ScrollView = require('famous/views/ScrollView');
 var SearchFlexGrid = require('../views/SearchFlexGrid');
