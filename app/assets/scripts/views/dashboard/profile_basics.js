@@ -11,7 +11,6 @@ function ProfileBasics() {
   View.apply(this, arguments);
 
   var pbr = <ProfileBasicsReact />
-  console.log(pbr);
 
   this.surface = new ReactSurface({
     size: [450, 315],

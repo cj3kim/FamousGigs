@@ -32,29 +32,38 @@ var CustomNavbarComponent = React.createClass({
 
     return (
       <ul className='custom-navbar stop-gap-div'>
-        <LiComponent {...this.props.portfolio }/>
-        <LiComponent { ...this.props.profile }/>
+        {this.props.list.map(function (data, i) {
+          return <LiComponent {...data } key={i}/>
+        })}
         <li></li>
       </ul>
     );
   }
 });
+var props = {
+ list: [
+    {
+      route: '/dashboard/portfolio',
+      name: 'Portfolio'
+    },
+    {
+      route: '/dashboard/profile',
+      name: 'Profile'
+    },
+    {
+      route: '/dashboard/portfolio/add',
+      name: 'Add'
+    }
+  ]
+};
 
-var portfolio = {
-  route: '/dashboard/portfolio',
-  name: 'Portfolio'
-};
-var profile = {
-  route: '/dashboard/profile',
-  name: 'Profile'
-};
 
 function CustomNavbar () {
   View.apply(this, arguments);
 
   var surface = new ReactSurface({
     size: [undefined, 50],
-    content: <CustomNavbarComponent profile={ profile } portfolio={portfolio} />,
+    content: <CustomNavbarComponent { ...props }/>,
     properties: {
       backgroundColor: 'white',
       borderTop: 'solid 1px #7a7a7a',

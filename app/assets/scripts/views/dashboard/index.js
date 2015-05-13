@@ -9,9 +9,11 @@ var FlexibleLayout = require('famous/views/FlexibleLayout');
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
 var ContainerSurface   = require('famous/surfaces/ContainerSurface');
 
-var Header = require('./header');
-var Profile = require('./profile/index');
+var Header    = require('./header');
+var Profile   = require('./profile/index');
 var Portfolio = require('./portfolio/index');
+var AddWork   = require('./add-work/index');
+
 var page = require('page');
 
 var dashboard = new HeaderFooterLayout({
@@ -25,7 +27,6 @@ var modCustomNavbar = new Modifier({
 });
 
 dashboard.header.add(modCustomNavbar).add(new CustomNavbar());
-
 
 var lightbox = new LightBox({
   inTransform:   Transform.translate(-500,0,0),
@@ -47,6 +48,9 @@ page('/dashboard/profile', function () {
 
 page('/dashboard/portfolio', function () {
   lightbox.show(Portfolio);
+});
+page('/dashboard/portfolio/add', function () {
+  lightbox.show(AddWork);
 });
 
 module.exports = dashboard;
