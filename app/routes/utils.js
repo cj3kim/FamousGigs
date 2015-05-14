@@ -108,6 +108,7 @@ module.exports.verify = function (req, res, next) {
   var token = exports.fetch(req.headers);
 
   console.log("utils.verify");
+  console.log('----------------');
   console.log('token: ' + token);
   jsonwebtoken.verify(token, JWT_SECRET_KEY, function (err, decode) {
     console.log('jsonwebtoken.verify');

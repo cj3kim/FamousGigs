@@ -11,15 +11,15 @@ var WorkCollection = require('../../collections/works');
 
 var User = Backbone.RelationalModel.extend({
   relations: [{
-		type: Backbone.HasMany,
-		key: 'user_id',
-		relatedModel: Work,
-		collectionType: WorkCollection,
-		reverseRelation: {
-			key: 'id',
-			includeInJSON: 'id'
-			// 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
-		}
+    type: Backbone.HasMany,
+    key: 'user_id',
+    relatedModel: Work,
+    collectionType: WorkCollection,
+    reverseRelation: {
+      key: 'id',
+      includeInJSON: 'id'
+      // 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
+    }
 	}],
 
   urlRoot: '/user',

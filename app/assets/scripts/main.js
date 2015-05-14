@@ -3,11 +3,8 @@ require('famous-polyfills');
 
 // import dependencies
 var Engine           = require('famous/core/Engine');
-
 var Easing           = require('famous/transitions/Easing');
 var Transform        = require('famous/core/Transform');
-
-
 var page = require('page');
 
 var mainContext = Engine.createContext();
