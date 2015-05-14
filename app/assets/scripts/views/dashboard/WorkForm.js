@@ -13,16 +13,17 @@ var WorkFormComponent = React.createClass({
     this.initialUpload();
   },
   initialUpload: function () {
+    var _this = this;
     var form  = React.findDOMNode(this);
-    var searchAry = form.getElementsById('media-upload');
+    var searchAry = form.getElementsByClassName('media-upload');
     var file  = searchAry[0];
     if (file === null)
       alert("No file selected");
-    var _this = this;
+
     var signPromise = this.getSignedRequest(file)
+
     signPromise
-      .then(function (data) {
-        var response = JSON.parse(data);
+      .then(function (response) {
         return Promise.resolve(_this.uploadToS3(file, response.signed_request, response.url));
       })
       .then(function (response) {
@@ -31,30 +32,46 @@ var WorkFormComponent = React.createClass({
         //fire an event to add item to portfolio.
       })
       .catch(function (err) {
-        alert('There was an error with uploading your file.')
+        console.debug("There was an error in WorkFormComponent");
+        console.log(err);
       });
   },
   getSignedRequest: function (file) {
     var userSession = JSON.parse(sessionStorage.user);
+    console.log('getSignedRequest');
+
+    console.log('userSession.token: ' + userSession.token);
+
     return Promise.resolve(
       $.ajax({
         type: 'GET',
-        url: '/sign_s3',
+        url: '/api/sign_s3',
         data: {file_name: file.name, file_type: file.type },
         headers: {'Authorization' : "Bearer " + userSession.token }})
     );
   },
 
   uploadToS3: function (file, signedRequest, url) {
-    return Promise.resolve(
-      $.ajax({
-        type: 'PUT',
-        url: signedRequest,
-        data: file,
-        headers: {'x-amz-acl': 'public-read'}
-      })
-    );
-
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      console.log('signedRequest: ' + signedRequest);
+      xhr.open("POST", signedRequest);
+      xhr.setRequestHeader('x-amz-acl', 'public-read');
+      xhr.onload = function () {
+        console.log('xhr');
+        console.log(xhr);
+        var headers = xhr.getAllResponseHeaders().toLowerCase();
+        console.log(headers);
+        if (xhr.status === 200)
+          resolve(xhr);
+      };
+      xhr.onerror = function () {
+        console.log('xhr');
+        console.log(xhr);
+        reject(xhr.error);
+      };
+      xhr.send(file);
+    });
   },
   render: function () {
     return (
@@ -80,7 +97,7 @@ var WorkFormComponent = React.createClass({
 
           <tr>
             <td colSpan="2"><label for="media_upload">Upload</label> </td>
-            <td colSpan="4"><input id='media-upload' type="file" name="media_upload" /></td>
+            <td colSpan="4"><input className='media-upload' type="file" name="media_upload" /></td>
             </tr>
 
           <tr>

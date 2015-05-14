@@ -46,11 +46,15 @@ var whitelist = ['/api/registration', '/api/login', '/api/verify', '/developers'
 app.all('/api/*', jwtCheck.unless({path: whitelist}));
 app.all('/api/*', utils.middleware().unless({path: whitelist }));
 
-app.use('/api', require(path.join(__dirname, 'app', 'routes', 'authentication.js'))());
+var authenticationRoute = require(path.join(__dirname, 'app', 'routes', 'authentication.js'))();
+var amazonS3Route = require(path.join(__dirname, 'app', 'routes', 'amazon.js'))();
+
+app.use('/api', authenticationRoute);
+app.use('/api', amazonS3Route);
 
 app.get('/', function(req, res) {
   res.render('index')
-})
+});
 
 require('./app/routes/company_ads/index')(app);
 require('./app/routes/developers/index')(app);
