@@ -17,8 +17,8 @@ module.exports = function () {
       var s3_params = {
         Bucket: S3_BUCKET,
         Key: req.query.file_name,
-        //Expires: 6000,
-        //ContentType: req.query.file_type,
+        Expires: 600,
+        ContentType: req.query.file_type,
         ACL: 'public-read'
       };
 

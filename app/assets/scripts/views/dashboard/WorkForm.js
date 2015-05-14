@@ -16,7 +16,7 @@ var WorkFormComponent = React.createClass({
     var _this = this;
     var form  = React.findDOMNode(this);
     var searchAry = form.getElementsByClassName('media-upload');
-    var file  = searchAry[0];
+    var file  = searchAry[0].files[0];
     if (file === null)
       alert("No file selected");
 
@@ -41,22 +41,34 @@ var WorkFormComponent = React.createClass({
     console.log('getSignedRequest');
 
     console.log('userSession.token: ' + userSession.token);
+    console.log(file);
+    console.log('file type: ' + file.type);
+
 
     return Promise.resolve(
       $.ajax({
         type: 'GET',
         url: '/api/sign_s3',
-        data: {file_name: file.name, file_type: file.type },
+        data: {file_name: file.name, file_type: file.type},
         headers: {'Authorization' : "Bearer " + userSession.token }})
     );
   },
 
   uploadToS3: function (file, signedRequest, url) {
+
     return new Promise(function(resolve, reject) {
+
+      //var formData = new FormData();
+      //formData.append(file.name, file.slice());
+
       var xhr = new XMLHttpRequest();
       console.log('signedRequest: ' + signedRequest);
-      xhr.open("POST", signedRequest);
+      xhr.open("PUT", signedRequest);
+      //HEADERS have to reflect the ones on the server.
       xhr.setRequestHeader('x-amz-acl', 'public-read');
+      xhr.setRequestHeader('Content-Type', file.type);
+      xhr.setRequestHeader('Expires', 600);
+
       xhr.onload = function () {
         console.log('xhr');
         console.log(xhr);
@@ -70,7 +82,7 @@ var WorkFormComponent = React.createClass({
         console.log(xhr);
         reject(xhr.error);
       };
-      xhr.send(file);
+      xhr.send(file.slice());
     });
   },
   render: function () {
