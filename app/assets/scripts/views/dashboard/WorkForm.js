@@ -82,6 +82,13 @@ var WorkFormComponent = React.createClass({
         console.log(xhr);
         reject(xhr.error);
       };
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          var percentComplete = e.loaded / e.total;
+          console.log(percentComplete);
+        } else {
+        }
+      })
       xhr.send(file.slice());
     });
   },
