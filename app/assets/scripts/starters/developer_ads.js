@@ -20,7 +20,6 @@ module.exports = function () {
   var promise = Promise.resolve(Developers.fetch());
   promise
     .then(function (models) {
-      console.log(models);
       function genAd(model) {
         var adSurface = new ReactSurface({
           classes: ['company-ad'],
