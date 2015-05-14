@@ -6,7 +6,9 @@ var debug  = require('debug')('app:utils:' + process.pid),
     jsonwebtoken            = require("jsonwebtoken"),
     TOKEN_EXPIRATION        = 60,
     TOKEN_EXPIRATION_SEC    = TOKEN_EXPIRATION * 60,
-    UnauthorizedAccessError = require(path.join(__dirname, '..', 'errors', 'UnauthorizedAccessError'));
+    UnauthorizedAccessError = require(path.join(__dirname, '..', 'errors', 'UnauthorizedAccessError'))
+    JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+    ;
 
 client.on('error', function (err) {
     debug(err);
@@ -42,7 +44,7 @@ module.exports.create = function (user, req, res, next) {
   var data = {
       id:    id,
       email: user.get('email'),
-      token: jsonwebtoken.sign({id: id }, "secret", {
+      token: jsonwebtoken.sign({id: id }, JWT_SECRET_KEY, {
           expiresInMinutes: TOKEN_EXPIRATION
       })
   };
@@ -107,13 +109,13 @@ module.exports.verify = function (req, res, next) {
 
   console.log("utils.verify");
   console.log('token: ' + token);
-  jsonwebtoken.verify(token, "secret", function (err, decode) {
+  jsonwebtoken.verify(token, JWT_SECRET_KEY, function (err, decode) {
     console.log('jsonwebtoken.verify');
     console.log('----------------');
-    console.log(err);
     console.log(decode);
     console.log('----------------');
     if (err) {
+      console.log(err);
       req.user = undefined;
       return next(new UnauthorizedAccessError("invalid_token", err));
     }

@@ -4,6 +4,7 @@ var path        = require('path'),
     utils       = require(path.join(__dirname, "app", "routes", "utils.js")),
     NotFoundError = require(path.join(__dirname, "app", "errors", "NotFoundError.js"));
     unless      = require('express-unless')
+    JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
   ;
 
 var repl = require('repl');
@@ -35,7 +36,7 @@ app.use(multer()); // for parsing multipart/form-data
 app.use(compression);
 app.use(responseTime);
 
-var jwtCheck = jwt({secret: "test"});
+var jwtCheck = jwt({secret: JWT_SECRET_KEY});
 jwtCheck.unless = unless;
 
 app.use('/public', serveIndex('public/'));
