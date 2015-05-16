@@ -10,23 +10,15 @@ var Work = require('../work');
 var WorkCollection = require('../../collections/works');
 
 var User = Backbone.RelationalModel.extend({
-  relations: [{
-    type: Backbone.HasMany,
-    key: 'user_id',
-    relatedModel: Work,
-    collectionType: WorkCollection,
-    reverseRelation: {
-      key: 'id',
-      includeInJSON: 'id'
-      // 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
-    }
-	}],
-
   urlRoot: '/user',
+
+  idAttribute: 'id',
+
   initialize: function () {
     this.dispatchToken = FamousGigsDispatcher.register(this.dispatchCallback);
     this.checkForSession();
   },
+
   dispatchCallback: function (payload) {
     switch (payload.actionType) {
       case 'case':

@@ -8,16 +8,19 @@ var ProfileBasics = React.createClass({
 
     _this.setState({ email: user.get('email')});
   },
+
   getInitialState: function () {
     return {
       email: user.get('email'),
     };
   },
+
   handleEmailChange: function (event) {
     this.setState({email: event.target.value});
   },
   render: function () {
     var email = this.state.email;
+
     return (
       <div  className="profile stop-gap-div">
         <div className="title row">

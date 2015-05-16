@@ -4,7 +4,9 @@ var FamousGigsDispatcher = require('../dispatcher');
 Backbone.$ = $;
 
 var WorkCollection = Backbone.Collection.extend({
-  url: '/works',
+  url: function () {
+    return '/works';
+  },
   initialize: function () {
     this.dispatchToken = FamousGigsDispatcher.register(this.dispatchCallback);
   },

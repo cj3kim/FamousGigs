@@ -6,7 +6,13 @@ var Promise = require('bluebird');
 var TableHeader = require('../../react_views/components/table_header');
 var $ = require('zepto-browserify').$
 
+var url = require('url');
+
 var WorkFormComponent = React.createClass({
+  componentDidMount: function () {
+    var user = require('../../models/singleton/user');
+    this.user = user;
+  },
   handleSubmit: function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -15,8 +21,10 @@ var WorkFormComponent = React.createClass({
   initialUpload: function () {
     var _this = this;
     var form  = React.findDOMNode(this);
+
     var searchAry = form.getElementsByClassName('media-upload');
     var file  = searchAry[0].files[0];
+
     if (file === null)
       alert("No file selected");
 
@@ -26,10 +34,11 @@ var WorkFormComponent = React.createClass({
       .then(function (response) {
         return Promise.resolve(_this.uploadToS3(file, response.signed_request, response.url));
       })
-      .then(function (response) {
-        console.log(response);
-        console.log(response.url);
-        //fire an event to add item to portfolio.
+      .then(function (xhr) {
+        var parsedUrl   = url.parse(xhr.responseURL);
+        var resourceUrl = parsedUrl.protocol + '//' + parsedUrl.hostname + parsedUrl.pathname;
+        console.log(_this.user);
+
       })
       .catch(function (err) {
         console.debug("There was an error in WorkFormComponent");
@@ -43,7 +52,6 @@ var WorkFormComponent = React.createClass({
     console.log('userSession.token: ' + userSession.token);
     console.log(file);
     console.log('file type: ' + file.type);
-
 
     return Promise.resolve(
       $.ajax({
