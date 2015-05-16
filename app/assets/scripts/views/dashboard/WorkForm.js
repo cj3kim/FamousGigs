@@ -37,8 +37,20 @@ var WorkFormComponent = React.createClass({
       .then(function (xhr) {
         var parsedUrl   = url.parse(xhr.responseURL);
         var resourceUrl = parsedUrl.protocol + '//' + parsedUrl.hostname + parsedUrl.pathname;
-        console.log(_this.user);
 
+        var workModel = _this.user.works.create({
+          work: {
+            title: "example_title",
+            description: "asdfasdfadsf",
+            media_type: "asdfasdfafaf",
+            url: resourceUrl
+          }
+        });
+        return Promise.resolve(workModel.save());
+      })
+      .then(function (model) {
+
+        console.log(model);
       })
       .catch(function (err) {
         console.debug("There was an error in WorkFormComponent");

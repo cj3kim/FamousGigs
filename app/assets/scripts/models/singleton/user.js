@@ -6,8 +6,7 @@ require('backbone-relational')
 var FamousGigsDispatcher = require('../../dispatcher');
 var Promise = require('bluebird');
 
-var Work = require('../work');
-var WorkCollection = require('../../collections/works');
+var WorkCollection = require('../../collections/user_works');
 
 var User = Backbone.RelationalModel.extend({
   urlRoot: '/user',
@@ -15,8 +14,15 @@ var User = Backbone.RelationalModel.extend({
   idAttribute: 'id',
 
   initialize: function () {
+    var _this = this;
     this.dispatchToken = FamousGigsDispatcher.register(this.dispatchCallback);
     this.checkForSession();
+    this.works = new WorkCollection();
+
+    this.on('change', function () {
+      if (_this.hasChanged('id'))
+        _this.works.setUserId(_this.get('id'));
+    });
   },
 
   dispatchCallback: function (payload) {

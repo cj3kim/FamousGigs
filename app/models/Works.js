@@ -10,6 +10,13 @@ Promise.promisifyAll(bcrypt);
 var Work = bookshelf.Model.extend({
     tableName: 'works',
     initialize: function () {},
+    defaults: {
+      title: "write a title",
+      description: "",
+      media_type: "",
+      url: "",
+      user_id: ""
+    }
 });
 
 module.exports = Work;
