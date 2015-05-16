@@ -38,7 +38,7 @@ var WorkFormComponent = React.createClass({
         var parsedUrl   = url.parse(xhr.responseURL);
         var resourceUrl = parsedUrl.protocol + '//' + parsedUrl.hostname + parsedUrl.pathname;
 
-        var workModel = _this.user.works.create({
+        var workModel = new _this.user.works.model({
           work: {
             title: "example_title",
             description: "asdfasdfadsf",
@@ -46,10 +46,10 @@ var WorkFormComponent = React.createClass({
             url: resourceUrl
           }
         });
+        workModel.collection = _this.user.works;
         return Promise.resolve(workModel.save());
       })
       .then(function (model) {
-
         console.log(model);
       })
       .catch(function (err) {
