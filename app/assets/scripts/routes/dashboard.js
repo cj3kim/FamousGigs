@@ -10,7 +10,9 @@ module.exports = function (page, obj) {
   page('/dashboard', function () {
     user.verifySession()
       .then(function(data) {
-        bodyRC.show(dashboard);
+        bodyRC.show(dashboard, function () {
+          page.show('/dashboard/portfolio');
+        });
       })
       .catch(function (xhr) {
         console.log(arguments);

@@ -21,6 +21,19 @@ module.exports = function (app) {
       //});
   });
 
+  app.get('/user/:user_id/works', function (req,res) {
+    var user_id = req.params.user_id;
+    Works
+      .fetchAll({user_id: user_id})
+      .then(function (models) {
+        console.log(models);
+        res.json(models.toJSON())
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  });
+
   app.post('/user/:user_id/works', function (req, res) {
     var user_id = req.params.user_id;
     var attrs   = req.body.work;
@@ -33,7 +46,6 @@ module.exports = function (app) {
         res.json(model)
       })
       .catch(function (err) {
-        console.log(err);
         res.status(501);
       });
   });

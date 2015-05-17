@@ -1,4 +1,4 @@
 
-var portfolio = require('../../../starters/works');
+var portfolio = require('../../../starters/dashboard_works');
 
 module.exports = portfolio;

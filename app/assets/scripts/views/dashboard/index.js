@@ -40,15 +40,22 @@ var lightbox = new LightBox({
 });
 
 dashboard.content.add(lightbox);
-lightbox.show(Portfolio);
 
 page('/dashboard/profile', function () {
   lightbox.show(Profile);
 });
 
 page('/dashboard/portfolio', function () {
-  lightbox.show(Portfolio);
+  Portfolio.loadWorks()
+    .then(function () {
+      lightbox.show(Portfolio);
+    })
+    .catch(function (err) {
+      console.log('/dashboard/portfolio');
+      console.log(err);
+    });
 });
+
 page('/dashboard/portfolio/add', function () {
   lightbox.show(AddWork);
 });
