@@ -103,7 +103,6 @@ FlexGrid.prototype.render = function() {
 
 FlexGrid.prototype.commit = function(context) {
     var width = context.size[0];
-
     var specs = [];
 
     if (this._cachedWidth !== width) {

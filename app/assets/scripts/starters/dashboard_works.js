@@ -31,13 +31,18 @@ scrollview.loadWorks = function () {
   var promise = Promise.resolve(user.works.fetch());
 
   return promise
-    .then(function (models) {
+    .then(function () {
       //For some reason, we don't get objects instead of bb models
-      for (var i = 0; i < user.works.models.length; i++) {
-        var workSurface = Work(user.works.models[i].get('url'));
+
+      var models = user.works.models;
+
+      for (var i = 0; i < models.length; i++) {
+        var workSurface = new Work(models[i]);
         surfaces.push(workSurface);
       }
       flexGrid.sequenceFrom(surfaces);
+      flexGrid.resizeFlow(flexGrid._cachedWidth);
+
       return Promise.resolve(surfaces);
     });
 };

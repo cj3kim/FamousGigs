@@ -10,9 +10,14 @@ var page = require('page');
 
 var Easing = require('famous/transitions/Easing');
 
-module.exports = function (videoLink) {
+//This is a backbone model
+module.exports = function (model) {
   var renderNode = new RenderNode();
-  var videoSurface    = new VideoSurface({});
+  var videoSurface    = new VideoSurface({
+    properties: {
+      backgroundColor: 'red'
+    }
+  });
 
   var lb = new LightBox({
     inTransform: Transform.translate(38,100,0),
@@ -36,7 +41,7 @@ module.exports = function (videoLink) {
   });
 
   hire.on('click', function () {
-    page.show('/developer/1')
+    page.show('/developer/' + model.get('user_id'));
   });
 
   var hireNode = new RenderNode();
@@ -45,7 +50,7 @@ module.exports = function (videoLink) {
   renderNode.add(videoSurface)
   renderNode.add(lb);
 
-  videoSurface.setContent(videoLink)
+  videoSurface.setContent(model.get('url'))
   videoSurface.on('click', function () {
     this._element.play();
     lb.show(hireNode);

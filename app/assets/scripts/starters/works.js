@@ -27,7 +27,6 @@ var scrollview = new ScrollView();
 Engine.pipe(scrollview);
 scrollview.sequenceFrom([flexGrid]);
 
-
 var worksPromise = Promise.resolve(Works.fetch());
 var surfaces = [];
 
@@ -36,9 +35,11 @@ worksPromise
     var models = Works.models;
     for (var i = 0; i < models.length; i++) {
       var model = models[i];
-      var workSurface = Work(model.get('url'));
+      var workSurface = Work(model);
       surfaces.push(workSurface);
     }
+    flexGrid.sequenceFrom(surfaces);
+    flexGrid.resizeFlow(flexGrid._cachedWidth);
   });
 
 flexGrid.sequenceFrom(surfaces);
