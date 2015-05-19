@@ -39,6 +39,6 @@ require('./routes/login')(page, obj);
 require('./routes/developers')(page, obj);
 require('./routes/works')(page, obj)
 
-page.show('/developer/1');
+page.show('/');
 
 

@@ -1,2 +1,2 @@
-var WorkCollection = require('./singleton/works');
+var WorkCollection = require('../works');
 module.exports = new WorkCollection();

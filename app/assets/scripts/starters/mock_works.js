@@ -6,8 +6,6 @@ var FlexGrid = require('../views/FlexGrid');
 var VideoSurface = require('famous/surfaces/VideoSurface');
 var Surface = require('famous/core/surface');
 
-var Works = require('../collections/singleton/works');
-
 var React = require('react');
 var ReactSurface = require('react-surface');
 var page = require('page');
@@ -25,21 +23,21 @@ var flexGrid = new FlexGrid({
 
 var scrollview = new ScrollView();
 Engine.pipe(scrollview);
+
 scrollview.sequenceFrom([flexGrid]);
+var videoLinks = [
+  "http://video.capptivate.co/videos/TimelinesDetail/small_TimelinesDetail.mov",
+  "http://video.capptivate.co/videos/TryAgain/small_TimelineMenu.mov",
+  "http://video.capptivate.co/videos/SkypeQikMenu/SkypeQikMenu.mov",
+  "http://video.capptivate.co/videos/KeezyMenu/KeezyMenu.mov"
+];
 
 
-var worksPromise = Promise.resolve(Works.fetch());
 var surfaces = [];
-
-worksPromise
-  .then(function () {
-    var models = Works.models;
-    for (var i = 0; i < models.length; i++) {
-      var model = models[i];
-      var workSurface = Work(model.get('url'));
-      surfaces.push(workSurface);
-    }
-  });
+for (var i = 0; i < videoLinks.length; i++) {
+  var workSurface = Work(videoLinks[i]);
+  surfaces.push(workSurface);
+}
 
 flexGrid.sequenceFrom(surfaces);
 
