@@ -2,12 +2,12 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.table('users', function (t) {
-    t.string('github_id');
+    t.string('full_name');
   }); 
 };
 
 exports.down = function(knex, Promise) {
   return knex.schema.table('users', function (t) {
-    t.dropColumn('github_id');
+    t.dropColumn('full_name');
   });
 };
