@@ -13,11 +13,7 @@ var Easing = require('famous/transitions/Easing');
 //This is a backbone model
 module.exports = function (model) {
   var renderNode = new RenderNode();
-  var videoSurface    = new VideoSurface({
-    properties: {
-      backgroundColor: 'red'
-    }
-  });
+  var videoSurface    = new VideoSurface();
 
   var lb = new LightBox({
     inTransform: Transform.translate(38,100,0),

@@ -24,7 +24,8 @@ module.exports = function (app) {
   app.get('/user/:user_id/works', function (req,res) {
     var user_id = req.params.user_id;
     Works
-      .fetchAll({user_id: user_id})
+      .where({user_id: user_id})
+      .fetchAll()
       .then(function (models) {
         console.log(models);
         res.json(models.toJSON())
