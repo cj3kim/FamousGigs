@@ -4,9 +4,8 @@ var FormContent = require('../../react_views/form_content');
 
 var Promise = require('bluebird');
 var TableHeader = require('../../react_views/components/table_header');
-var $ = require('zepto-browserify').$
-
 var url = require('url');
+var $ = require('zepto-browserify').$;
 
 var WorkFormComponent = React.createClass({
   componentDidMount: function () {
@@ -18,15 +17,17 @@ var WorkFormComponent = React.createClass({
     e.preventDefault();
     this.initialUpload();
   },
+
   initialUpload: function () {
     var _this = this;
-    var form  = React.findDOMNode(this);
-
-    var searchAry = form.getElementsByClassName('media-upload');
-    var file  = searchAry[0].files[0];
 
     if (file === null)
       alert("No file selected");
+
+    var form  = React.findDOMNode(this);
+    var file  = form.getElementsByClassName('media-upload')[0].files[0];
+    var title = form.getElementsByClassName('work-title')[0].value;
+    var mediaType = form.getElementsByTagName('select')[0].value;
 
     var signPromise = this.getSignedRequest(file)
 
@@ -40,9 +41,8 @@ var WorkFormComponent = React.createClass({
 
         var workModel = new _this.user.works.model({
           work: {
-            title: "example_title",
-            description: "asdfasdfadsf",
-            media_type: "asdfasdfafaf",
+            title: title,
+            media_type: mediaType,
             url: resourceUrl
           }
         });
@@ -77,12 +77,7 @@ var WorkFormComponent = React.createClass({
   uploadToS3: function (file, signedRequest, url) {
 
     return new Promise(function(resolve, reject) {
-
-      //var formData = new FormData();
-      //formData.append(file.name, file.slice());
-
       var xhr = new XMLHttpRequest();
-      console.log('signedRequest: ' + signedRequest);
       xhr.open("PUT", signedRequest);
       //HEADERS have to reflect the ones on the server.
       xhr.setRequestHeader('x-amz-acl', 'public-read');
@@ -90,23 +85,17 @@ var WorkFormComponent = React.createClass({
       xhr.setRequestHeader('Expires', 600);
 
       xhr.onload = function () {
-        console.log('xhr');
-        console.log(xhr);
         var headers = xhr.getAllResponseHeaders().toLowerCase();
-        console.log(headers);
         if (xhr.status === 200)
           resolve(xhr);
       };
       xhr.onerror = function () {
-        console.log('xhr');
-        console.log(xhr);
         reject(xhr.error);
       };
       xhr.upload.addEventListener('progress', function(e) {
         if (e.lengthComputable) {
           var percentComplete = e.loaded / e.total;
           console.log(percentComplete);
-        } else {
         }
       })
       xhr.send(file.slice());
@@ -119,7 +108,7 @@ var WorkFormComponent = React.createClass({
           <TableHeader amount="6" />
           <tr>
             <td colSpan="2"><label for="title">Title</label> </td>
-            <td colSpan="4"><input type="text" name="title" /></td>
+            <td colSpan="4"><input className='work-title' type="text" name="title" /></td>
             </tr>
 
           <tr>
