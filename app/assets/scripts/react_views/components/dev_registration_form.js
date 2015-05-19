@@ -3,6 +3,9 @@ var TableHeader = require('./table_header');
 var $ = require('zepto-browserify').$;
 var serializeObject = require('./SerializeObject');
 
+var env = require('../../env');
+var githubClientID = env.GITHUB_CLIENT_ID;
+
 var RegistrationReact = React.createClass({
   componentDidMount: function () {
   },
@@ -21,12 +24,18 @@ var RegistrationReact = React.createClass({
   },
 
   render: function () {
+    var githubOauth = "https://github.com/login/oauth/authorize?scope=user:email&client_id="+githubClientID;
+
     return (
       <form id="registration-form" onSubmit={this.handleSubmit}>
         <table border="0">
           <TableHeader amount={6} />
           <tr>
-            <td colSpan="3"><button><span>Sign in with Github </span></button></td>
+            <td colSpan="3">
+              <a href={ githubOauth }><span>Sign in with Github </span></a>
+
+              </td>
+
             <td colSpan="3"><button><span>Sign in with Facebook</span></button></td>
           </tr>
 

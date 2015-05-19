@@ -41,16 +41,18 @@ jwtCheck.unless = unless;
 
 app.use('/public', serveIndex('public/'));
 app.use('/public', serveStatic('public/'));
-var whitelist = ['/api/registration', '/api/login', '/api/verify', '/developers'];
+var whitelist = ['/api/registration', '/api/oauth/github/callback', '/api/login', '/api/verify', '/developers'];
 
 app.all('/api/*', jwtCheck.unless({path: whitelist}));
 app.all('/api/*', utils.middleware().unless({path: whitelist }));
 
 var authenticationRoute = require(path.join(__dirname, 'app', 'routes', 'authentication.js'))();
 var amazonS3Route = require(path.join(__dirname, 'app', 'routes', 'amazon.js'))();
+var OAuthGithubRoute = require(path.join(__dirname, 'app', 'routes', 'oauth', 'github.js'))();
 
 app.use('/api', authenticationRoute);
 app.use('/api', amazonS3Route);
+app.use('/api', OAuthGithubRoute)
 
 app.get('/', function(req, res) {
   res.render('index')
