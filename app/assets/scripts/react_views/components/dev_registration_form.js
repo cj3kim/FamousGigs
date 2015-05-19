@@ -24,7 +24,7 @@ var RegistrationReact = React.createClass({
   },
 
   render: function () {
-    var githubOauth = "https://github.com/login/oauth/authorize?scope=user:email&client_id="+githubClientID;
+    //var githubOauth = "https://github.com/login/oauth/authorize?scope=user:email&client_id="+githubClientID;
 
     return (
       <form id="registration-form" onSubmit={this.handleSubmit}>
@@ -32,8 +32,7 @@ var RegistrationReact = React.createClass({
           <TableHeader amount={6} />
           <tr>
             <td colSpan="3">
-              <a href={ githubOauth }><span>Sign in with Github </span></a>
-
+              <button><span>Sign in with Github </span></button>
               </td>
 
             <td colSpan="3"><button><span>Sign in with Facebook</span></button></td>
