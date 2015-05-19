@@ -4,6 +4,7 @@ var knex = require('knex')(dbConfig);
 var bookshelf = require('bookshelf')(knex);
 var Promise = require('bluebird');
 var bcrypt = require('bcryptjs');
+var randomstring = require("randomstring");
 
 Promise.promisifyAll(bcrypt);
 
@@ -18,6 +19,36 @@ var User = bookshelf.Model.extend({
   },
 
   {
+    findOrCreate: function (options) {
+      var _this = this;
+      var user      = options.user;
+      var github_id = options.github_id;
+      console.log('findOrCreate');
+      console.log(options);
+
+      if (github_id && user) {
+        return this.where({github_id: github_id})
+            .fetch()
+            .then(function (model) {
+              if (model === null) {
+                console.log('_this');
+                console.log(_this);
+                return new _this({
+                  email:      user.email, user_name:  user.login,
+                  full_name:  user.name, avatar_url: user.avatar_url,
+                  github_id:  github_id, password:   randomstring.generate()
+                }).save();
+
+              } else {
+                return Promise.resolve(model);
+              }
+            });
+      } else {
+        console.log('error');
+        console.log(_this);
+        return Promise.reject(new Error('couldnt find the user'))
+      }
+    },
     login: Promise.method(function (email, password) {
       if (!email || !password) throw new Error("Email and password are both required.");
       var storage = { user: null, samePassword: null };

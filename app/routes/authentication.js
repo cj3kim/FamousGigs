@@ -8,7 +8,8 @@ var debug  = require('debug')('app:routes:default' + process.pid),
     AccountAlreadyExists = require(path.join(__dirname, "..", "errors", "AccountAlreadyExists.js")),
     ServerError = require(path.join(__dirname, "..", "errors", "ServerError.js")),
     User  = require(path.join(__dirname, "..", "models", "User.js")),
-    jwt    = require("express-jwt");
+    jwt    = require("express-jwt")
+;
 
 
 var authenticate = function (req, res, next) {
