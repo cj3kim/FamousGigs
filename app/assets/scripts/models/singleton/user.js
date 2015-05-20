@@ -9,7 +9,7 @@ var Promise = require('bluebird');
 var WorkCollection = require('../../collections/user_works');
 
 var User = Backbone.RelationalModel.extend({
-  urlRoot: '/user',
+  urlRoot: '/users',
 
   idAttribute: 'id',
 
@@ -83,11 +83,10 @@ var User = Backbone.RelationalModel.extend({
     );
     promise.then(function (userData) {
       sessionStorage.setItem("user", JSON.stringify(userData));
-      console.log(userData);
       _this.set({id: userData.id, email: userData.email});
 
       return Promise.resolve(userData);
-    })
+    });
     return promise;
   }
 });
