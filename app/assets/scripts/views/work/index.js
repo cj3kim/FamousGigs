@@ -3,15 +3,14 @@ var ScrollView = require('famous/views/ScrollView');
 var FlexGrid = require('../../views/FlexGrid');
 var VideoSurface = require('famous/surfaces/VideoSurface');
 var Surface = require('famous/core/surface');
-var page = require('page');
 var Easing = require('famous/transitions/Easing');
 var LightBox = require('famous/views/LightBox');
 var Transform = require('famous/core/Transform');
 var RenderNode = require('famous/core/RenderNode');
 var Modifier = require('famous/core/Modifier');
+
+var page = require('page');
 var genExitBtn = require('./delete');
-
-
 var genVideo = require('./video');
 var genImage = require('./image');
 var genHire  = require('./hire');

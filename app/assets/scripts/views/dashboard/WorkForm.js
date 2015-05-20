@@ -33,6 +33,7 @@ var WorkFormComponent = React.createClass({
     var file  = form.getElementsByClassName('media-upload')[0].files[0];
     var title = form.getElementsByClassName('work-title')[0].value;
     var mediaType = form.getElementsByTagName('select')[0].value;
+    console.log('mediaType: ' + mediaType);
 
     var signPromise = this.getSignedRequest(file)
 
@@ -122,7 +123,7 @@ var WorkFormComponent = React.createClass({
             <td colSpan="3"><label for="media_type">Media Type</label> </td>
             <td colSpan="3">
               <select name="select">
-                <option value="mov">.mov</option>
+                <option value="mov">mov</option>
                 <option value="jpeg">jpeg</option>
                 <option value="gif">gif</option>
                 <option value="png">png</option>

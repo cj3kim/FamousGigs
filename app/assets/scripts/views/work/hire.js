@@ -2,6 +2,7 @@ var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
 var Surface    = require('famous/core/Surface');
+var page       = require('page');
 
 module.exports = function (user_id) {
   var hireMod = new Modifier({
