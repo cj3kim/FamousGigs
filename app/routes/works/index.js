@@ -1,3 +1,7 @@
+
+
+
+var Promise = require('bluebird');
 module.exports = function (app) {
   var Works = require('../../models/Works');
 
@@ -51,12 +55,27 @@ module.exports = function (app) {
       });
   });
 
-  app.put('/user/:user_id/work/:work_id', function (req,res) {
+  app.put('/user/:user_id/works/:work_id', function (req,res) {
 
   });
 
-  app.delete('/user/:user_id/work/:work_id', function (req,res) {
+  app.delete('/user/:user_id/works/:work_id', function (req,res) {
+    var user_id = req.params.user_id;
+    var work_id = req.params.work_id;
 
+    Works
+      .where({user_id: user_id, id: work_id })
+      .fetch()
+      .then(function (model) {
+        console.log(model);
+        return Promise.resolve(model.destroy());
+      })
+      .then(function (model) {
+        res.status(200).json(model);
+      })
+      .catch(function () {
+        res.sendStatus(500);
+      })
   });
 
 }

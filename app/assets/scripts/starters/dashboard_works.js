@@ -3,9 +3,8 @@ var ScrollView = require('famous/views/ScrollView');
 var FlexGrid = require('../views/FlexGrid');
 
 var page = require('page');
-
 var Promise = require('bluebird');
-var Work = require('../views/work');
+var Work = require('../views/work/index');
 var user = require('../models/singleton/user');
 
 var flexGrid = new FlexGrid({
@@ -32,12 +31,10 @@ scrollview.loadWorks = function () {
 
   return promise
     .then(function () {
-      //For some reason, we don't get objects instead of bb models
-
       var models = user.works.models;
-
       for (var i = 0; i < models.length; i++) {
-        var workSurface = new Work(models[i]);
+        var model = models[i];
+        var workSurface = new Work(model.get('media_type'), model, true);
         surfaces.push(workSurface);
       }
       flexGrid.sequenceFrom(surfaces);

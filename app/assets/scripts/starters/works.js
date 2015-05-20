@@ -7,13 +7,13 @@ var VideoSurface = require('famous/surfaces/VideoSurface');
 var Surface = require('famous/core/surface');
 
 var Works = require('../collections/singleton/works');
+var Work = require('../views/work/index');
 
 var React = require('react');
 var ReactSurface = require('react-surface');
 var page = require('page');
 
 var Promise = require('bluebird');
-var Work = require('../views/work');
 
 var flexGrid = new FlexGrid({
   marginTop:  20,
@@ -35,7 +35,7 @@ worksPromise
     var models = Works.models;
     for (var i = 0; i < models.length; i++) {
       var model = models[i];
-      var workSurface = Work(model);
+      var workSurface = Work(model.get('media_type'), model);
       surfaces.push(workSurface);
     }
     flexGrid.sequenceFrom(surfaces);

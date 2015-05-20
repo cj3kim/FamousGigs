@@ -6,12 +6,17 @@ var Promise = require('bluebird');
 var TableHeader = require('../../react_views/components/table_header');
 var url = require('url');
 var $ = require('zepto-browserify').$;
+var page = require('page');
 
 var WorkFormComponent = React.createClass({
   componentDidMount: function () {
     var user = require('../../models/singleton/user');
     this.user = user;
+
+    var form = React.findDOMNode(this);
+    this.progress = form.getElementsByTagName('progress')[0];
   },
+
   handleSubmit: function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -50,7 +55,7 @@ var WorkFormComponent = React.createClass({
         return Promise.resolve(workModel.save());
       })
       .then(function (model) {
-        console.log(model);
+        page.show('/dashboard/portfolio');
       })
       .catch(function (err) {
         console.debug("There was an error in WorkFormComponent");
@@ -75,6 +80,7 @@ var WorkFormComponent = React.createClass({
   },
 
   uploadToS3: function (file, signedRequest, url) {
+    var _this = this;
 
     return new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest();
@@ -95,7 +101,8 @@ var WorkFormComponent = React.createClass({
       xhr.upload.addEventListener('progress', function(e) {
         if (e.lengthComputable) {
           var percentComplete = e.loaded / e.total;
-          console.log(percentComplete);
+          var value = percentComplete * 100;
+          _this.progress.value = value;
         }
       })
       xhr.send(file.slice());
@@ -106,11 +113,11 @@ var WorkFormComponent = React.createClass({
       <form id="work-form" onSubmit={this.handleSubmit}>
         <table>
           <TableHeader amount="6" />
+
           <tr>
             <td colSpan="2"><label for="title">Title</label> </td>
             <td colSpan="4"><input className='work-title' type="text" name="title" /></td>
             </tr>
-
           <tr>
             <td colSpan="3"><label for="media_type">Media Type</label> </td>
             <td colSpan="3">
@@ -129,12 +136,12 @@ var WorkFormComponent = React.createClass({
             </tr>
 
           <tr>
-            <td colSpan="2"></td>
-            <td colSpan="2"></td>
+            <td colSpan="4"><progress value='0' max='100'></progress></td>
             <td colSpan="2">
               <button className='work-submit' type="submit">
                 <span>Add</span>
-              </button></td>
+              </button>
+              </td>
             </tr>
         </table>
       </form>
