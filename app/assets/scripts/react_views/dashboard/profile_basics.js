@@ -7,10 +7,12 @@ var ProfileBasics = React.createClass({
     var _this = this;
 
     _this.setState({ email: user.get('email')});
+
   },
 
   getInitialState: function () {
     return {
+      disabled: '',
       email: user.get('email'),
     };
   },
@@ -30,27 +32,17 @@ var ProfileBasics = React.createClass({
           <form action="">
             <table border="0">
               <tr>
-                <td><label for="name">name</label></td>
-                <td><input type="text" name="name" /></td>
+                <td><label for="name">user name</label></td>
+                <td><input type="text" name="name" disabled={this.state.disabled }/></td>
               </tr>
 
               <tr>
                 <td><label for="email">email</label></td>
-                <td><input type="text" name="email" value={email} onChange={this.handleEmailChange} /></td>
+                <td><input type="text" name="email" value={email} disabled={this.state.disabled } /></td>
               </tr>
               <tr>
                 <td><label for="password">password</label></td>
-                <td><input type="password" name="password" /></td>
-              </tr>
-
-              <tr>
-                <td><label for="phone">phone</label></td>
-                <td><input type="text" name="phone" /></td>
-              </tr>
-
-              <tr>
-                <td><label for="company">company</label> </td>
-                <td><input type="text" name="company" /></td>
+                <td><input type="password" name="password" disabled={this.state.disabled } /></td>
               </tr>
             </table>
           </form>
@@ -59,8 +51,6 @@ var ProfileBasics = React.createClass({
     );
   }
 });
-
-
 
 
 module.exports = ProfileBasics;
