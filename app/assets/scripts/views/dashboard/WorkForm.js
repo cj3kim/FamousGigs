@@ -8,7 +8,11 @@ var url = require('url');
 var $ = require('zepto-browserify').$;
 var page = require('page');
 
+var S3Mixin = require('../S3Mixin');
+
+
 var WorkFormComponent = React.createClass({
+  mixins: [S3Mixin],
   componentDidMount: function () {
     var user = require('../../models/singleton/user');
     this.user = user;
@@ -20,37 +24,19 @@ var WorkFormComponent = React.createClass({
   handleSubmit: function (e) {
     e.stopPropagation();
     e.preventDefault();
-    this.initialUpload();
-  },
 
-  initialUpload: function () {
     var _this = this;
-
-    if (file === null)
-      alert("No file selected");
-
     var form  = React.findDOMNode(this);
     var file  = form.getElementsByClassName('media-upload')[0].files[0];
     var title = form.getElementsByClassName('work-title')[0].value;
     var mediaType = form.getElementsByTagName('select')[0].value;
-    console.log('mediaType: ' + mediaType);
 
-    var signPromise = this.getSignedRequest(file)
+    var filePath = 'users/' + this.user.get('id') + '/' + mediaType + '/';
 
-    signPromise
-      .then(function (response) {
-        return Promise.resolve(_this.uploadToS3(file, response.signed_request, response.url));
-      })
-      .then(function (xhr) {
-        var parsedUrl   = url.parse(xhr.responseURL);
-        var resourceUrl = parsedUrl.protocol + '//' + parsedUrl.hostname + parsedUrl.pathname;
-
+    this.initialUpload(file, filePath)
+      .then(function (resourceUrl) {
         var workModel = new _this.user.works.model({
-          work: {
-            title: title,
-            media_type: mediaType,
-            url: resourceUrl
-          }
+          work: { title: title, media_type: mediaType, url: resourceUrl }
         });
         workModel.collection = _this.user.works;
         return Promise.resolve(workModel.save());
@@ -63,52 +49,7 @@ var WorkFormComponent = React.createClass({
         console.log(err);
       });
   },
-  getSignedRequest: function (file) {
-    var userSession = JSON.parse(sessionStorage.user);
-    console.log('getSignedRequest');
 
-    console.log('userSession.token: ' + userSession.token);
-    console.log(file);
-    console.log('file type: ' + file.type);
-
-    return Promise.resolve(
-      $.ajax({
-        type: 'GET',
-        url: '/api/sign_s3',
-        data: {file_name: file.name, file_type: file.type},
-        headers: {'Authorization' : "Bearer " + userSession.token }})
-    );
-  },
-
-  uploadToS3: function (file, signedRequest, url) {
-    var _this = this;
-
-    return new Promise(function(resolve, reject) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("PUT", signedRequest);
-      //HEADERS have to reflect the ones on the server.
-      xhr.setRequestHeader('x-amz-acl', 'public-read');
-      xhr.setRequestHeader('Content-Type', file.type);
-      xhr.setRequestHeader('Expires', 600);
-
-      xhr.onload = function () {
-        var headers = xhr.getAllResponseHeaders().toLowerCase();
-        if (xhr.status === 200)
-          resolve(xhr);
-      };
-      xhr.onerror = function () {
-        reject(xhr.error);
-      };
-      xhr.upload.addEventListener('progress', function(e) {
-        if (e.lengthComputable) {
-          var percentComplete = e.loaded / e.total;
-          var value = percentComplete * 100;
-          _this.progress.value = value;
-        }
-      })
-      xhr.send(file.slice());
-    });
-  },
   render: function () {
     return (
       <form id="work-form" onSubmit={this.handleSubmit}>
