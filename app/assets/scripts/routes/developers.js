@@ -3,9 +3,8 @@ var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
 
-var developerScrollView = require('../starters/developer_ads')();
+var developerScrollView = require('../starters/developer_ads');
 var DevProfile = require('../views/developer-details/index');
-
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
