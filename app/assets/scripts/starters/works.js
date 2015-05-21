@@ -4,8 +4,8 @@ var FlexGrid = require('../views/FlexGrid');
 var page = require('page');
 var Works = require('../collections/singleton/works');
 var Work = require('../views/work/index');
-
 var Promise = require('bluebird');
+var ContainerSurface = require('famous/surfaces/ContainerSurface');
 
 var flexGrid = new FlexGrid({
   marginTop:  20,
@@ -15,11 +15,15 @@ var flexGrid = new FlexGrid({
   itemSize: [320,500],
 });
 
+var container = new ContainerSurface();
 var scrollview = new ScrollView();
-Engine.pipe(scrollview);
+
+container.add(scrollview);
+container.pipe(scrollview);
+
 scrollview.sequenceFrom([flexGrid]);
 
-scrollview.loadWorks = function () {
+container.loadWorks = function () {
   var surfaces = [];
 
   var userId;
@@ -39,8 +43,8 @@ var worksPromise = Promise.resolve(Works.fetch());
 
 worksPromise
   .then(function () {
-    scrollview.loadWorks();
+    container.loadWorks();
   });
 
 
-module.exports = scrollview;
+module.exports = container;

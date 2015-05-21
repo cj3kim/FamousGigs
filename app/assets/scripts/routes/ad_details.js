@@ -1,4 +1,4 @@
-var Engine     = require('famous/core/Engine');
+var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var Easing     = require('famous/transitions/Easing');
 var ScrollView = require('famous/views/ScrollView');
 
@@ -8,23 +8,23 @@ var Transform  = require('famous/core/Transform');
 
 module.exports = function (page, obj, companyAds) {
   var bodyRC = obj.bodyRC;
-
   var AdDetails = require('../views/ad-details/index');
   var adDetails = new AdDetails({
     gutterCol: 30,
     gutterRow: 30,
   });
 
-  var adDetailScrollview = new ScrollView();
-
-  adDetailScrollview.sequenceFrom([adDetails]);
-  Engine.pipe(adDetailScrollview);
+  var adDetailScrollView = new ScrollView();
+  adDetailScrollView.sequenceFrom([adDetails]);
+  var container = new ContainerSurface();
+  container.add(adDetailScrollView);
+  container.pipe(adDetailScrollView);
 
   var renderNode = new RenderNode();
   var offsetMod = new Modifier({
     transform: Transform.translate(0,30,0)
   })
-  renderNode.add(offsetMod).add(adDetailScrollview);
+  renderNode.add(offsetMod).add(adDetailScrollView);
 
 
   page('/ad-details/:id', function (ctx) {

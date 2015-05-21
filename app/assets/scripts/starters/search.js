@@ -1,4 +1,5 @@
-var Engine           = require('famous/core/Engine');
+var ContainerSurface = require('famous/surfaces/ContainerSurface');
+
 var CompanyAdCollection = require('../collections/company_ads');
 var companyAds = new CompanyAdCollection;
 
@@ -14,9 +15,11 @@ var page = require('page');
 module.exports = function (navbar) {
   var searchFlexGrid = new SearchFlexGrid();
   var sfgScrollView = new ScrollView();
-
   sfgScrollView.sequenceFrom([searchFlexGrid]);
-  Engine.pipe(sfgScrollView);
+
+  var container = new ContainerSurface();
+  container.add(sfgScrollView);
+  container.pipe(sfgScrollView)
 
   var searchInput = navbar._searchInput;
   searchInput.pipe(searchFlexGrid._eventInput);
@@ -44,5 +47,5 @@ module.exports = function (navbar) {
 
 
 
-  return [searchInput, searchFlexGrid, sfgScrollView, companyAds];
+  return [searchInput, searchFlexGrid, container, companyAds];
 }

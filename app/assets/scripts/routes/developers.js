@@ -1,4 +1,4 @@
-var Engine = require('famous/core/Engine');
+var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var Easing     = require('famous/transitions/Easing');
 var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
@@ -20,16 +20,16 @@ module.exports = function (page, obj) {
 
   var devProfile = new DevProfile();
   var scrollview = new ScrollView();
+  var container = new ContainerSurface();
+  container.add(scrollview);
+  container.pipe(scrollview);
   scrollview.sequenceFrom([devProfile]);
-
-
-  Engine.pipe(scrollview);
 
   page('/developers/:id', function (ctx) {
     var id = ctx.params.id;
     var developer = developers.get(id);
 
     devProfile.update(developer);
-    bodyRC.show(scrollview);
+    bodyRC.show(container);
   });
 }
