@@ -19,10 +19,9 @@ function SidebarMenu() {
 
   var flexibleLayout = new FlexibleLayout({
     direction: 1,
-    ratios: [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
+    //ratios: [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
+    ratios: [undefined, undefined, undefined, undefined, undefined]
   });
-
-
 
   var menuHeader = new Surface({
     size: [undefined, 56],
@@ -60,23 +59,23 @@ function SidebarMenu() {
     content: "<span class='menu-item'><span class='icon flaticon-sheet3'></span><span class='copy'>Developers</span></span>",
   });
 
-  var dashboard = new Surface({
-    size: [undefined, 60],
-    classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Dashboard</span> </span>",
-  });
+  //var dashboard = new Surface({
+    //size: [undefined, 60],
+    //classes: ['sidebar-menu', 'stop-gap-div'],
+    //content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Dashboard</span> </span>",
+  //});
 
-  var register = new Surface({
-    size: [undefined, 60],
-    classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Register</span> </span>",
-  });
+  //var register = new Surface({
+    //size: [undefined, 60],
+    //classes: ['sidebar-menu', 'stop-gap-div'],
+    //content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Register</span> </span>",
+  //});
 
-  var login = new Surface({
-    size: [undefined, 60],
-    classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Login</span></span>",
-  });
+  //var login = new Surface({
+    //size: [undefined, 60],
+    //classes: ['sidebar-menu', 'stop-gap-div'],
+    //content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Login</span></span>",
+  //});
 
   works.on('click', function () {
     page.show('/');
@@ -94,17 +93,17 @@ function SidebarMenu() {
     page.show('/developers');
   });
 
-  dashboard.on('click', function () {
-    page.show('/dashboard');
-  });
+  //dashboard.on('click', function () {
+    //page.show('/dashboard');
+  //});
 
-  register.on('click', function () {
-    page.show('/registration');
-  });
+  //register.on('click', function () {
+    //page.show('/registration');
+  //});
 
-  login.on('click', function () {
-    page.show('/login')
-  });
+  //login.on('click', function () {
+    //page.show('/login')
+  //});
 
   var backButton = new Surface({
     size: [40, 40],
@@ -130,7 +129,8 @@ function SidebarMenu() {
   this._lb = lb;
 
   //make sure to update the ratios array if you add a view here
-  flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts, dashboard, register, login]);
+  //flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts, dashboard, register, login]);
+  flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts]);
 
   var mod = new Modifier({
     transform: Transform.translate(15,10,0)
