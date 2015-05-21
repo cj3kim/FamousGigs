@@ -16,7 +16,7 @@ module.exports = function (user_id) {
   });
 
   hire.on('click', function () {
-    page.show('/developer/' + user_id);
+    page.show('/developers/' + user_id);
   });
 
   var hireNode = new RenderNode();

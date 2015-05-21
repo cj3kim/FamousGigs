@@ -102,13 +102,13 @@ FlexGrid.prototype.render = function() {
 };
 
 FlexGrid.prototype.commit = function(context) {
-    var width = context.size[0];
-    var specs = [];
+  var width = context.size[0];
+  var specs = [];
 
-    if (this._cachedWidth !== width) {
+    if (this._cachedWidth !== width)
       this.resizeFlow(width);
-    }
 
+  if (this._items.length !== 0) {
     for (var i = 0; i < this._modifiers.length; i++) {
         var renderable = this._items[i].render();
 
@@ -118,8 +118,9 @@ FlexGrid.prototype.commit = function(context) {
         spec.transform = Transform.multiply4x4(spec.transform, context.transform);
         specs.push(spec);
     }
+  }
 
-    return specs;
+  return specs;
 };
 
 FlexGrid.prototype.resizeFlow = function () {

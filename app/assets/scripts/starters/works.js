@@ -25,21 +25,32 @@ var scrollview = new ScrollView();
 Engine.pipe(scrollview);
 scrollview.sequenceFrom([flexGrid]);
 
-var worksPromise = Promise.resolve(Works.fetch());
 var surfaces = [];
+flexGrid.sequenceFrom(surfaces);
+scrollview.loadWorks = function () {
+  surfaces = [];
+
+  var userId;
+  if (arguments.length > 0)
+    userId = arguments[0];
+  var models = userId ? Works.where({user_id: userId}) : Works.models;
+
+  for (var i = 0; i < models.length; i++) {
+    var model = models[i];
+    var workSurface = Work(model.get('media_type'), model);
+    surfaces.push(workSurface);
+  }
+  flexGrid.sequenceFrom(surfaces);
+  flexGrid.resizeFlow(flexGrid._cachedWidth);
+};
+
+var worksPromise = Promise.resolve(Works.fetch());
+
 
 worksPromise
   .then(function () {
-    var models = Works.models;
-    for (var i = 0; i < models.length; i++) {
-      var model = models[i];
-      var workSurface = Work(model.get('media_type'), model);
-      surfaces.push(workSurface);
-    }
-    flexGrid.sequenceFrom(surfaces);
-    flexGrid.resizeFlow(flexGrid._cachedWidth);
+    scrollview.loadWorks();
   });
 
-flexGrid.sequenceFrom(surfaces);
 
 module.exports = scrollview;

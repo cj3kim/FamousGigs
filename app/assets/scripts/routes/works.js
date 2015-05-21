@@ -9,7 +9,8 @@ module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
 
   page('/', function (ctx) {
-    var transition = {duration: 200, curve: Easing.inSine };
-    bodyRC.show(Works);
+    var transition = {duration: 300, curve: Easing.inSine };
+    Works.loadWorks();
+    bodyRC.show(Works, transition);
   });
 };

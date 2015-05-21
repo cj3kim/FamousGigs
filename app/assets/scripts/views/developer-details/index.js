@@ -21,6 +21,7 @@ function DevProfile() {
 
   this.update = function (model) {
     devHeader.update(model);
+    devContent.update(model);
   };
 };
 
