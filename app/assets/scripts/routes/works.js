@@ -10,7 +10,6 @@ module.exports = function (page, obj) {
 
   page('/', function (ctx) {
     var transition = {duration: 300, curve: Easing.inSine };
-    Works.loadWorks();
-    bodyRC.show(Works, transition);
+    bodyRC.show(Works);
   });
 };

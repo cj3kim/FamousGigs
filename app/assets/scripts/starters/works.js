@@ -1,15 +1,9 @@
 var Engine     = require('famous/core/Engine');
 var ScrollView = require('famous/views/ScrollView');
 var FlexGrid = require('../views/FlexGrid');
-var VideoSurface = require('famous/surfaces/VideoSurface');
-var Surface = require('famous/core/surface');
-
+var page = require('page');
 var Works = require('../collections/singleton/works');
 var Work = require('../views/work/index');
-
-var React = require('react');
-var ReactSurface = require('react-surface');
-var page = require('page');
 
 var Promise = require('bluebird');
 
@@ -25,10 +19,8 @@ var scrollview = new ScrollView();
 Engine.pipe(scrollview);
 scrollview.sequenceFrom([flexGrid]);
 
-var surfaces = [];
-flexGrid.sequenceFrom(surfaces);
 scrollview.loadWorks = function () {
-  surfaces = [];
+  var surfaces = [];
 
   var userId;
   if (arguments.length > 0)
@@ -41,11 +33,9 @@ scrollview.loadWorks = function () {
     surfaces.push(workSurface);
   }
   flexGrid.sequenceFrom(surfaces);
-  flexGrid.resizeFlow(flexGrid._cachedWidth);
 };
 
 var worksPromise = Promise.resolve(Works.fetch());
-
 
 worksPromise
   .then(function () {

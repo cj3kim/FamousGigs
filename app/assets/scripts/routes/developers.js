@@ -11,7 +11,9 @@ module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
 
   page('/developers', function (ctx) {
-    bodyRC.show(developerScrollView);
+    bodyRC.show(developerScrollView, function () {
+      developerScrollView.loadDevs();
+    });
   });
 
   var devProfile = new DevProfile();

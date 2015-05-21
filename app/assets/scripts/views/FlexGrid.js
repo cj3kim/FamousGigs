@@ -104,23 +104,25 @@ FlexGrid.prototype.render = function() {
 FlexGrid.prototype.commit = function(context) {
   var width = context.size[0];
   var specs = [];
+  if (this._items !== undefined) {
+    if (this._items.length > 0 ) {
 
-    if (this._cachedWidth !== width)
-      this.resizeFlow(width);
+      if (this._cachedWidth !== width)
+        this.resizeFlow(width);
 
-  if (this._items.length !== 0) {
-    for (var i = 0; i < this._modifiers.length; i++) {
-        var renderable = this._items[i].render();
+      for (var i = 0; i < this._modifiers.length; i++) {
+          var renderable = this._items[i].render();
 
-        var spec = this._modifiers[i].modify({
-          target: renderable
-        });
-        spec.transform = Transform.multiply4x4(spec.transform, context.transform);
-        specs.push(spec);
+          var spec = this._modifiers[i].modify({
+            target: renderable
+          });
+          spec.transform = Transform.multiply4x4(spec.transform, context.transform);
+          specs.push(spec);
+      }
     }
   }
-
   return specs;
+
 };
 
 FlexGrid.prototype.resizeFlow = function () {

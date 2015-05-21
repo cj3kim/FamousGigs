@@ -13,7 +13,9 @@ var DeveloperAdComponent = React.createClass({
     };
     return (
       <div className="developer-ad stop-gap-div"> 
-        <h3> { this.props.full_name || this.props.email }</h3>
+        <div className="overlay">
+          <h3>{ this.props.full_name || this.props.email }</h3>
+        </div>
         <img src={ this.props.avatar_url }/>
       </div>
     );
@@ -26,7 +28,6 @@ module.exports = function (model) {
   });
 
   developerAd.on('click', function (e) {
-    console.log('dev ad clicked');
     page.show('/developers/' + model.get('id'));
   });
 
