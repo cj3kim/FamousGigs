@@ -1,12 +1,21 @@
 var React        = require('react');
 var ReactSurface = require('react-surface');
+var User = require('../../models/singleton/user');
 
 var AvatarComponent = React.createClass({
+  componentDidMount: function () {
+  },
+
+  getInitialState: function () {
+    return {
+      avatarUrl: User.get('avatar_url'),
+    };
+  },
   render: function () {
     return (
       <div className='avatar-container'>
         <div className='avatar'>
-          <span className='flaticon-user91'> </span>
+          <img src={this.state.avatarUrl} />
         </div>
 
         <span className='change-avatar'>Change avatar</span>
