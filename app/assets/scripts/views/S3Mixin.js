@@ -21,7 +21,7 @@ var S3Mixin = {
   },
 
   getSignedRequest: function (file, filePath) {
-    var userSession = JSON.parse(window.sessionStorage.user);
+    var userSession = JSON.parse(window.sessionStorage.token_info);
 
     return Promise.resolve(
       $.ajax({
