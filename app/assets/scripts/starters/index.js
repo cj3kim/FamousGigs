@@ -11,7 +11,7 @@ var NotificationBox  = require('../views/notification/index');
 var LightBox         = require('famous/views/LightBox');
 
 module.exports = function (mainContext) {
-  var navbar = require('../views/nav_bar');
+  var navbar = require('../views/MainNavbar');
   var headerFooterLayout = new HeaderFooterLayout({headerSize: 57});
   var navbarMod = new StateModifier({transform: Transform.translate(0,0,1) });
   headerFooterLayout.header.add(navbarMod).add(navbar);
