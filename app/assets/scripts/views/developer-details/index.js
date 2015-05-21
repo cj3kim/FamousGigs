@@ -13,8 +13,15 @@ function DevProfile() {
     transform: Transform.translate(0, headerHeight, 0)
   });
 
-  this._node.add(contentMod).add(new DevContent());
-  this._node.add(new DevHeader(headerHeight));
+  var devHeader = new DevHeader(headerHeight);
+  var devContent = new DevContent();
+
+  this._node.add(contentMod).add(devContent);
+  this._node.add(devHeader);
+
+  this.update = function (model) {
+    devHeader.update(model);
+  };
 };
 
 DevProfile.prototype = Object.create(View.prototype);

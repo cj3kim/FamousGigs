@@ -2,6 +2,7 @@
 var Surface = require('famous/core/surface');
 var React = require('react');
 var ReactSurface = require('react-surface');
+var page = require('page');
 var DeveloperAdComponent = React.createClass({
   render: function () {
     var _this = this;
@@ -22,6 +23,11 @@ var DeveloperAdComponent = React.createClass({
 module.exports = function (model) {
   var developerAd = new ReactSurface({
     content: <DeveloperAdComponent { ...model.attributes } />
+  });
+
+  developerAd.on('click', function (e) {
+    console.log('dev ad clicked');
+    page.show('/developers/' + model.get('id'));
   });
 
   return developerAd;

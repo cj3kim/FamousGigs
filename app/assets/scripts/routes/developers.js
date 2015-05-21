@@ -5,19 +5,22 @@ var Transform  = require('famous/core/Transform');
 
 var developerScrollView = require('../starters/developer_ads');
 var DevProfile = require('../views/developer-details/index');
+var developers = require('../collections/singleton/developers');
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
 
   page('/developers', function (ctx) {
-
     bodyRC.show(developerScrollView);
   });
 
   var devProfile = new DevProfile();
 
-  page('/developer/:id', function (ctx) {
+  page('/developers/:id', function (ctx) {
+    var id = ctx.params.id;
+    var developer = developers.get(id);
 
+    devProfile.update(developer);
     bodyRC.show(devProfile);
   });
 }

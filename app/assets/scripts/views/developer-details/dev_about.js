@@ -40,17 +40,24 @@ function DevAbout () {
   var mod = new Modifier({
     transform: Transform.translate(400, 100,0)
   });
+  console.log('DevAboutComponent');
+  console.log(devAbout);
+  var devAbout =  <DevAboutComponent />;
 
   var surface = new ReactSurface({
     size: [200, true],
     classes: ['rounded-corners'],
-    content: <DevAboutComponent />,
+    content: devAbout,
     properties: {
       backgroundColor: 'white'
     }
   });
 
   this._node.add(mod).add(surface);
+
+  this.update = function (model) {
+
+  };
 }
 
 DevAbout.prototype = Object.create(View.prototype);

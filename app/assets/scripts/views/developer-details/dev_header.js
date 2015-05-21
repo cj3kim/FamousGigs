@@ -8,9 +8,9 @@ var DevHeaderComponent = React.createClass({
   render: function () {
     return (
       <div className='dev-header stop-gap-div'>
-        <img  className='profile-picture' src="/public/images/cats.jpg" alt="cats" />
+        <img  className='profile-picture' src={this.props.avatar_url} />
         <div className='company-name'>
-          <span>WunderCode</span>
+          <span>{ this.props.email || this.props.full_name }</span>
         </div>
         <ul className='company-info'>
           <li> San Francisco, CA </li>
@@ -28,13 +28,15 @@ function DevHeader(height)  {
 
   var surface = new ReactSurface({
     size: [undefined, height],
-    content: <DevHeaderComponent />,
     properties: {
       backgroundColor: 'white'
     }
   });
 
   this._node.add(surface);
+  this.update = function (model) {
+    surface.setContent(<DevHeaderComponent {...model.attributes }/>);
+  };
 }
 
 DevHeader.prototype = Object.create(View.prototype);
