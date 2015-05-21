@@ -36,13 +36,13 @@ var User = Backbone.RelationalModel.extend({
     var sessionUser = window.sessionStorage.user;
     if (sessionUser) {
       var user = JSON.parse(sessionStorage.user);
-      this.set({id: user.id, email: user.email });
+      this.set(user);
     }
   },
   verifySession: function () {
     var userSession;
     if (sessionStorage.user) {
-      userSession = JSON.parse(sessionStorage.user);
+      userSession = JSON.parse(sessionStorage.token_info);
 
       return Promise.resolve(
         $.ajax({
@@ -54,6 +54,7 @@ var User = Backbone.RelationalModel.extend({
       throw new Error("You're not logged in.")
     }
   },
+
   login: function (postData) {
     var _this = this;
     return  Promise.resolve(
@@ -64,12 +65,13 @@ var User = Backbone.RelationalModel.extend({
         contentType: 'application/json',
       })
     )
-    .then(function (userData) {
-      sessionStorage.setItem("user", JSON.stringify(userData));
-      _this.set({id: userData.id, email: userData.email});
+    .then(function (data) {
+      sessionStorage.setItem("user", JSON.stringify(data.user));
+      sessionStorage.setItem("token_info", JSON.stringify(data.token_info));
+      _this.set(data.user);
 
-      return Promise.resolve(userData);
-    })
+      return Promise.resolve(_this);
+    });
   },
   register: function (postData) {
     var _this = this;
@@ -82,9 +84,9 @@ var User = Backbone.RelationalModel.extend({
       })
     );
     promise.then(function (userData) {
-      sessionStorage.setItem("user", JSON.stringify(userData));
-      _this.set({id: userData.id, email: userData.email});
-
+      sessionStorage.setItem("user", JSON.stringify(data.user));
+      sessionStorage.setItem("token_info", JSON.stringify(data.token_info));
+      _this.set(data.user);
       return Promise.resolve(userData);
     });
     return promise;

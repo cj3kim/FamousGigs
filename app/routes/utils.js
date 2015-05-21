@@ -36,28 +36,32 @@ module.exports.fetch = function (headers) {
 };
 
 module.exports.create = function (user, req, res, next) {
-  debug("Create token");
+  debug("Create atoken");
   if (_.isEmpty(user))
     return next(new Error('User data cannot be empty.'));
 
   var id = user.get('id');
+  var token = jsonwebtoken.sign({id: id }, JWT_SECRET_KEY, {
+    expiresInMinutes: TOKEN_EXPIRATION
+  });
+  var decoded = jsonwebtoken.decode(token);
+
   var data = {
-      id:    id,
-      email: user.get('email'),
-      token: jsonwebtoken.sign({id: id }, JWT_SECRET_KEY, {
-          expiresInMinutes: TOKEN_EXPIRATION
-      })
+    id: id,
+    user: user.attributes,
+    token_info: {
+      token: token,
+      token_exp: decoded.exp,
+      token_iat:decoded.iat
+    }
   };
-  var decoded = jsonwebtoken.decode(data.token);
-  data.token_exp = decoded.exp;
-  data.token_iat = decoded.iat;
 
-  debug("Token generated for user: %s, token: %s", data.username, data.token);
+  debug("Token generated for user: %s, token: %s", 'user', token);
 
-  client.set(data.token, JSON.stringify(data), function (err, reply) {
+  client.set(token, JSON.stringify(data), function (err, reply) {
     if (err) return next(new Error(err));
     if (reply) {
-      client.expire(data.token, TOKEN_EXPIRATION_SEC, function (err, reply) {
+      client.expire(token, TOKEN_EXPIRATION_SEC, function (err, reply) {
         if (err)
           return next(new Error("Can not set the expire value for the token key"));
 
@@ -93,7 +97,7 @@ module.exports.retrieve = function (id, done) {
       var data = JSON.parse(reply);
       debug("User data fetched from redis store for user: %s", data.username);
 
-      if (_.isEqual(data.token, id)) {
+      if (_.isEqual(data.token_info.token, id)) {
         return done(null, data);
       } else {
         return done(new Error("token_doesnt_exist"), {
