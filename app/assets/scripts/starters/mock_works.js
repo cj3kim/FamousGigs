@@ -1,10 +1,10 @@
 var Engine     = require('famous/core/Engine');
 var Developers = require('../collections/singleton/developers');
 var DeveloperAdComponent = require('../react_views/components/developer_ad');
-var ScrollView = require('famous/views/ScrollView');
+var ScrollView = require('famous/views/Scrollview');
 var FlexGrid = require('../views/FlexGrid');
 var VideoSurface = require('famous/surfaces/VideoSurface');
-var Surface = require('famous/core/surface');
+var Surface = require('famous/core/Surface');
 
 var React = require('react');
 var ReactSurface = require('react-surface');

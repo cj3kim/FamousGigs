@@ -1,7 +1,7 @@
 
 var View = require('famous/core/View');
 var ViewSequence = require('famous/core/ViewSequence');
-var LightBox = require('famous/views/LightBox');
+var LightBox = require('famous/views/Lightbox');
 var Transform = require('famous/core/Transform');
 
 var RenderController = require('famous/views/RenderController');

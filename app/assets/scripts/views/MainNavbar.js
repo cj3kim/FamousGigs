@@ -1,4 +1,4 @@
-var Surface = require('famous/core/surface');
+var Surface = require('famous/core/Surface');
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var FlexNavbar = require('./FlexNavbar');
 var page = require('page');

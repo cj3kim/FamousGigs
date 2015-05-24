@@ -8,7 +8,7 @@ var RenderController = require('famous/views/RenderController');
 var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var Easing           = require('famous/transitions/Easing');
 var NotificationBox  = require('../views/notification/index');
-var LightBox         = require('famous/views/LightBox');
+var LightBox         = require('famous/views/Lightbox');
 
 module.exports = function (mainContext) {
   var navbar = require('../views/MainNavbar');

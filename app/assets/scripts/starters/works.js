@@ -1,5 +1,5 @@
 var Engine     = require('famous/core/Engine');
-var ScrollView = require('famous/views/ScrollView');
+var ScrollView = require('famous/views/Scrollview');
 var FlexGrid = require('../views/FlexGrid');
 var page = require('page');
 var Works = require('../collections/singleton/works');

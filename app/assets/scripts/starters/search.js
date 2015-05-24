@@ -5,7 +5,7 @@ var companyAds = new CompanyAdCollection;
 
 var CompanyAdComponent = require('../react_views/components/company_ad');
 
-var ScrollView = require('famous/views/ScrollView');
+var ScrollView = require('famous/views/Scrollview');
 var SearchFlexGrid = require('../views/SearchFlexGrid');
 
 var React = require('react');

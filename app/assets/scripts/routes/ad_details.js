@@ -1,6 +1,6 @@
 var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var Easing     = require('famous/transitions/Easing');
-var ScrollView = require('famous/views/ScrollView');
+var ScrollView = require('famous/views/Scrollview');
 
 var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');

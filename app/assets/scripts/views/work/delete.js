@@ -1,4 +1,4 @@
-var Surface = require('famous/core/surface');
+var Surface = require('famous/core/Surface');
 var RenderNode = require('famous/core/RenderNode');
 var Modifier = require('famous/core/Modifier');
 var Transform = require('famous/core/Transform');

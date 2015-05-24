@@ -3,7 +3,7 @@ var Surface = require('famous/core/Surface');
 var Modifier = require('famous/core/Modifier');
 var View = require('famous/core/View');
 var Easing = require('famous/transitions/Easing');
-var LightBox = require('famous/views/LightBox');
+var LightBox = require('famous/views/Lightbox');
 
 var Transform = require('famous/core/Transform');
 var Modifier = require('famous/core/Modifier');

@@ -1,5 +1,5 @@
 
-var Surface = require('famous/core/surface');
+var Surface = require('famous/core/Surface');
 var React = require('react');
 var ReactSurface = require('react-surface');
 var page = require('page');

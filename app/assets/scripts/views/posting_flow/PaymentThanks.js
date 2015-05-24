@@ -1,4 +1,4 @@
-var View = require('famous/core/view');
+var View = require('famous/core/View');
 var React = require('react');
 var ReactSurface = require('react-surface');
 

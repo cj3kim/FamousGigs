@@ -3,7 +3,7 @@ var Modifier  = require('famous/core/Modifier');
 var Easing    = require('famous/transitions/Easing');
 
 
-var LightBox         = require('famous/views/LightBox');
+var LightBox         = require('famous/views/Lightbox');
 var FlexibleLayout = require('famous/views/FlexibleLayout');
 
 var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');

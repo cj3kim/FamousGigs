@@ -3,7 +3,7 @@ var Easing     = require('famous/transitions/Easing');
 var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
-var ScrollView = require('famous/views/ScrollView');
+var ScrollView = require('famous/views/Scrollview');
 
 var developerScrollView = require('../starters/developer_ads');
 var DevProfile = require('../views/developer-details/index');
