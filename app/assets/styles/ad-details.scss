@@ -1,4 +1,38 @@
+
+div.ad-details {
+  div.col {
+    float: none;
+  }
+  @media (max-width: 700px) {
+    div.col {
+      float: left;
+    }
+  }
+}
+
+
+
 div.ad-information {
+
+  img.company-log {
+    width:  265px;
+    height: 136px;
+    background-color: #0d283e;
+  }
+
+  div.apply-now-btn{
+    width: 233px;
+    height: 50px;
+    border-radius: 2.5%;
+    text-align: 'center';
+    background-color: #3b9eb7;
+
+    span {
+      font-family: 'Raleway, serif';
+      color: white;
+    }
+  }
+
   div.details, div.contact {
     margin: 10px 0px 10px 0px;
   }
@@ -30,20 +64,6 @@ div.ad-information {
         font-size: 14px;
         font-weight: 400;
       }
-    }
-  }
-
-}
-
-div.apply-now {
-  .apply-btn {
-    width: 233px;
-    height: 50px;
-    border-radius: 2.5%;
-
-    span {
-      background-color: #3b9eb7;
-      color: white;
     }
   }
 }

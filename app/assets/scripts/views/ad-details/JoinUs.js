@@ -3,7 +3,7 @@ var ReactSurface = require('react-surface');
 var FormContent   = require('../../react_views/form_content');
 var TableHeader = require('../../react_views/components/table_header');
 
-var JoinUsReact = React.createClass({
+var JoinUsComponent = React.createClass({
   render: function () {
     return (
       <form id='email-form'>
@@ -30,12 +30,7 @@ var JoinUsReact = React.createClass({
 
 var settings = {
   headerName: "Developer Signup",
-  reactClass: JoinUsReact
+  reactClass: JoinUsComponent
 };
 
-var JoinUs = new ReactSurface({
-  classes: ['rounded-corners'],
-  content: <FormContent  {...settings} />
-});
-
-module.exports = JoinUs;
+module.exports = JoinUsComponent;
