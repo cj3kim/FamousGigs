@@ -62,7 +62,7 @@ require('./app/routes/company_ads/index')(app);
 require('./app/routes/developers/index')(app);
 require('./app/routes/works/index')(app);
 
-var port = 1337;
+var port = process.env.NODE_ENV === 'development' ? 1337 : 80;
 console.log('Starting server at port ' + port + '.');
 
 app.listen(port);
