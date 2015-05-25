@@ -6,9 +6,10 @@ var FormContent = React.createClass({
   render: function () {
     var ReactClass = this.props.reactClass; 
     var headerName = this.props.headerName;
+    var id = this.props.id ? this.props.id : "";
 
     return (
-      <div className="form-content stop-gap-div">
+      <div id={id} className="form-content stop-gap-div">
         <ContentHeader headerName={ headerName }/>
         <div className="content-body"> 
           <ReactClass {...this.props}/>

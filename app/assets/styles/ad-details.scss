@@ -1,40 +1,92 @@
 
+$COL_ONE_WIDTH: 500px;
+$COL_TWO_WIDTH: 260px;
+$MOBILE_WIDTH: 300px;
 div.ad-details {
-  div.col {
-    float: none;
-  }
-  @media (max-width: 700px) {
+  height: 100%;
+  overflow-y: scroll !important;
+  padding-top: 30px;
+  margin: 0px auto;
+
+  @media (min-width: 701px) {
+    width: 800px;
     div.col {
       float: left;
+      div.company-ad {
+        width: 480px;
+      }
+    }
+
+    div.one {
+      width: $COL_ONE_WIDTH;
+    }
+
+    div.two {
+      width: $COL_TWO_WIDTH;
+      margin-left: 20px;
     }
   }
+
+  @media (max-width: 700px) {
+    /*width: 300px;*/
+    div.col {
+      margin: 0 auto;
+      float: none;
+      div.company-ad {
+        width: 92.5%;
+        padding: 3.75%;
+      }
+    }
+    div.one {
+      width: $MOBILE_WIDTH;
+    }
+    div.two {
+      margin-top: 20px;
+      width: $MOBILE_WIDTH;
+    }
+
+  }
+
+  div.company-ad {
+    height: auto;
+  }
+
+
 }
 
 
-
 div.ad-information {
+  width: 100%;
+  height: auto !important;
+  background-color: white;
+  border-radius: 2.5%;
+  overflow: hidden;
 
-  img.company-log {
-    width:  265px;
-    height: 136px;
+  img.company-logo {
+    width:  100%;
+    height: auto;
     background-color: #0d283e;
   }
 
   div.apply-now-btn{
-    width: 233px;
-    height: 50px;
+    width: 210px;
+    height: 40px;
+    margin: 10px auto;
+    padding: 10px 10px 0px 10px;
     border-radius: 2.5%;
-    text-align: 'center';
     background-color: #3b9eb7;
 
+    text-align: center;
     span {
-      font-family: 'Raleway, serif';
       color: white;
+      font-size: 24px;
+      font-weight: 500;
     }
   }
 
   div.details, div.contact {
     margin: 10px 0px 10px 0px;
+    padding: 0 10 0 10;
   }
   ul {
     width: 100%;

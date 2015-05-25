@@ -27,8 +27,12 @@ module.exports = function (navbar) {
   var promise = companyAds.fetch();
   promise.done(function (models) {
     function genAd(model) {
+      model.frontPage = true;
       var adSurface = new ReactSurface({
         classes: ['company-ad'],
+        properties: {
+          overflow: 'hidden'
+        },
         content: <CompanyAdComponent {...model} />
       });
 

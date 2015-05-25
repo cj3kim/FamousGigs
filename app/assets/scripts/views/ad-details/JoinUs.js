@@ -17,9 +17,8 @@ var JoinUsComponent = React.createClass({
             <td colSpan="6"> <input type='text' /> </td>
           </tr>
           <tr>
-            <td colSpan="2"></td>
-            <td colSpan="2"></td>
-            <td colSpan="2"> <button> <span>Sign Up </span></button> </td>
+            <td colSpan="3"></td>
+            <td colSpan="3"> <button> <span>Sign Up </span></button> </td>
           </tr>
         </table>
       </form>

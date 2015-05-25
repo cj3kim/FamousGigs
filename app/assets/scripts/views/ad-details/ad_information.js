@@ -5,11 +5,11 @@ var ReactSurface = require('react-surface');
 var AdInformation = React.createClass({
   render: function () {
     return (
-      <div className='ad-information stop-gap-div'>
+      <div className='ad-information'>
         <img className='company-logo' src='/public/images/cats.jpg'/>
 
         <div className='apply-now-btn'>
-          APPLY
+          <span>APPLY</span>
         </div>
 
         <div className='details'> 

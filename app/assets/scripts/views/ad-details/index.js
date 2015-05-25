@@ -9,19 +9,21 @@ var FormContent   = require('../../react_views/form_content');
 
 var settings = {
   headerName: "Developer Signup",
-  reactClass: JoinUs
+  reactClass: JoinUs,
+  id: 'developer-signup'
 };
 
 var AdDetailsComponent = React.createClass({
   render: function () {
     return (
-      <div className='ad-details stop-gap-div'>
-        <div className='col'>
+      <div className='ad-details'>
+        <div className='col one'>
           <CompanyAd { ...this.props}/>
         </div>
 
-        <div className='col'>
+        <div className='col two'>
           <AdInformation {...this.props }/>
+
           <FormContent { ...settings}/>
         </div>
       </div>
@@ -45,7 +47,8 @@ AdDetails.prototype.initialize = function () {
   var props = {
     description: "",
     title: "",
-    job_location: ""
+    job_location: "",
+    setClass: true
   };
   var surface = new ReactSurface({
     content: <AdDetailsComponent { ...props }/> 
@@ -57,7 +60,9 @@ AdDetails.prototype.initialize = function () {
 AdDetails.prototype.setupEventListeners = function () {
   var _this = this;
   this._eventInput.on('reset-ad-details', function (model) {
-    _this.surface.setContent(<AdDetailsComponent { ...model.attributes } />);
+    var attributes = model.attributes;
+    attributes.setClass = true;
+    _this.surface.setContent(<AdDetailsComponent { ...attributes } />);
   });
 };
 
