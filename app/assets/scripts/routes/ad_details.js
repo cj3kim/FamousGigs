@@ -14,18 +14,13 @@ module.exports = function (page, obj, companyAds) {
     gutterRow: 30,
   });
 
+  var offsetMod = new Modifier({ transform: Transform.translate(0,30,0) });
+
   var adDetailScrollView = new ScrollView();
   adDetailScrollView.sequenceFrom([adDetails]);
   var container = new ContainerSurface();
-  container.add(adDetailScrollView);
+  container.add(offsetMod).add(adDetailScrollView);
   container.pipe(adDetailScrollView);
-
-  var renderNode = new RenderNode();
-  var offsetMod = new Modifier({
-    transform: Transform.translate(0,30,0)
-  })
-  renderNode.add(offsetMod).add(adDetailScrollView);
-
 
   page('/ad-details/:id', function (ctx) {
     var id = ctx.params.id;
@@ -33,6 +28,6 @@ module.exports = function (page, obj, companyAds) {
     adDetails.trigger('reset-ad-details', ad);
 
     var transition = {duration: 200, curve: Easing.inSine };
-    bodyRC.show(renderNode, transition);
+    bodyRC.show(container, transition);
   });
 };

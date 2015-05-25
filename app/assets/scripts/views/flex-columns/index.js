@@ -87,69 +87,75 @@ FlexColumns.prototype.resizeFlow = function (contextWidth) {
   }
 };
 
-FlexColumns.prototype.mobileFlow = function (contextWidth) {
+
+function adCheck(node, size) {
+  var nodeHeight
+  if (node.ad) {
+    var element = node.ad._element
+    nodeHeight = element ? element.offsetHeight : size[1];
+  } else {
+    nodeHeight = size[1];
+  }
+  return nodeHeight;
+};
+
+FlexColumns.prototype.createMod = function (colObj, rowIndex, position, size, node) {
+  if (colObj.mods[rowIndex] === undefined ) {
+    var transitionObj = _createState.call(this, position, size);
+    var mod = new Modifier(transitionObj);
+    mod._node = node;
+
+    colObj.mods[rowIndex] = mod;
+    colObj.states[rowIndex] = transitionObj;
+    this._mods.push(mod);
+  }
+
+};
+
+FlexColumns.prototype.iterator = function (contextWidth, computePosition, mobile) {
   var _this = this;
-  var yColOffset = 0;
+
+  var ColOffset = 0;
+  var RowOffset = 0;
+
   //Iterate through each column
   _.each(_this._cols, function (colObj, colIndex) {
     //Iterate through each row/node
     var nodes = colObj.nodes;
-    var yRowOffset = _this.options.marginTop;
 
+    RowOffset = mobile ? RowOffset : 0;
     _.each(nodes, function (node, rowIndex) {
       var size = colObj.sizes[rowIndex];
-      var nodeHeight = size[1];
-      var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, size, contextWidth);
+      var nodeHeight = adCheck(node, size);
 
-      if (colObj.mods[rowIndex] === undefined ) {
-        var transitionObj = _createState.call(_this, position, size);
-        var mod = new Modifier(transitionObj);
-        mod._node = node;
+      var newSize = [null, null];
+      newSize[0] = mobile ? _this.options.mobileWidth : size[0];
+      newSize[1] = nodeHeight;
 
-        colObj.mods[rowIndex] = mod;
-        colObj.states[rowIndex] = transitionObj;
-        _this._mods.push(mod);
-      } 
-      var mobileSize = [_this.options.mobileWidth, size[1]];
-      var position = Calculations.computeMobilePosition.call(_this, colIndex, rowIndex, yColOffset, yRowOffset, mobileSize, contextWidth);
-      _animateModifier.call(_this, colIndex, rowIndex, position, mobileSize);
-      yRowOffset += nodeHeight;
+      var position = computePosition.call(_this, colIndex, rowIndex, ColOffset, RowOffset, newSize, contextWidth, nodeHeight);
+
+      _this.createMod.call(_this, colObj, rowIndex, position, size, node);
+
+      if (size[1] === true) newSize[1] = true;
+      _animateModifier.call(_this, colIndex, rowIndex, position, newSize);
+      RowOffset += nodeHeight;
     });
-
-    yColOffset += Calculations.computeColHeight(colObj.states);
+    ColOffset += mobile ? Calculations.computeColHeight(colObj.states) : colObj.initialWidth;
   });
 };
 
+FlexColumns.prototype.mobileFlow = function (contextWidth) {
+  var computePosition = function (colIndex, rowIndex, yColOffset, yRowOffset, size, contextWidth, nodeHeight) {
+    var mobileSize = [this.options.mobileWidth, nodeHeight];
+    var position = Calculations.computeMobilePosition.call(this, colIndex, rowIndex, yColOffset, yRowOffset, mobileSize, contextWidth);
+    return position;
+  }
+
+  this.iterator(contextWidth, computePosition, true);
+};
+
 FlexColumns.prototype.desktopFlow = function (contextWidth) {
-  var _this = this;
-
-  var xColOffset = 0;
-  // Iterate through each column
-  _.each(_this._cols, function (colObj, colIndex) {
-    var nodes = colObj.nodes;
-    var yRowOffset = _this.options.marginTop;
-
-    // Iterate through each row/node
-    _.each(nodes, function (node, rowIndex) {
-      var size     = colObj.sizes[rowIndex];
-      var position = Calculations.computeDesktopPosition.call(_this, colIndex, rowIndex, xColOffset, yRowOffset, size, contextWidth)
-      var nodeHeight = size[1];
-
-      if (colObj.mods[rowIndex] === undefined ) {
-        var transitionObj = _createState.call(_this, position, size);
-        var mod = new Modifier(transitionObj);
-        mod._node = node;
-
-        colObj.mods[rowIndex] = mod;
-        colObj.states[rowIndex] = transitionObj;
-        _this._mods.push(mod);
-      } 
-
-      _animateModifier.call(_this, colIndex, rowIndex, position, size);
-      yRowOffset += nodeHeight;
-    });
-    xColOffset += colObj.initialWidth;
-  });
+  this.iterator(contextWidth, Calculations.computeDesktopPosition, false);
 };
 
 FlexColumns.prototype.render = function () {

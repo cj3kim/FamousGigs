@@ -20,18 +20,6 @@ module.exports = function (mainContext) {
     overlap: true
   });
 
-  //var lb = new LightBox({
-    //inTransform:   Transform.translate(-500,0,0),
-    //outTransform:  Transform.translate(500,0,0),
-    //inTransition:  {duration: 500, curve: Easing.inSine },
-    //outTransition: {duration: 500, curve: Easing.outSine },
-    //inAlign:   [0,0],
-    //outAlign:  [0,0],
-    //showAlign: [0,0],
-    //showOrigin:[0,0]
-  //});
-
-
   headerFooterLayout.content.add(bodyRC);
   var notificationBox = NotificationBox();
   headerFooterLayout.content.add(notificationBox);

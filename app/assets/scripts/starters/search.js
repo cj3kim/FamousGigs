@@ -45,7 +45,5 @@ module.exports = function (navbar) {
     }
   });
 
-
-
   return [searchInput, searchFlexGrid, container, companyAds];
 }
