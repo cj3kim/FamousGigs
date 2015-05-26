@@ -34,7 +34,7 @@ function CompanyDetails () {
   });
 
   this.createCol(600);
-  this.addColNode(0, companyDetailsForm, [600, 620])
+  this.addColNode(0, companyDetailsForm, [600, true])
 }
 
 CompanyDetails.prototype = Object.create(FlexColumns.prototype);

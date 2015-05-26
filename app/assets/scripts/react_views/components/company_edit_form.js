@@ -1,40 +1,35 @@
 var React = require('react');
-var Quill = require('quill');
 var Toolbar = require('./toolbar');
 var TableHeader = require('./table_header');
 var NextButton = require('./next_button');
 
 var $ = require('zepto-browserify').$;
 var serializeObject = require('./SerializeObject');
+var S3Mixin = require('../../views/S3Mixin');
+var Dropzone = require('react-dropzone');
 
 var CompanyDetails = React.createClass({
+  mixins: [S3Mixin],
+
   componentDidMount: function () {
     var _this = this;
 
     var form = React.findDOMNode(this);
+    this.progress = form.getElementsByTagName('progress')[0];
+    this.resourceUrl = "";
+
     var $form = $(form);
-
-    var div = form.getElementsByClassName('quill-ad-form')[0];
-    var fullEditor = new Quill(div, {
-      styles: {
-        '.ql-editor': {
-          'font-family': "Helvetica, 'Arial', san-serif;",
-        }
-      },
-      theme: 'snow'
-    });
-
+    this.$form = $form;
     $form.on('next-view', function (event) {
-      var data = _this.retrieveFormData($form, fullEditor);
+      var data = _this.retrieveFormData($form);
+      data.logo_url = _this.resourceUrl;
       event.data = data;
       //we continue to let the event bubble up
     });
   },
 
-  retrieveFormData: function ($form, quillEditor) {
+  retrieveFormData: function ($form) {
     var data = serializeObject($form);
-    var html = quillEditor.getHTML();
-    data.additional_notes = html;
     data = this.cleanFormData(data);
 
     return data;
@@ -45,9 +40,28 @@ var CompanyDetails = React.createClass({
     return data;
   },
 
+  onDrop: function (files) {
+    var _this = this;
+    var file = files[0];
+    var filePath = "company-ads/logos/";
+
+    this.initialUpload(file, filePath)
+      .then(function (resourceUrl) {
+        _this.resourceUrl = resourceUrl;
+        var $image = _this.$form.find('#dropzone-image');
+        var image = $image[0];
+        image.src = resourceUrl;
+        $image.show();
+        _this.$form.find('.dropzone-message').hide();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  },
+
   render: function () {
     return (
-      <form>
+      <form id='company-edit-form'>
         <table border="0">
           <TableHeader amount={6} />
 
@@ -72,15 +86,25 @@ var CompanyDetails = React.createClass({
           </tr>
 
           <tr>
-            <td colSpan="6"><label>Additional Notes</label></td>
-          </tr>
-
-          <tr className='quill-row'>
-            <td colSpan="6" className='quill-ad-column'><div className='quill-ad-form'></div></td>
+            <td colSpan="2"><label>Logo Upload</label></td>
+            <td colSpan="4"><progress value="0" max="100"></progress></td>
           </tr>
 
           <tr>
-            <td colSpan="2">  </td>
+            <td colSpan="6">
+              <Dropzone onDrop={this.onDrop} style={{width: '100%', height: '150px', border: '1px dotted #41aec2', marginTop: '10px'}} >
+                <div className='dropzone-message'>
+                  Drop your logo here, or click to select from your computer. 
+                  </div>
+
+                <img id="dropzone-image" style={{ display: 'none' }} />
+
+              </Dropzone>
+            </td>
+          </tr>
+
+          <tr>
+            <td colSpan="2"> </td>
             <td colSpan="2"> </td>
             <td colSpan="2"> <NextButton /> </td>
           </tr>

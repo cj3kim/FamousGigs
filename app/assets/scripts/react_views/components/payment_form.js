@@ -54,11 +54,10 @@ var PaymentForm = React.createClass({
             </tr>
 
           <tr>
-            <td colSpan="2"></td>
-            <td colSpan="2"></td>
-            <td colSpan="2">
+            <td colSpan="3"></td>
+            <td colSpan="3">
               <button className='pay-btn' type="submit">
-                <span> Pay $XX </span>
+                <span> Complete Post </span>
               </button></td>
             </tr>
         </table>
