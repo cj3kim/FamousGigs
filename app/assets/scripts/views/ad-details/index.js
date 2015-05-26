@@ -59,8 +59,9 @@ AdDetails.prototype.initialize = function () {
 
 AdDetails.prototype.setupEventListeners = function () {
   var _this = this;
+  var attributes;
   this._eventInput.on('reset-ad-details', function (model) {
-    var attributes = model.attributes;
+    attributes = model.attributes;
     attributes.setClass = true;
     _this.surface.setContent(<AdDetailsComponent { ...attributes } />);
   });
