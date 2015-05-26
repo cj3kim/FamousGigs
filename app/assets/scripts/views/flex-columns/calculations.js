@@ -32,7 +32,7 @@ module.exports = {
     //TODO add midAlign computations to x here.
     var width = size[0];
     var x = 0;
-    var y = yColOffset + yRowOffset + (rowIndex * this.options.gutterRow) + (colIndex * this.options.gutterRow);
+    var y = yRowOffset + (rowIndex * this.options.gutterRow) + (colIndex * this.options.gutterRow);
 
     if (this.options.midAlign) {
       x += (contextWidth/2) - (width/2);
