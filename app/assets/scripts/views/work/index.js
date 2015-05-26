@@ -1,13 +1,7 @@
-var Engine     = require('famous/core/Engine');
-var ScrollView = require('famous/views/Scrollview');
-var FlexGrid = require('../../views/FlexGrid');
-var VideoSurface = require('famous/surfaces/VideoSurface');
-var Surface = require('famous/core/Surface');
 var Easing = require('famous/transitions/Easing');
 var LightBox = require('famous/views/Lightbox');
 var Transform = require('famous/core/Transform');
 var RenderNode = require('famous/core/RenderNode');
-var Modifier = require('famous/core/Modifier');
 
 var page = require('page');
 var genExitBtn = require('./delete');
@@ -36,9 +30,9 @@ module.exports = function (type, model) {
   var lightboxNode = dashboard ? genExitBtn(model): genHire(model.get('user_id'));
 
   var options = {
-    url: url,
     lightboxNode: lightboxNode,
-    lightbox: lightbox
+    lightbox: lightbox,
+    attributes: model.attributes
   };
 
   switch (type) {

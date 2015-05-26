@@ -10,9 +10,9 @@ var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var flexGrid = new FlexGrid({
   marginTop:  20,
   marginSide: 0,
-  gutterCol:  0,
+  gutterCol:  20,
   gutterRow:  40,
-  itemSize: [320,500],
+  itemSize: [300,500],
 });
 
 var container = new ContainerSurface();

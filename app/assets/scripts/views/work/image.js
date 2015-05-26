@@ -1,7 +1,9 @@
 var ImageSurface = require('famous/surfaces/ImageSurface');
 
 module.exports = function (options) {
-  var url = options.url;
+  var attributes = options.attributes;
+
+  var url = attributes.url;
   var lightboxNode = options.lightboxNode;
   var imageSurface = new ImageSurface();
   var lightbox = options.lightbox;

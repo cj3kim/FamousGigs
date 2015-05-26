@@ -23,10 +23,13 @@ div.general-content, div.form-content, div.text-content{
 }
 
 div.general-content {
-  div.content-body {
-    padding: 15px;
-    span {
+  position: absolute;
+  z-index: 0;
 
+  div.content-body {
+    video {
+      width: 100%;
+      height: auto;
     }
   }
 }
