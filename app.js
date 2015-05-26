@@ -41,7 +41,7 @@ jwtCheck.unless = unless;
 
 app.use('/public', serveIndex('public/'));
 app.use('/public', serveStatic('public/'));
-var whitelist = ['/api/registration', '/api/oauth/github/callback', '/api/login', '/api/verify', '/developers'];
+var whitelist = ['/api/registration', '/api/oauth/github/callback', '/api/login', '/api/verify', '/api/sign_s3', '/developers'];
 
 app.all('/api/*', jwtCheck.unless({path: whitelist}));
 app.all('/api/*', utils.middleware().unless({path: whitelist }));

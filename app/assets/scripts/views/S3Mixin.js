@@ -21,14 +21,14 @@ var S3Mixin = {
   },
 
   getSignedRequest: function (file, filePath) {
-    var userSession = JSON.parse(window.sessionStorage.token_info);
-
+    //var userSession = JSON.parse(window.sessionStorage.token_info);
     return Promise.resolve(
       $.ajax({
         type: 'GET',
         url: '/api/sign_s3',
         data: {file_name: filePath + file.name, file_type: file.type},
-        headers: {'Authorization' : "Bearer " + userSession.token }})
+        //headers: {'Authorization' : "Bearer " + userSession.token }})
+      })
     );
   },
 
