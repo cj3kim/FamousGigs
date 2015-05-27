@@ -20,7 +20,7 @@ function SidebarMenu() {
   var flexibleLayout = new FlexibleLayout({
     direction: 1,
     //ratios: [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
-    ratios: [undefined, undefined, undefined, undefined, undefined]
+    ratios: [undefined, undefined, undefined, undefined, undefined, undefined]
   });
 
   var menuHeader = new Surface({
@@ -71,11 +71,11 @@ function SidebarMenu() {
     //content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Register</span> </span>",
   //});
 
-  //var login = new Surface({
-    //size: [undefined, 60],
-    //classes: ['sidebar-menu', 'stop-gap-div'],
-    //content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Login</span></span>",
-  //});
+  var login = new Surface({
+    size: [undefined, 60],
+    classes: ['sidebar-menu', 'stop-gap-div'],
+    content: "<span class='menu-item'><span class='icon flaticon-login2'></span><span class='copy'>Login</span></span>",
+  });
 
   works.on('click', function () {
     page.show('/');
@@ -101,9 +101,9 @@ function SidebarMenu() {
     //page.show('/registration');
   //});
 
-  //login.on('click', function () {
-    //page.show('/login')
-  //});
+  login.on('click', function () {
+    page.show('/login')
+  });
 
   var backButton = new Surface({
     size: [40, 40],
@@ -130,7 +130,7 @@ function SidebarMenu() {
 
   //make sure to update the ratios array if you add a view here
   //flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts, dashboard, register, login]);
-  flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts]);
+  flexibleLayout.sequenceFrom([menuHeader, works, gigs, developers, posts, login]);
 
   var mod = new Modifier({
     transform: Transform.translate(15,10,0)

@@ -32,7 +32,7 @@ function Registration () {
 
   this.createCol(425);
   if (props.login) {
-    this.addColNode(0, registration, [425, 400])
+    this.addColNode(0, registration, [300, 225])
     registration.on('user-login', function (data) {
       var obj = data._args[0]; //{ user: {} }
 

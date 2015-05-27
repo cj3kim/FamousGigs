@@ -26,7 +26,6 @@ module.exports = function (page, obj) {
   renderNode.add(offsetMod).add(login);
 
   page('/login', function (ctx) {
-    var transition = {duration: 200, curve: Easing.inSine };
     bodyRC.show(renderNode);
   });
 };
