@@ -29,8 +29,6 @@ module.exports = function (options) {
   var lightbox = options.lightbox;
 
   var attributes = options.attributes;
-  console.log('attributes');
-  console.log(attributes);
   var settings = {
     headerName: attributes.title || "No Title",
     attributes: attributes,
@@ -39,7 +37,6 @@ module.exports = function (options) {
 
   var surface = new ReactSurface({
     content: <GeneralContent { ...settings }/>
-    //classes: ['rounded-corners']
   });
 
   surface.on('playing', function (e) {

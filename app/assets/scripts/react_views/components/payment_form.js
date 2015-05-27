@@ -3,7 +3,7 @@ var $ = require('zepto-browserify').$;
 var TableHeader = require('./table_header');
 
 
-//Stripe.setPublishableKey('pk_test_8vofNFraEETbkErpKImun5jZ');
+Stripe.setPublishableKey('pk_test_8vofNFraEETbkErpKImun5jZ');
 
 var serializeObject = require('./SerializeObject');
 
