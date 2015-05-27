@@ -1,5 +1,6 @@
 var View = require('famous/core/View');
-var Works = require('../../starters/works');
+var genWorks = require('../../starters/works');
+var Works = genWorks();
 
 function DevContent() {
   View.apply(this, arguments);
