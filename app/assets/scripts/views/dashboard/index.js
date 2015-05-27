@@ -48,14 +48,9 @@ page('/dashboard/profile', function () {
 
 var portfolioContainer = localizedScroll(Portfolio);
 page('/dashboard/portfolio', function () {
-  Portfolio.loadWorks()
-    .then(function () {
-      lightbox.show(portfolioContainer);
-    })
-    .catch(function (err) {
-      console.log('/dashboard/portfolio');
-      console.log(err);
-    });
+  lightbox.show(portfolioContainer, function () {
+    Portfolio.loadWorks()
+  });
 });
 
 page('/dashboard/portfolio/add', function () {
