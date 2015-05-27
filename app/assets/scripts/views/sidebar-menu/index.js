@@ -35,7 +35,7 @@ function SidebarMenu() {
   var works = new Surface({
     size: [undefined, 56],
     classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Works</span> </span>",
+    content: "<span class='menu-item'><span class='icon flaticon-building104'></span><span class='copy'>Works</span> </span>",
     properties: {
       color: "white"
     }
@@ -44,7 +44,7 @@ function SidebarMenu() {
   var gigs = new Surface({
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-edit45'></span><span class='copy'>Gigs/Jobs</span> </span>",
+    content: "<span class='menu-item'><span class='icon flaticon-pin71'></span><span class='copy'>Gigs/Jobs</span> </span>",
   });
 
   var posts = new Surface({
@@ -56,7 +56,7 @@ function SidebarMenu() {
   var developers = new Surface({
     size: [undefined, 60],
     classes: ['sidebar-menu', 'stop-gap-div'],
-    content: "<span class='menu-item'><span class='icon flaticon-sheet3'></span><span class='copy'>Developers</span></span>",
+    content: "<span class='menu-item'><span class='icon flaticon-user91'></span><span class='copy'>Developers</span></span>",
   });
 
   //var dashboard = new Surface({
