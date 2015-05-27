@@ -1,29 +1,28 @@
-var ContainerSurface = require('famous/surfaces/ContainerSurface');
 var Easing     = require('famous/transitions/Easing');
 var RenderNode = require('famous/core/RenderNode');
 var Modifier   = require('famous/core/Modifier');
 var Transform  = require('famous/core/Transform');
-var ScrollView = require('famous/views/Scrollview');
-
-var developerScrollView = require('../starters/developer_ads');
-var DevProfile = require('../views/developer-details/index');
 var developers = require('../collections/singleton/developers');
+
+var DevProfile = require('../views/developer-details/index');
+var genDevFlexGrid = require('../starters/developer_ads');
+
+var devFlexGrid = genDevFlexGrid();
+var localizedScroll = require('../views/ScrollTech');
+
 
 module.exports = function (page, obj) {
   var bodyRC = obj.bodyRC;
 
+  var devsContainer = localizedScroll(devFlexGrid);
   page('/developers', function (ctx) {
-    bodyRC.show(developerScrollView, function () {
-      developerScrollView.loadDevs();
+    bodyRC.show(devsContainer, function () {
+      devFlexGrid.loadDevs();
     });
   });
 
   var devProfile = new DevProfile();
-  var scrollview = new ScrollView();
-  var container = new ContainerSurface();
-  container.add(scrollview);
-  container.pipe(scrollview);
-  scrollview.sequenceFrom([devProfile]);
+  var container  = localizedScroll(devProfile);
 
   page('/developers/:id', function (ctx) {
     var id = ctx.params.id;

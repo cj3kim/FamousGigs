@@ -13,6 +13,7 @@ var Header    = require('./header');
 var Profile   = require('./profile/index');
 var Portfolio = require('./portfolio/index');
 var AddWork   = require('./add-work/index');
+var localizedScroll = require('../ScrollTech');
 
 var page = require('page');
 
@@ -45,10 +46,11 @@ page('/dashboard/profile', function () {
   lightbox.show(Profile);
 });
 
+var portfolioContainer = localizedScroll(Portfolio);
 page('/dashboard/portfolio', function () {
   Portfolio.loadWorks()
     .then(function () {
-      lightbox.show(Portfolio);
+      lightbox.show(portfolioContainer);
     })
     .catch(function (err) {
       console.log('/dashboard/portfolio');
