@@ -9,11 +9,13 @@ var path        = require('path'),
 
 var repl = require('repl');
 
-repl.start({
-  prompt: "node via stdin> ",
-  input: process.stdin,
-  output: process.stdout
-});
+if (process.env.NODE_ENV === 'development') {
+  repl.start({
+    prompt: "node via stdin> ",
+    input: process.stdin,
+    output: process.stdout
+  });
+}
 
 var express = require('express');
 var app = express();
@@ -62,7 +64,7 @@ require('./app/routes/company_ads/index')(app);
 require('./app/routes/developers/index')(app);
 require('./app/routes/works/index')(app);
 
-var port = process.env.NODE_ENV === 'development' ? 1337 : 80;
+var port = 1337;
 console.log('Starting server at port ' + port + '.');
 
 app.listen(port);

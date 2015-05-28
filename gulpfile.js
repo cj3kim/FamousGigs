@@ -10,42 +10,78 @@ var   gulp       = require('gulp')
     ;
 
 var buffer = require('vinyl-buffer');
-    
+var uglify = require('gulp-uglify');
+var bg = require('gulp-bg');
+
+var env = process.env;
+var NODE_ENV = env.NODE_ENV;
+
 var sass = require('gulp-sass');
-//var uglify = require('gulp-uglify'),
 var concatCSS = require('gulp-concat-css');
 
-gulp.task('default',['fonts', 'images', 'sass', 'browserify-watch', 'watch', 'start-dev-server'])
+var devServerTasks = ['fonts', 'images', 'sass', 'browserify-watch', 'browser-sync', 'watch', 'dev-server'];
+var serverTasks = ['fonts', 'images', 'sass', 'build-main', 'server'];
 
-gulp.task('start-dev-server', function () {
-  require('./app.js');
+var tasks = NODE_ENV === 'development' ? devServerTasks : serverTasks;
+
+gulp.task('default', tasks);
+
+gulp.task('dev-server', function () {
+  require('./app.js')
+});
+gulp.task('server', bg('node', './app.js'));
+
+gulp.task('browser-sync', function () {
   exec("browser-sync start --proxy localhost:1337  --files 'public/**/*.*'");
 });
 
-
 gulp.task('images', function () {
-    gulp.src('./app/assets/images/**/*')
-      .pipe(gulp.dest('./public/images'));
+  gulp.src('./app/assets/images/**/*')
+    .pipe(gulp.dest('./public/images'));
 });
 
 gulp.task('fonts', function () {
-    gulp.src('./app/assets/fonts/**/*')
-      .pipe(gulp.dest('./public/fonts'));
+  gulp.src('./app/assets/fonts/**/*')
+    .pipe(gulp.dest('./public/fonts'));
 });
 
 gulp.task('sass', function () {
-    gulp.src('./app/assets/styles/*.scss')
-        .pipe(sass())
-        .pipe(concatCSS('main.css'))
-        .pipe(gulp.dest('./public/styles'));
+  gulp.src('./app/assets/styles/*.scss')
+    .pipe(sass())
+    .pipe(concatCSS('main.css'))
+    .pipe(gulp.dest('./public/styles'));
 });
 
 gulp.task('watch', function () {
   gulp.watch('./app/assets/styles/*.scss', ['sass'])
 });
 
+gulp.task('build-main', function() { // for non dev servers
+  var b = browserify({ cache: {}, packageCache: {}, fullPaths: true })
+  b.transform('reactify');
+  var startFile       = './app/assets/scripts/main.js';
+  var destinationPath = './public/scripts';
+  var buildName       = 'main.js';
+  var buildFile       = path.join(destinationPath, buildName);
+  var compiled = _.template('Bundling <%= startFile %> to <%= buildFile %>.')
+
+  b.add(startFile)
+
+  var bundled = b.bundle();
+  bundled
+    .on('error', function(err){
+      console.log(err.message);
+      this.end();
+    })
+    .pipe(source(buildName))
+    .pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
+    .pipe(uglify())
+    .pipe(gulp.dest(destinationPath));
+});
+
 gulp.task('browserify-watch', function () {
   var b = browserify({ cache: {}, packageCache: {}, fullPaths: true })
+
   b = watchify(b);
   b.transform('reactify');
 
