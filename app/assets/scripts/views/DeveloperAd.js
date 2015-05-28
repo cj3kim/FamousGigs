@@ -14,7 +14,7 @@ var DeveloperAdComponent = React.createClass({
     return (
       <div className="developer-ad stop-gap-div"> 
         <div className="overlay">
-          <h3>{ this.props.full_name || this.props.email }</h3>
+          <span>{ this.props.full_name || this.props.email }</span>
         </div>
         <img src={ this.props.avatar_url }/>
       </div>

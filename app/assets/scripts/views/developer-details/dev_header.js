@@ -5,7 +5,12 @@ var ReactSurface = require('react-surface');
 var Transform = require('famous/core/Transform');
 
 var DevHeaderComponent = React.createClass({
+
   render: function () {
+    var props = this.props;
+    var defaultLocation = 'Neverland';
+    var location = (props.city || props.state) !== true ? defaultLocation : props.city + ", " + props.state;
+
     return (
       <div className='dev-header stop-gap-div'>
         <img  className='profile-picture' src={this.props.avatar_url} />
@@ -13,10 +18,10 @@ var DevHeaderComponent = React.createClass({
           <span>{ this.props.email || this.props.full_name }</span>
         </div>
         <ul className='company-info'>
-          <li> San Francisco, CA </li>
+          <li> { location } </li>
         </ul>
         <div className='brief-description'>
-          <span>Rapid Application Development Service</span>
+          <span>{ this.about_tagline }</span>
         </div>
       </div>
     );
