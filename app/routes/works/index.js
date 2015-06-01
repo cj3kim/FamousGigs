@@ -43,6 +43,10 @@ module.exports = function (app) {
     var user_id = req.params.user_id;
     var attrs   = req.body.work;
     attrs.user_id = user_id;
+    attrs.title = xss(attrs.title);
+    attrs.description = xss(attrs.description);
+    attrs.media_type = xss(attrs.media_type);
+    attrs.url = xss(attrs.url);
 
     var work = new Works();
     work
