@@ -1,4 +1,5 @@
 var stripe = require("stripe")("sk_test_1WASPwzkx5thPhUjyW06SYXb");
+var xss = require("xss");
 
 module.exports = function (app) {
   var CompanyAds = require('../../models/company_ads');
@@ -14,23 +15,26 @@ module.exports = function (app) {
   });
 
   app.post('/company_ads/create', function (req, res) {
-    var stripeToken = req.body.stripe_token;
-    var contactEmail = req.body.contact_email;
-    console.log(req.body);
+    var companyAd = req.body;
+    companyAd.title = xss(companyAd.title);
+    companyAd.job_location = xss(companyAd.job_location);
+    companyAd.description = xss(companyAd.description);
+    companyAd.contactEmail = xss(companyAd.contact_email);
 
     var charge = stripe.charges.create({
       amount: 1000, // amount in cents, again
       currency: "usd",
-      source: stripeToken,
-      description: contactEmail
+      source: companyAd.stripeToken,
+      description: companyAd.contactEmail
     }, function(err, charge) {
       if (err && err.type === 'StripeCardError') {
         console.log('charge failed');
         console.log(err);
       } else {
-        new CompanyAds(req.body).save().then(function () {
-          res.sendStatus(200);
-        });
+        new CompanyAds(companyAd).save()
+          .then(function () {
+            res.sendStatus(200);
+          });
       }
     });
   });
