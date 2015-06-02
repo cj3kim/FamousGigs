@@ -11,19 +11,19 @@ var debug  = require('debug')('app:utils:' + process.pid),
     ;
 
 client.on('error', function (err) {
-    debug(err);
+  debug(err);
 });
 
 client.on('connect', function () {
-    debug("Redis successfully connected");
+  debug("Redis successfully connected");
 });
 
 module.exports.fetch = function (headers) {
-  console.log('utils.fetch');
-  console.log('------------');
-  console.log(headers);
-  console.log(headers.authorization);
-  console.log('------------');
+  //console.log('utils.fetch');
+  //console.log('------------');
+  //console.log(headers);
+  //console.log(headers.authorization);
+  //console.log('------------');
 
   if (headers && headers.authorization) {
     var authorization = headers.authorization;
@@ -36,7 +36,6 @@ module.exports.fetch = function (headers) {
 };
 
 module.exports.create = function (user, req, res, next) {
-  debug("Create atoken");
   if (_.isEmpty(user))
     return next(new Error('User data cannot be empty.'));
 
@@ -55,8 +54,6 @@ module.exports.create = function (user, req, res, next) {
       token_iat:decoded.iat
     }
   };
-
-  debug("Token generated for user: %s, token: %s", 'user', token);
 
   client.set(token, JSON.stringify(data), function (err, reply) {
     if (err) return next(new Error(err));
@@ -81,7 +78,6 @@ module.exports.create = function (user, req, res, next) {
 };
 
 module.exports.retrieve = function (id, done) {
-  debug("Calling retrieve for token: %s", id);
   if (_.isNull(id))
     return done(new Error("token_invalid"), {"message": "Invalid token"});
 
@@ -110,17 +106,15 @@ module.exports.retrieve = function (id, done) {
 
 module.exports.verify = function (req, res, next) {
   var token = exports.fetch(req.headers);
-
-  console.log("utils.verify");
-  console.log('----------------');
-  console.log('token: ' + token);
+  //console.log("utils.verify");
+  //console.log('----------------');
+  //console.log('token: ' + token);
   jsonwebtoken.verify(token, JWT_SECRET_KEY, function (err, decode) {
-    console.log('jsonwebtoken.verify');
-    console.log('----------------');
-    console.log(decode);
-    console.log('----------------');
+    //console.log('jsonwebtoken.verify');
+    //console.log('----------------');
+    //console.log(decode);
+    //console.log('----------------');
     if (err) {
-      console.log(err);
       req.user = undefined;
       return next(new UnauthorizedAccessError("invalid_token", err));
     }
@@ -138,7 +132,6 @@ module.exports.verify = function (req, res, next) {
 
 module.exports.expire = function (headers) {
   var token = exports.fetch(headers);
-  debug("Expiring token: %s", token);
   if (token !== null)
     client.expire(token, 0);
   return token !== null;

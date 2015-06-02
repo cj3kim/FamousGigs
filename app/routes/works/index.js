@@ -1,7 +1,6 @@
-
-
-
 var Promise = require('bluebird');
+var worksRouteLogger = require('../../loggers/routes/index').works;
+
 module.exports = function (app) {
   var Works = require('../../models/Works');
 
@@ -11,18 +10,14 @@ module.exports = function (app) {
         res.json(models.toJSON());
       })
       .catch(function (err) {
-        console.log(err);
+        worksRouteLogger.error({error: err, req: req});
+        res.status(501).json({error: err});
       });
   });
 
 
   app.get('/work/:id', function (req, res) {
-    //Works.where({id: id})
-      //.then(function (model) {
-        //res.json(model.toJSON());
-      //})
-      //.catch(function (err) {
-      //});
+    //Works.where({id: id}) //.then(function (model) { //res.json(model.toJSON()); //}) //.catch(function (err) { //});
   });
 
   app.get('/user/:user_id/works', function (req,res) {
@@ -31,11 +26,11 @@ module.exports = function (app) {
       .where({user_id: user_id})
       .fetchAll()
       .then(function (models) {
-        console.log(models);
         res.json(models.toJSON())
       })
       .catch(function (err) {
-        console.log(err);
+        worksRouteLogger.error({error: err, req: req});
+        res.status(501).json({error: err});
       });
   });
 
@@ -55,12 +50,12 @@ module.exports = function (app) {
         res.json(model)
       })
       .catch(function (err) {
-        res.status(501);
+        worksRouteLogger.error({error: err, req: req});
+        res.status(501).json({error: err});
       });
   });
 
   app.put('/user/:user_id/works/:work_id', function (req,res) {
-
   });
 
   app.delete('/user/:user_id/works/:work_id', function (req,res) {
@@ -71,15 +66,15 @@ module.exports = function (app) {
       .where({user_id: user_id, id: work_id })
       .fetch()
       .then(function (model) {
-        console.log(model);
         return Promise.resolve(model.destroy());
       })
       .then(function (model) {
         res.status(200).json(model);
       })
-      .catch(function () {
-        res.sendStatus(500);
-      })
+      .catch(function (err) {
+        worksRouteLogger.error({error: err, req: req});
+        res.status(501).json({error: err});
+      });
   });
 
 }

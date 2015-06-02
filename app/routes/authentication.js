@@ -1,5 +1,4 @@
-var debug  = require('debug')('app:routes:default' + process.pid),
-    _      = require("lodash"),
+var _      = require("lodash"),
     path   = require('path'),
     utils  = require("./utils"),
     Router = require("express").Router,
@@ -11,10 +10,9 @@ var debug  = require('debug')('app:routes:default' + process.pid),
     jwt    = require("express-jwt")
 ;
 
+var authRouteLogger = require('../loggers/routes/index').authentication;
 
 var authenticate = function (req, res, next) {
-  debug("Processing authenticate middleware");
-
   var user     = req.body.user;
   var email    = user.email
     , password = user.password;
@@ -28,6 +26,8 @@ var authenticate = function (req, res, next) {
         utils.create(user, req, res, next);
       })
       .catch(function (err) {
+        authRouteLogger.error({error: err, req: req});
+
         return next(new UnauthorizedAccessError("401", {
           message: err.message
         }));
@@ -66,6 +66,8 @@ module.exports = function () {
           utils.create(user, req, res, func);
         })
         .catch(function (err){
+          authRouteLogger.error({error: err, req: req});
+
           var re1 = /passwords don't match/i;
           var re2 = /unique constraint "users_email_unique"/i;
           if (re1.test(err.message)) {

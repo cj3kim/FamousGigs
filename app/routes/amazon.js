@@ -5,10 +5,14 @@ var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
 var S3_BUCKET = process.env.S3_BUCKET
 var aws = require('aws-sdk');
+
 aws.config.update({
   accessKeyId: AWS_ACCESS_KEY,
   secretAccessKey: AWS_SECRET_KEY
 });
+
+var amazonRouteLogger = require('../loggers/routes/index').amazon;
+
 module.exports = function () {
   var router = new Router();
 
@@ -35,14 +39,12 @@ module.exports = function () {
             signed_request: data,
             url: 'https://'+S3_BUCKET+'.s3.amazonaws.com/'+req.query.file_name
           };
-          console.log('amazon sign promise');
-          console.log(obj);
           res.json(obj);
         })
         .catch(function (err) {
-          console.log("There was an error in amazon.js");
-          console.log(err);
-        })
+          amazonRouteLogger.error({error: err, req: req}, "Amazon s3 signing error.");
+          res.status(501).json({error: err});
+        });
   });
   return router;
 }

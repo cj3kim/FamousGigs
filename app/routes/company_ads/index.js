@@ -1,5 +1,7 @@
 var stripe = require("stripe")("sk_test_1WASPwzkx5thPhUjyW06SYXb");
 var xss = require("xss");
+var companyAdsRouteLogger = require('../../loggers/routes/index').company_ads;
+
 
 module.exports = function (app) {
   var CompanyAds = require('../../models/company_ads');
@@ -10,7 +12,8 @@ module.exports = function (app) {
       res.json(models.toJSON());
     })
     .catch(function (err) {
-      console.log(err);
+      companyAdsRouteLogger.error({error: err, req: req });
+      res.sendStatus(501);
     });
   });
 
@@ -28,12 +31,16 @@ module.exports = function (app) {
       description: companyAd.contactEmail
     }, function(err, charge) {
       if (err && err.type === 'StripeCardError') {
-        console.log('charge failed');
-        console.log(err);
+        companyAdsRouteLogger.error({error: err, req: req });
       } else {
-        new CompanyAds(companyAd).save()
+        new CompanyAds(companyAd)
+          .save()
           .then(function () {
             res.sendStatus(200);
+          })
+          .catch(function (err) {
+            companyAdsRouteLogger.error({error: err, req: req });
+            res.sendStatus(501);
           });
       }
     });
@@ -44,6 +51,10 @@ module.exports = function (app) {
       .fetch()
       .then(function (model) {
         res.json(model.toJSON());
-      });
+      })
+      .catch(function (err) {
+        companyAdsRouteLogger.error({error: err, req: req });
+        res.sendStatus(501);
+      })
   });
 }

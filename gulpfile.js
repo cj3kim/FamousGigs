@@ -29,11 +29,10 @@ gulp.task('default', tasks);
 gulp.task('dev-server', function () {
   require('./app.js')
 });
+
 gulp.task('server', bg('node', './app.js'));
 
-gulp.task('browser-sync', function () {
-  exec("browser-sync start --proxy localhost:1337  --files 'public/**/*.*'");
-});
+gulp.task('browser-sync', bg("browser-sync",  'start', '--proxy', 'localhost:1337', '--files', 'public/**/*.*'));
 
 gulp.task('images', function () {
   gulp.src('./app/assets/images/**/*')
