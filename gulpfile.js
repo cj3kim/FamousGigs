@@ -22,6 +22,9 @@ var concatCSS = require('gulp-concat-css');
 var devServerTasks = ['fonts', 'images', 'sass', 'browserify-watch', 'browser-sync', 'watch', 'dev-server'];
 var serverTasks = ['fonts', 'images', 'sass', 'build-main', 'server'];
 
+var noServerTasks = ['fonts', 'images', 'sass', 'build-main'];
+gulp.task('forever', noServerTasks);
+
 var tasks = NODE_ENV === 'development' ? devServerTasks : serverTasks;
 
 gulp.task('default', tasks);
