@@ -7,6 +7,7 @@ var $ = require('zepto-browserify').$;
 var serializeObject = require('./SerializeObject');
 var S3Mixin = require('../../views/S3Mixin');
 var Dropzone = require('react-dropzone');
+var noticationBox = require('../../views/notification/index');
 
 var CompanyDetails = React.createClass({
   mixins: [S3Mixin],
@@ -45,18 +46,27 @@ var CompanyDetails = React.createClass({
     var file = files[0];
     var filePath = "company-ads/logos/";
 
-    this.initialUpload(file, filePath)
-      .then(function (resourceUrl) {
-        _this.resourceUrl = resourceUrl;
-        var $image = _this.$form.find('#dropzone-image');
-        var image = $image[0];
-        image.src = resourceUrl;
-        $image.show();
-        _this.$form.find('.dropzone-message').hide();
-      })
-      .catch(function (err) {
-        console.log(err);
+
+    if (file.size > 2097152) {
+      noticationBox._eventInput.trigger('new-notification', {
+        message: "File is too big to send."
       });
+    } else {
+      this.initialUpload(file, filePath)
+        .then(function (resourceUrl) {
+          _this.resourceUrl = resourceUrl;
+          var $image = _this.$form.find('#dropzone-image');
+          var image = $image[0];
+          image.src = resourceUrl;
+          $image.show();
+          _this.$form.find('.dropzone-message').hide();
+        })
+        .catch(function (err) {
+          noticationBox._eventInput.trigger('new-notification', {
+            message: err.message
+          });
+        });
+    }
   },
 
   render: function () {
