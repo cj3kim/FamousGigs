@@ -7,7 +7,7 @@ var Modifier         = require('famous/core/Modifier');
 var RenderController = require('famous/views/RenderController');
 var FlexibleLayout   = require('famous/views/FlexibleLayout');
 var Easing           = require('famous/transitions/Easing');
-var NotificationBox  = require('../views/notification/index');
+var notificationBox  = require('../views/notification/index');
 var LightBox         = require('famous/views/Lightbox');
 
 module.exports = function (mainContext) {
@@ -21,7 +21,6 @@ module.exports = function (mainContext) {
   });
 
   headerFooterLayout.content.add(bodyRC);
-  var notificationBox = NotificationBox();
   headerFooterLayout.content.add(notificationBox);
 
   var KaollaSu = require('../lib/KaollaSu')(mainContext);

@@ -56,29 +56,25 @@ NotificationBox.prototype.initialize = function () {
 
 NotificationBox.prototype.setupEventListeners = function () {
   var _this = this;
-  var errorMessage;
   _this.exitBtn.on('click', function () {
     _this.renderController.hide();
   });
-  _this.notificationBox.on('new-notification', function (xhr) {
-    errorMessage = xhr.responseText.replace(/\w+:\s?(\w+)/i, "$1");
+
+  _this.notificationBox.on('new-notification', function (err) {
+    var constructorString = err.constructor.toString();
+    var xhrRegex = /XMLHttpRequest/i;
+
+    var isXHR = xhrRegex.test(constructorString);
+    var errorMessage = isXHR ? err.responseText.replace(/\w+:\s?(\w+)/i, "$1") : err.message;
 
     _this.notificationBox.setContent("<span>" + errorMessage + "</span>");
     _this.renderController.show(_this.rn);
   });
 };
+
 NotificationBox.prototype.setupPiping = function () {
   this._eventInput.pipe(this.notificationBox._eventOutput);
 };
 
-var notificationView;
-
-function generateSingleton() {
-  if (notificationView) return notificationView;
-  notificationView = new NotificationBox();
-  return notificationView;
-}
-
-
-module.exports = generateSingleton;
+module.exports = new NotificationBox();
 

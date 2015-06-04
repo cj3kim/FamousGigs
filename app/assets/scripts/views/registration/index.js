@@ -7,7 +7,7 @@ var FormContent  = require('../../react_views/form_content');
 var FlexColumns  = require('../flex-columns/index');
 var $ = require('zepto-browserify').$;
 var objectMerge     = require('object-merge');
-var NotificationView = require('../notification/index');
+var notificationView = require('../notification/index');
 
 var RegistrationReact = require('../../react_views/components/dev_registration_form');
 var user = require("../../models/singleton/user");
@@ -16,7 +16,6 @@ function Registration () {
   FlexColumns.apply(this, arguments);
   var _this = this;
   var props = this.options.props;
-  var notificationView = new NotificationView();
 
   var settings = {
     headerName: props.headerName || "Registration",
