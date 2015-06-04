@@ -56,8 +56,15 @@ app.use('/api', authenticationRoute);
 app.use('/api', amazonS3Route);
 app.use('/api', OAuthGithubRoute)
 
+var MobileDetect = require('mobile-detect');
+var md;
 app.get('/', function(req, res) {
-  res.render('index')
+  md = new MobileDetect(req.headers['user-agent']);
+  if (!md.mobile()) {
+    res.render('index')
+  } else {
+    res.render('mobile')
+  }
 });
 
 require('./app/routes/company_ads/index')(app);
