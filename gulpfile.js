@@ -23,7 +23,7 @@ var devServerTasks = ['fonts', 'images', 'sass', 'browserify-watch', 'browser-sy
 var serverTasks = ['fonts', 'images', 'sass', 'build-main', 'server'];
 
 var noServerTasks = ['fonts', 'images', 'sass', 'build-main'];
-gulp.task('forever', noServerTasks);
+gulp.task('prepare-assets', noServerTasks);
 
 var tasks = NODE_ENV === 'development' ? devServerTasks : serverTasks;
 
