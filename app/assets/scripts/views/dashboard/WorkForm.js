@@ -9,7 +9,7 @@ var $ = require('zepto-browserify').$;
 var page = require('page');
 
 var S3Mixin = require('../S3Mixin');
-
+var notificationBox = require('../notification/index');
 
 var WorkFormComponent = React.createClass({
   mixins: [S3Mixin],
@@ -32,6 +32,12 @@ var WorkFormComponent = React.createClass({
     var mediaType = form.getElementsByTagName('select')[0].value;
 
     var filePath = 'users/' + this.user.get('id') + '/' + mediaType + '/';
+
+    if (file.size > 2100000 ) {
+      notificationBox._eventInput.trigger('new-notification', {
+        message: "File size is greater than 2 megabytes."
+      });
+    }
 
     this.initialUpload(file, filePath)
       .then(function (resourceUrl) {
