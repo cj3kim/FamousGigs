@@ -22,13 +22,13 @@ module.exports = function (app) {
     companyAd.title = xss(companyAd.title);
     companyAd.job_location = xss(companyAd.job_location);
     companyAd.description = xss(companyAd.description);
-    companyAd.contactEmail = xss(companyAd.contact_email);
+    companyAd.contact_email = xss(companyAd.contact_email);
 
     var charge = stripe.charges.create({
       amount: 1000, // amount in cents, again
       currency: "usd",
       source: companyAd.stripeToken,
-      description: companyAd.contactEmail
+      description: companyAd.contact_email
     }, function(err, charge) {
       if (err && err.type === 'StripeCardError') {
         companyAdsRouteLogger.error({error: err, req: req });
