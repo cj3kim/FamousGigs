@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var worksRouteLogger = require('../../loggers/routes/index').works;
+var xss = require('xss');
 
 module.exports = function (app) {
   var Works = require('../../models/Works');
