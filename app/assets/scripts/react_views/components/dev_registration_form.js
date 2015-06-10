@@ -8,7 +8,6 @@ var serializeObject = require('./SerializeObject');
 
 var RegistrationReact = React.createClass({
   handleSubmit: function (event) {
-    console.log('handleSubmit: ' + event);
     event.preventDefault();
     event.stopPropagation();
 
