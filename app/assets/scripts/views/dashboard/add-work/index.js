@@ -7,7 +7,8 @@ var AddWorkView = new FlexColumns({
   gutterRow: 20
 });
 
-AddWorkView.createCol(300).addColNode(0, WorkForm, [300, true]);
+var width = 500;
+AddWorkView.createCol(width).addColNode(0, WorkForm, [width, true]);
 
 
 module.exports = AddWorkView;
