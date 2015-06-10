@@ -10,49 +10,48 @@ var page = require('page');
 
 var S3Mixin = require('../S3Mixin');
 var notificationBox = require('../notification/index');
+var Dropzone = require('react-dropzone');
+var DropzoneMixin = require('../../react_views/dropzone_mixin');
 
 var WorkFormComponent = React.createClass({
-  mixins: [S3Mixin],
+  mixins: [S3Mixin, DropzoneMixin],
   componentDidMount: function () {
     var user = require('../../models/singleton/user');
     this.user = user;
 
-    var form = React.findDOMNode(this);
-    this.progress = form.getElementsByTagName('progress')[0];
+    this.form = React.findDOMNode(this);
+    this.progress = this.form.getElementsByTagName('progress')[0];
+    this.work_url = '';
+  },
+  dropCallback: function (resourceUrl) {
+    this.work_url = resourceUrl;
+  },
+
+  onDrop: function (files) {
+    var mediaType = form.getElementsByTagName('select')[0].value;
+
+    var filePath = 'users/' + this.user.get('id') + '/' + mediaType + '/';
+    var fileSizeLimit = 2097152;
+    this.dropAndLoad(files, filePath, fileSizeLimit,  this.dropCallback.bind(this));
   },
 
   handleSubmit: function (e) {
     e.stopPropagation();
     e.preventDefault();
 
-    var _this = this;
-    var form  = React.findDOMNode(this);
-    var file  = form.getElementsByClassName('media-upload')[0].files[0];
-    var title = form.getElementsByClassName('work-title')[0].value;
+    var file  = this.form.getElementsByClassName('media-upload')[0].files[0];
+    var title = this.form.getElementsByClassName('work-title')[0].value;
     var mediaType = form.getElementsByTagName('select')[0].value;
+    
+    var workModel = new this.user.works.model({
+      work: {title: title, media_type: mediaType, url: this.work_url }
+    });
 
-    var filePath = 'users/' + this.user.get('id') + '/' + mediaType + '/';
+    workModel.collection = this.user.works;
 
-    if (file.size > 2100000 ) {
-      notificationBox._eventInput.trigger('new-notification', {
-        message: "File size is greater than 2 megabytes."
-      });
-    }
-
-    this.initialUpload(file, filePath)
-      .then(function (resourceUrl) {
-        var workModel = new _this.user.works.model({
-          work: { title: title, media_type: mediaType, url: resourceUrl }
-        });
-        workModel.collection = _this.user.works;
-        return Promise.resolve(workModel.save());
-      })
-      .then(function (model) {
+    Promise.resolve(workModel.save())
+      .then(function () {
         page.show('/dashboard/portfolio');
-      })
-      .catch(function (err) {
-        console.debug("There was an error in WorkFormComponent");
-        console.log(err);
       });
   },
 
@@ -77,14 +76,26 @@ var WorkFormComponent = React.createClass({
               </select>
             </td>
             </tr>
+          <tr>
+            <td colSpan="2"><label>Media Upload</label></td>
+            <td colSpan="4"><progress value="0" max="100"></progress></td>
+          </tr>
 
           <tr>
-            <td colSpan="2"><label for="media_upload">Upload</label> </td>
-            <td colSpan="4"><input className='media-upload' type="file" name="media_upload" /></td>
-            </tr>
+            <td colSpan="6">
+              <Dropzone onDrop={this.onDrop} style={{width: '100%', height: '150px', border: '1px dotted #41aec2', marginTop: '10px'}} >
+                <div className='dropzone-message'>
+                  Drop your work here, or click to select from your computer. 
+                  </div>
+                <img id="dropzone-image" style={{ display: 'none' }} />
+
+              </Dropzone>
+            </td>
+          </tr>
 
           <tr>
-            <td colSpan="4"><progress value='0' max='100'></progress></td>
+            <td colSpan="2"></td>
+            <td colSpan="2"></td>
             <td colSpan="2">
               <button className='work-submit' type="submit">
                 <span>Add</span>

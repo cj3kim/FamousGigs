@@ -8,9 +8,10 @@ var serializeObject = require('./SerializeObject');
 var S3Mixin = require('../../views/S3Mixin');
 var Dropzone = require('react-dropzone');
 var noticationBox = require('../../views/notification/index');
+var DropzoneMixin = require('../dropzone_mixin');
 
 var CompanyDetails = React.createClass({
-  mixins: [S3Mixin],
+  mixins: [S3Mixin, DropzoneMixin],
 
   componentDidMount: function () {
     var _this = this;
@@ -41,32 +42,19 @@ var CompanyDetails = React.createClass({
     return data;
   },
 
+  setImage: function (resourceUrl) {
+    this.resourceUrl = resourceUrl;
+    var $image = this.$form.find('#dropzone-image');
+    var image = $image[0];
+    image.src = resourceUrl;
+    $image.show();
+    this.$form.find('.dropzone-message').hide();
+
+  },
   onDrop: function (files) {
-    var _this = this;
-    var file = files[0];
     var filePath = "company-ads/logos/";
-
-
-    if (file.size > 2097152) {
-      noticationBox._eventInput.trigger('new-notification', {
-        message: "File is too big to send."
-      });
-    } else {
-      this.initialUpload(file, filePath)
-        .then(function (resourceUrl) {
-          _this.resourceUrl = resourceUrl;
-          var $image = _this.$form.find('#dropzone-image');
-          var image = $image[0];
-          image.src = resourceUrl;
-          $image.show();
-          _this.$form.find('.dropzone-message').hide();
-        })
-        .catch(function (err) {
-          noticationBox._eventInput.trigger('new-notification', {
-            message: err.message
-          });
-        });
-    }
+    var fileSizeLimit = 2097152;
+    this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
   },
 
   render: function () {
