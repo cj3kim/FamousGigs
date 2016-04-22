@@ -1,0 +1,8 @@
+{
+  "server": {
+    "development": {
+      "port": 1337
+    }
+  },
+  "showMobile": true
+}

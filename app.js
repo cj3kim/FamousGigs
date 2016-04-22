@@ -1,17 +1,23 @@
 var path        = require('path'),
     fs          = require('fs'),
+    appConfig   = require("./config/app.json")
     jwt         = require("express-jwt"),
     utils       = require(path.join(__dirname, "app", "routes", "utils.js")),
-    NotFoundError = require(path.join(__dirname, "app", "errors", "NotFoundError.js"));
-    unless      = require('express-unless')
-    JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+    unless      = require('express-unless'),
+    JWT_SECRET_KEY = process.env.JWT_SECRET_KEY,
+    NotFoundError = require(path.join(__dirname, "app", "errors", "NotFoundError.js")),
+    NODE_ENV    = process.env.NODE_ENV
   ;
 
-var repl = require('repl');
+var bodyParser   = require('body-parser'),
+    multer       = require('multer'),
+    compression  = require('compression')(),
+    responseTime = require('response-time')()
+;
 
-if (process.env.NODE_ENV === 'development') {
-  repl.start({
-    prompt: "node via stdin> ",
+var repl = require('repl');
+if (NODE_ENV === 'development') {
+  repl.start({ prompt: "node via stdin> ",
     input: process.stdin,
     output: process.stdout
   });
@@ -25,20 +31,15 @@ var serveStatic = require('serve-static');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', './app/views');
+var middlewareModules = [ bodyParser.json(), // for parsing application/json
+                          bodyParser.urlencoded({ extended: true }), // for parsing application/x-www-form-urlencoded
+                          multer(), // for parsing multipart/form-data
+                          compression,
+                          responseTime
+                          ];
+middlewareModules.forEach(function (_modules) { app.use(_modules); });
 
-var bodyParser   = require('body-parser'),
-    multer       = require('multer'),
-    compression  = require('compression')(),
-    responseTime = require('response-time')()
-;
-
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.use(multer()); // for parsing multipart/form-data
-app.use(compression);
-app.use(responseTime);
-
-var jwtCheck = jwt({secret: JWT_SECRET_KEY});
+var jwtCheck    = jwt({secret: JWT_SECRET_KEY});
 jwtCheck.unless = unless;
 
 app.use('/public', serveIndex('public/'));
@@ -48,30 +49,38 @@ var whitelist = ['/api/registration', '/api/oauth/github/callback', '/api/login'
 app.all('/api/*', jwtCheck.unless({path: whitelist}));
 app.all('/api/*', utils.middleware().unless({path: whitelist }));
 
-var authenticationRoute = require(path.join(__dirname, 'app', 'routes', 'authentication.js'))();
-var amazonS3Route = require(path.join(__dirname, 'app', 'routes', 'amazon.js'))();
-var OAuthGithubRoute = require(path.join(__dirname, 'app', 'routes', 'oauth', 'github.js'))();
+var authRoutes = ["authentication", "amazon.js", "oauth/github.js"];
+authRoutes.map(function (authRoute) {
+            var _path   = path.join(__dirname, 'app', 'routes', authRoute)
+            var _module = require(_path)();
+            return _module;
+          })
+          .forEach(function (_module) { app.use('/api', _module); });
 
-app.use('/api', authenticationRoute);
-app.use('/api', amazonS3Route);
-app.use('/api', OAuthGithubRoute)
 
 var MobileDetect = require('mobile-detect');
-var md;
 app.get('/', function(req, res) {
-  md = new MobileDetect(req.headers['user-agent']);
-  if (!md.mobile()) {
-    res.render('index')
-  } else {
-    res.render('mobile')
-  }
+  var md = new MobileDetect(req.headers['user-agent']);
+  var isMobile   = !!md.mobile();
+  var showMobile = appConfig.showMobile;
+
+  var template = isMobile && showMobile ?  "mobile" : "index";
+  res.render(template);
 });
 
-require('./app/routes/company_ads/index')(app);
-require('./app/routes/developers/index')(app);
-require('./app/routes/works/index')(app);
+var executeRoute = genExecuteMainRoute(app);
+var mainRoutes = ["company_ads", "developers", "works"];
+mainRoutes.forEach(function (mainRoute) { executeRoute(mainRoute); });
 
-var port = 1337;
+var port = appConfig.server[NODE_ENV].port;
 console.log('Starting server at port ' + port + '.');
 
 app.listen(port);
+
+// route generation code
+function genExecuteMainRoute (app) {
+  return function executeRoute (main) {
+    var _path = path.join(__dirname, "app", "routes", main, "index");
+    require(_path)(app);
+  }
+}
