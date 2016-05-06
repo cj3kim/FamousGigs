@@ -63,6 +63,7 @@
     "quill": "^0.19.10",
     "randomstring": "^1.0.5",
     "react": "^15.0.2",
+    "react-dom": "^15.0.2",
     "react-dropzone": "^1.2.0",
     "react-router": "^2.4.0",
     "react-surface": "^0.3.0",
