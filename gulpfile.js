@@ -11,16 +11,16 @@ var   gulp       = require('gulp')
 
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
-var bg = require('gulp-bg');
+var bg     = require('gulp-bg');
 
-var env = process.env;
+var env      = process.env;
 var NODE_ENV = env.NODE_ENV;
 
 var sass = require('gulp-sass');
 var concatCSS = require('gulp-concat-css');
 
 var devServerTasks = ['fonts', 'images', 'sass', 'browserify-watch', 'browser-sync', 'watch', 'dev-server'];
-var serverTasks = ['fonts', 'images', 'sass', 'build-main', 'server'];
+var serverTasks    = ['fonts', 'images', 'sass', 'build-main', 'server'];
 
 var noServerTasks = ['fonts', 'images', 'sass', 'build-main'];
 gulp.task('prepare-assets', noServerTasks);
