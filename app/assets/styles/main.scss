@@ -3,6 +3,16 @@ url(https://fonts.googleapis.com/css?family=Raleway:600,500,400,300,200);
 
 html, body {
   background: #efecf0;
+  margin: 0;
+  padding: 0;
+}
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+a {
+  text-decoration: none;
+
 }
 
 .backfaceVisibility {
@@ -23,36 +33,57 @@ div.rounded-corners{
   border-radius: 2.5%;
   overflow: hidden;
 }
+div.main-nav-bar {
+  width: 100%;
+  height: 56px;
+  background-color: #0d283f;
 
-div.flex-navbar {
+  div.text-logo {
+    width: 200px;
+    height: 100%;
+    text-align: center;
+    background-color: #3ea9bd;
+    font-size: 25px;
+    float: left;
+    span.first {
+      color: white;
+      display: inline-block;
+      margin-top: 12px;
+      font-weight: 500;
+      span.second {
+        font-weight: 200;
+      }
+    }
+  }
 
-  span.menu-item {
-    width: 30px;
+  ul {
+    margin-right: 50px;
+    float: right;
+
+  }
+  ul li {
+    width: auto;
     height: 30px;
+    float: left;
+
     margin-left: 17px;
     margin-top: 15px;
     display: inline-block;
 
-    color: #7aa7c4;
-    font-size: 25px;
+    a {
+      /*color: #7aa7c4;*/
+      color: white;
+      font-size: 20px;
+    }
   }
 }
 
-div.flex-navbar.right {
+div.main-nav-bar.right {
   border-right: solid 1px #7aa7c4;
 }
 
-div.flex-navbar.left {
+div.main-nav-bar.left {
   border-left: solid 1px #7aa7c4;
 }
 
 
-div.stop-gap-div {
-  /*stop-gap-div defers the decision of how to interface famous and backbone surfaces and views. */
-  /*use it as the first element in the javascript template you have. it will be the first child element of a famous surface. */
-  /*there maybe a performance cost related to coding it this way, but it's probably immaterial. research this later.*/
-  /*once you've decided on a convention, remove the stop-gap-div implementation*/
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
