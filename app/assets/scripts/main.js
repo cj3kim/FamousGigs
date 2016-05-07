@@ -9,12 +9,15 @@ var Router      = ReactRouter.Router;
 var hashHistory = ReactRouter.hashHistory;
 
 var path = require("path");
-var test = require("./react_views/test.js")
 var App  = require("./react_views/components/app/app_container.js");
+
+var Gigs = require("./react_views/components/gigs/index.js")
 
 render((
   <Router history={hashHistory}>
-    <Route path="/" component={App}/>
+      <Route path="/" component={App}>
+          <Route path="/gigs" component={Gigs} />
+      </Route>
   </Router>
 ), document.getElementById("app"))
 

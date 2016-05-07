@@ -33,6 +33,18 @@ div.rounded-corners{
   border-radius: 2.5%;
   overflow: hidden;
 }
+
+div.app-body {
+  width: 1200px;
+  margin: 20px auto;
+}
+
+div.main-nav-bar-floater {
+  width: 1200px;
+  height: 100%;
+  margin: 0px auto;
+}
+
 div.main-nav-bar {
   width: 100%;
   height: 56px;
@@ -57,7 +69,7 @@ div.main-nav-bar {
   }
 
   ul {
-    margin-right: 50px;
+    margin-right: 93px;
     float: right;
 
   }

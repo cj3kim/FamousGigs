@@ -5,6 +5,11 @@ div.company-ad, div.developer-ad {
 }
 
 div.company-ad {
+  width:  250px;
+  height: 300px;
+  float: left;
+  margin: 0px 10px 10px 0px;
+  overflow: hidden;
   h3 {
     margin-top: 0px;
     margin-bottom: 10px;
