@@ -10,7 +10,6 @@ deferred($);
 Backbone.$ = $;
 
 var CompanyAds = Backbone.Collection.extend({
-  model: CompanyAd,
   url: '/company_ads'
 });
 

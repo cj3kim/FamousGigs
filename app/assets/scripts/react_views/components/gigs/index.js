@@ -15,7 +15,7 @@ module.exports = React.createClass({
       var promise = companyAdCollection.fetch();
       promise.done(function (models) {
           var ads = models.map(function (model) {
-              return <CompanyAdComponent {...model}/>;
+              return <CompanyAdComponent model={model}/>;
           });
           _this.setState({ companyAds: _this.state.companyAds.concat(ads) });
       })
