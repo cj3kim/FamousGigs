@@ -81,18 +81,10 @@ var AdEditForm = React.createClass({
             <tr className="checkboxes">
               <td colSpan="1"> <label for="full_time">Full Time?</label> </td>
               <td colSpan="1"> <input type="checkbox" name="full_time" /> </td>
-              <td colSpan="1"> <label for="part_time">Part Time?</label> </td>
-              <td colSpan="1"> <input type="checkbox" name="part_time" /> </td>
               <td colSpan="1"> <label for="contract">Contract?</label> </td>
               <td colSpan="1"> <input type="checkbox" name="contract" /> </td>
-            </tr>
-
-            <tr className="checkboxes-last">
-              <td colSpan="1"> <label for="onsite">Onsite?</label> </td>
-              <td colSpan="1"> <input type="checkbox" name="onsite" /> </td>
               <td colSpan="1"> <label for="remote">Remote?</label> </td>
               <td colSpan="1"> <input type="checkbox" name="remote" /> </td>
-              <td colSpan="2"> </td>
             </tr>
           </tbody>
         </table>
