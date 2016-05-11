@@ -13,7 +13,6 @@ var AdPostForm = React.createClass({
             <div className="col-1">
                <FormContent headerName="Post Job"     reactClass={AdEditForm} />
                <FormContent headerName="Company Info" reactClass={CompanyForm} />
-               <FormContent headerName="Payment"      reactClass={PaymentForm} />
             </div>
 
             <div className="col-2">

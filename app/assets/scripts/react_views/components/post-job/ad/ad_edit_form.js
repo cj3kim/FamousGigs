@@ -69,19 +69,16 @@ var AdEditForm = React.createClass({
               <td colSpan="6" className='quill-ad-column'><div className='quill-ad-form'></div></td>
             </tr>
 
-            <tr className=''>
+            <tr className='no-padding'>
               <td colSpan="6"><Toolbar toolbarId="ad-toolbar" /></td>
             </tr>
 
             <tr >
-              <td colSpan="2"><label for="job_location">location</label></td>
+              <td colSpan="2"><label for="job_location">Location</label></td>
               <td colSpan="4"><input type="text" name="job_location" /></td>
             </tr>
 
-            <tr >
-              <td colSpan="6" className='description' ><label>Job Type</label></td>
-            </tr>
-            <tr className='checkboxes'>
+            <tr className="checkboxes">
               <td colSpan="1"> <label for="full_time">Full Time?</label> </td>
               <td colSpan="1"> <input type="checkbox" name="full_time" /> </td>
               <td colSpan="1"> <label for="part_time">Part Time?</label> </td>
@@ -90,7 +87,7 @@ var AdEditForm = React.createClass({
               <td colSpan="1"> <input type="checkbox" name="contract" /> </td>
             </tr>
 
-            <tr className='checkboxes'>
+            <tr className="checkboxes-last">
               <td colSpan="1"> <label for="onsite">Onsite?</label> </td>
               <td colSpan="1"> <input type="checkbox" name="onsite" /> </td>
               <td colSpan="1"> <label for="remote">Remote?</label> </td>

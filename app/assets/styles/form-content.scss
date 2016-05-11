@@ -1,3 +1,11 @@
+form {
+  margin: 0px;
+}
+
+tr.beefy-cols td {
+  height: 75px !important;
+}
+
 div.form-content {
   form {
     width: 90%;
@@ -37,10 +45,24 @@ div.form-content {
       td { height: 0px; border: none; }
     }
 
+
+    tr.no-padding {
+      td {
+        height: 43px;
+        vertical-align: top;
+      }
+      padding: 0px;
+      div#ad-toolbar {
+        padding: 0px;
+      }
+    
+    }
     tr.quill-row {
       td.quill-ad-column {
         height: 250px;
         display:table-cell;
+        border-bottom: none;
+        padding-bottom: 0px !important;
 
         div.quill-ad-form {
           width: 100%;
@@ -58,10 +80,10 @@ div.form-content {
       td {
         width:  16.665%;
         height: 50px;
-        border-bottom: solid 1px #e8e9e8;
+        /*border-bottom: solid 1px #e8e9e8;*/
         letter-spacing: 1px;
         vertical-align: center;
-        font-size: 16px;
+        font-size: 18px;
       }
 
       &:last-child {
@@ -76,9 +98,8 @@ div.form-content {
       }
 
       td label {
-        text-transform: uppercase;
         color: #41aec2;
-        font-size: 13px;
+        font-size: 17px;
         text-align: left;
       }
 
@@ -118,5 +139,14 @@ div.form-content {
       text-shadow: 0 -1px 0 rgba(46,86,153,0.3);
     }
   }
+
+  button.checkout-btn {
+    height: 50px;
+    span {
+      font-size: 20px;
+    }
+  }
+
+
 
 }

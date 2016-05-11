@@ -17,7 +17,6 @@ var CompanyDetails = React.createClass({
 
   componentDidMount: function () {
     var _this = this;
-
     var form         = ReactDOM.findDOMNode(this);
     this.progress    = form.getElementsByTagName("progress")[0];
     this.resourceUrl = "";
@@ -106,11 +105,15 @@ var CompanyDetails = React.createClass({
             </td>
           </tr>
 
-          <tr>
-            <td colSpan="2"> </td>
-            <td colSpan="2"> </td>
-            <td colSpan="2"> </td>
+          <tr className="beefy-cols">
+            <td colSpan="3"></td>
+            <td colSpan="3">
+              <button className="checkout-btn" type="submit">
+                <span>Review and Checkout</span>
+              </button>
+              </td>
           </tr>
+
           </tbody>
         </table>
       </form>
