@@ -9,6 +9,7 @@ var Router      = ReactRouter.Router;
 var hashHistory = ReactRouter.hashHistory;
 
 var AdDetails   = require("./react_views/components/ad-details/index.js");
+var AdPostForm  = require("./react_views/components/post-job/ad/index.js");
 
 var path = require("path");
 var App  = require("./react_views/components/app/app_container.js");
@@ -20,6 +21,8 @@ render((
       <Route path="/" component={App}>
           <Route path="/gigs" component={Gigs} />
           <Route path="/gigs/:job_id" component={AdDetails} />
+
+          <Route path="/post_job" component={AdPostForm} />
       </Route>
   </Router>
 ), document.getElementById("app"))

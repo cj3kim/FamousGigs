@@ -5,6 +5,8 @@ var CompanyAdCollection = require("../../../collections/company_ads.js");
 
 var companyAdCollection = new CompanyAdCollection();
 
+var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+
 //Gigs
 module.exports = React.createClass({
   getInitialState: function () {
@@ -15,7 +17,7 @@ module.exports = React.createClass({
       var promise = companyAdCollection.fetch();
       promise.done(function (models) {
           var ads = models.map(function (model) {
-              return <CompanyAdComponent model={model}/>;
+              return <CompanyAdComponent key={model.id} model={model}/>;
           });
           _this.setState({ companyAds: _this.state.companyAds.concat(ads) });
       })
@@ -24,7 +26,13 @@ module.exports = React.createClass({
   render: function () {
     return (
       <div className="gigs">
-        {this.state.companyAds}
+          <ReactCSSTransitionGroup transitionName="example"
+                                   transitionAppear={true}
+                                   transitionAppearTimeout={500}
+                                   transitionEnterTimeout={500}
+                                   transitionLeaveTimeout={300}>
+              {this.state.companyAds}
+          </ReactCSSTransitionGroup>
       </div>
     );
   }

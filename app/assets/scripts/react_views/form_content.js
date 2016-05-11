@@ -9,9 +9,9 @@ var FormContent = React.createClass({
     var id = this.props.id ? this.props.id : "";
 
     return (
-      <div id={id} className="form-content stop-gap-div">
+      <div id={id} className="form-content">
         <ContentHeader headerName={ headerName }/>
-        <div className="content-body"> 
+        <div className="content-body">
           <ReactClass {...this.props}/>
         </div>
      </div>

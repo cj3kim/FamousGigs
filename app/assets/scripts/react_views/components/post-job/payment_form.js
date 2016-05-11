@@ -1,32 +1,33 @@
-var React = require('react');
-var $ = require('zepto-browserify').$;
-var TableHeader = require('./table_header');
+var React = require("react");
+var ReactDOM    = require("react-dom");
+var $ = require("zepto-browserify").$;
+var TableHeader = require("../table_header");
 
 
-Stripe.setPublishableKey('pk_test_8vofNFraEETbkErpKImun5jZ');
+Stripe.setPublishableKey("pk_test_8vofNFraEETbkErpKImun5jZ");
 
-var serializeObject = require('./SerializeObject');
+var serializeObject = require("../SerializeObject");
 
 var PaymentForm = React.createClass({
   handleSubmit: function (event) {
     event.preventDefault();
     event.stopPropagation();
-    var $form = $('#payment-form')
-    var obj = serializeObject($form);
+    var $form = $(ReactDOM.findDOMNode(this));
+    var obj  = serializeObject($form);
 
     Stripe.card.createToken(obj, this.stripeResponseHandler);
   },
 
   stripeResponseHandler: function (status, response) {
-    var $form = $('#payment-form');
+    var $form = $("#payment-form");
 
     if (response.error) {
-      $form.find('.payment-errors').text(response.error.message);
-      $form.find('button').prop('disabled', false);
+      $form.find(".payment-errors").text(response.error.message);
+      $form.find("button").prop("disabled", false);
     } else {
       var token = response.id;
 
-      $form.trigger('stripe-payment',[{stripe_token: token}]);
+      $form.trigger("stripe-payment",[{stripe_token: token}]);
     }
   },
   render: function () {
@@ -34,18 +35,23 @@ var PaymentForm = React.createClass({
       <form id="payment-form" onSubmit={this.handleSubmit}>
         <span className="payment-errors"> </span>
         <table>
+          <tbody>
           <TableHeader amount="6" />
           <tr>
-            <td colSpan="2"><label for="number">Credit Card No.</label> </td>
+            <td colSpan="2"><label for="number">Cardholder Name</label> </td>
+            <td colSpan="4"><input type="text" name="number" data-stripe="number"/></td>
+            </tr>
+          <tr>
+            <td colSpan="2"><label for="number">Card Number</label> </td>
             <td colSpan="4"><input type="text" name="number" data-stripe="number"/></td>
             </tr>
 
           <tr>
             <td colSpan="2"><label>Expiration (MM/YYYY)</label></td>
             <td colSpan="4">
-                <input className='month' type="text"  name="exp_month" data-stripe="exp-month"/>
+                <input className="month" type="text"  name="exp_month" data-stripe="exp-month"/>
                 <span> / </span>
-                <input className='year'  type="text"  name="exp_year"  data-stripe="exp-year"/>
+                <input className="year"  type="text"  name="exp_year"  data-stripe="exp-year"/>
                 </td>
             </tr>
           <tr>
@@ -56,10 +62,13 @@ var PaymentForm = React.createClass({
           <tr>
             <td colSpan="3"></td>
             <td colSpan="3">
-              <button className='pay-btn' type="submit">
+              <button className="pay-btn" type="submit">
                 <span> Complete Post </span>
-              </button></td>
-            </tr>
+              </button>
+              </td>
+          </tr>
+
+          </tbody>
         </table>
       </form>
     );
