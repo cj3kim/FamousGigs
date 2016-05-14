@@ -1,9 +1,6 @@
 var React = require("react");
 
 var FormContent = require("../../../form_content");
-//var AdEditForm  = require("./ad_edit_form");
-//var CompanyForm = require("../company_edit_form");
-//var PaymentForm = require("../payment_form");
 var PaymentExplanation = require("../payment_explanation");
 
 

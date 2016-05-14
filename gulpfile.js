@@ -38,30 +38,30 @@ gulp.task('server', bg('node', './app.js'));
 gulp.task('browser-sync', bg("browser-sync",  'start', '--proxy', 'localhost:1337', '--files', 'public/**/*.*'));
 
 gulp.task('images', function () {
-  gulp.src('./app/assets/images/**/*')
+  gulp.src('./assets/images/**/*')
     .pipe(gulp.dest('./public/images'));
 });
 
 gulp.task('fonts', function () {
-  gulp.src('./app/assets/fonts/**/*')
+  gulp.src('./assets/fonts/**/*')
     .pipe(gulp.dest('./public/fonts'));
 });
 
 gulp.task('sass', function () {
-  gulp.src('./app/assets/styles/*.scss')
+  gulp.src('./assets/styles/*.scss')
     .pipe(sass())
     .pipe(concatCSS('main.css'))
     .pipe(gulp.dest('./public/styles'));
 });
 
 gulp.task('watch', function () {
-  gulp.watch('./app/assets/styles/*.scss', ['sass'])
+  gulp.watch('./assets/styles/*.scss', ['sass'])
 });
 
 gulp.task('build-main', function() { // for non dev servers
   var b = browserify({ cache: {}, packageCache: {}, fullPaths: true })
   b.transform('reactify');
-  var startFile       = './app/assets/scripts/main.js';
+  var startFile       = './assets/scripts/main.js';
   var destinationPath = './public/scripts';
   var buildName       = 'main.js';
   var buildFile       = path.join(destinationPath, buildName);
@@ -91,7 +91,7 @@ gulp.task('browserify-watch', function () {
     bundle(b);
   });
 
-  var startFile       = './app/assets/scripts/main.js';
+  var startFile       = './assets/scripts/main.js';
   var destinationPath = './public/scripts';
   var buildName       = 'main.js';
   var buildFile       = path.join(destinationPath, buildName);

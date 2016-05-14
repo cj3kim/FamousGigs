@@ -12,9 +12,7 @@ Stripe.setPublishableKey("pk_test_8vofNFraEETbkErpKImun5jZ");
 var PaymentForm = React.createClass({
   componentDidMount: function () {
     var $form = $(ReactDOM.findDOMNode(this));
-    this.setState({
-      $form: $form
-    });
+    this.setState({ $form: $form });
   },
   handleSubmit: function (event) {
     event.preventDefault();

@@ -59,17 +59,20 @@ var AdEditForm = React.createClass({
 
   setImage: function (resourceUrl) {
     this.resourceUrl = resourceUrl;
-    var $image = this.$form.find("#dropzone-image");
+    var $image = this.state.$form.find("#dropzone-image");
     var image = $image[0];
     image.src = resourceUrl;
     $image.show();
-    this.$form.find(".dropzone-message").hide();
+    this.state.$form.find(".dropzone-message").hide();
 
   },
   onDrop: function (files) {
     var filePath = "company-ads/logos/";
     var fileSizeLimit = 2097152;
-    this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
+    var file = files[0];
+    console.log('==> files', files);
+    this.setImage(file.preview)
+    //this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
   },
   updateCompanyAdStore: function (evt) {
     evt.preventDefault();
@@ -84,6 +87,7 @@ var AdEditForm = React.createClass({
     this.props.router.push("/post_job/payment");
   },
   render: function () {
+    //<td colSpan="4"><progress value="0" max="100"></progress></td>
     return (
       <form onSubmit={this.updateCompanyAdStore} >
         <table border="0">
@@ -147,16 +151,13 @@ var AdEditForm = React.createClass({
             </tr>
 
             <tr>
-              <td colSpan="2"><label>Logo Upload</label></td>
-              <td colSpan="4"><progress value="0" max="100"></progress></td>
+              <td colSpan="6"><label>Logo Upload (200x70 is optimal)</label></td>
             </tr>
 
             <tr>
               <td colSpan="6">
                 <Dropzone onDrop={this.onDrop} style={{width: "100%", height: "150px", border: "1px dotted #41aec2", marginTop: "10px"}} >
-                  <div className="dropzone-message">
-                    Drop your logo here, or click to select from your computer.
-                    </div>
+                  <div className="dropzone-message"> Drop your logo here, or click to select from your computer.  </div>
 
                   <img id="dropzone-image" style={{ display: "none" }} />
 
