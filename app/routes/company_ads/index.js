@@ -27,7 +27,7 @@ module.exports = function (app) {
     var charge = stripe.charges.create({
       amount: 1000, // amount in cents, again
       currency: "usd",
-      source: companyAd.stripeToken,
+      source: companyAd.stripe_token,
       description: companyAd.contact_email
     }, function(err, charge) {
       if (err && err.type === 'StripeCardError') {

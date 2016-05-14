@@ -1,33 +1,42 @@
-var React = require("react");
+var React       = require("react");
 var ReactDOM    = require("react-dom");
-var $ = require("zepto-browserify").$;
-var TableHeader = require("../table_header");
+var $           = require("zepto-browserify").$;
+var sgCompanyAdStore = require("../../../models/singleton/company_ad.js");
 
+var TableHeader = require("../table_header");
+var serializeObject = require("../SerializeObject");
 
 Stripe.setPublishableKey("pk_test_8vofNFraEETbkErpKImun5jZ");
 
-var serializeObject = require("../SerializeObject");
 
 var PaymentForm = React.createClass({
+  componentDidMount: function () {
+    var $form = $(ReactDOM.findDOMNode(this));
+    this.setState({
+      $form: $form
+    });
+  },
   handleSubmit: function (event) {
     event.preventDefault();
     event.stopPropagation();
-    var $form = $(ReactDOM.findDOMNode(this));
-    var obj  = serializeObject($form);
-
-    Stripe.card.createToken(obj, this.stripeResponseHandler);
+    var $form   = this.state.$form;
+    var formObj = serializeObject($form);
+    Stripe.card.createToken(formObj, this.stripeResponseHandler);
   },
 
   stripeResponseHandler: function (status, response) {
-    var $form = $("#payment-form");
-
+    var $form   = this.state.$form;
     if (response.error) {
       $form.find(".payment-errors").text(response.error.message);
       $form.find("button").prop("disabled", false);
     } else {
       var token = response.id;
+      sgCompanyAdStore.set({stripe_token: token});
 
-      $form.trigger("stripe-payment",[{stripe_token: token}]);
+      var postObj = sgCompanyAdStore.attributes;
+      $.post('/company_ads/create', postObj, function () {
+          console.log("Successfully created the ad.");
+      });
     }
   },
   render: function () {
