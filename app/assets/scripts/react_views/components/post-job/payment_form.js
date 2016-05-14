@@ -37,9 +37,37 @@ var PaymentForm = React.createClass({
         <table>
           <tbody>
           <TableHeader amount="6" />
+
+          <tr className="header">
+            <td colSpan="6">Payment Details</td>
+          </tr>
+
+          <tr className="payment-details">
+            <td colSpan="2"><label for="number">1x Post</label> </td>
+            <td colSpan="1">$50</td>
+            </tr>
+
+          <tr className="subtotal-line payment-details">
+            <td colSpan="2"><label for="number">Subtotal: </label> </td>
+            <td colSpan="1">$50</td>
+            </tr>
+          <tr>
+            <td colSpan="2"><label for="number">Total: </label> </td>
+            <td colSpan="4">$50</td>
+            </tr>
+
+          <tr className="header">
+            <td colSpan="6">Payment Information</td>
+          </tr>
+          <tr>
+            <td colSpan="2"><label for="number">Card Type</label> </td>
+            <td colSpan="4">
+                <img alt={"Accept Credit Cards Visa MasterCard American Express Discover"} src={"http://www.instamerchant.com/cards4.gif"}  />
+            </td>
+            </tr>
           <tr>
             <td colSpan="2"><label for="number">Cardholder Name</label> </td>
-            <td colSpan="4"><input type="text" name="number" data-stripe="number"/></td>
+            <td colSpan="4"><input type="text" name="number" /></td>
             </tr>
           <tr>
             <td colSpan="2"><label for="number">Card Number</label> </td>
@@ -56,7 +84,7 @@ var PaymentForm = React.createClass({
             </tr>
           <tr>
             <td colSpan="2"><label for="cvc">CVC</label></td>
-            <td colSpan="4"><input type="text" name="cvc" /></td>
+            <td colSpan="1"><input type="text" name="cvc" /></td>
             </tr>
 
           <tr>

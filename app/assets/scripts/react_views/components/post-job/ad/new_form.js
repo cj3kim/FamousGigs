@@ -1,7 +1,10 @@
 var React = require("react");
 var ReactDOM    = require("react-dom");
 var Quill = require("quill");
+var Link = require("react-router").Link
+var withRouter = require("react-router").withRouter;
 
+var serializeObject = require('../../SerializeObject');
 var Toolbar     = require("../../toolbar");
 var TableHeader = require("../../table_header");
 var Dropzone    = require ("react-dropzone");
@@ -11,34 +14,33 @@ var S3Mixin         = require("../../../../views/S3Mixin");
 var noticationBox   = require("../../../../views/notification/index");
 var DropzoneMixin   = require("../../../dropzone_mixin");
 
+var sgCompanyAdStore = require("../../../../models/singleton/company_ad.js");
+
 
 var AdEditForm = React.createClass({
   mixins: [S3Mixin, DropzoneMixin],
 
   componentDidMount: function () {
     var _this = this;
-    var form = ReactDOM.findDOMNode(this);
-    var div = form.getElementsByClassName('quill-ad-form')[0];
+    var form  = ReactDOM.findDOMNode(this);
+    var div   = form.getElementsByClassName('quill-ad-form')[0];
     var $form = $(form);
+    var quillEditor = this.generateQuillForm(div);
 
-    var fullEditor = new Quill(div, {
-      styles: {
-        ".ql-editor": {
-          "font-family": "Helvetica, 'Arial', san-serif;",
-        }
-      },
-      modules: {
-        "toolbar": { container: "#ad-toolbar" },
-      },
-      theme: "snow"
+    this.setState({
+      $form: $form,
+      quillEditor: quillEditor,
     });
+  },
 
-
-    $form.on("next-view", function (event) {
-      var data = _this.retrieveFormData($form, fullEditor);
-      event.data = data;
-      //we continue to let the event bubble up
-    });
+  generateQuillForm: function (div) {
+      return new Quill(div, {
+        styles: {
+          ".ql-editor": { "font-family": "Helvetica, 'Arial', san-serif;" }
+        },
+        modules: { "toolbar": { container: "#ad-toolbar" }, },
+        theme: "snow"
+      });
   },
 
   retrieveFormData: function ($form, quillEditor) {
@@ -69,10 +71,21 @@ var AdEditForm = React.createClass({
     var fileSizeLimit = 2097152;
     this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
   },
+  updateCompanyAdStore: function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
 
+    var state       = this.state;
+    var quillEditor = state.quillEditor;
+    var $form       = state.$form;
+    var formData    = this.retrieveFormData($form, quillEditor);
+
+    sgCompanyAdStore.set(formData);
+    this.props.router.push("/post_job/payment");
+  },
   render: function () {
     return (
-      <form>
+      <form onSubmit={this.updateCompanyAdStore} >
         <table border="0">
           <tbody>
             <TableHeader amount={6} />
@@ -166,4 +179,4 @@ var AdEditForm = React.createClass({
   }
 });
 
-module.exports = AdEditForm;
+module.exports = withRouter(AdEditForm);

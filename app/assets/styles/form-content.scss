@@ -75,6 +75,16 @@ div.form-content {
     tr.checkboxes td {
       border: none;
     }
+    tr.payment-details {
+      td {
+        height: 40px;
+      }
+    }
+    tr.subtotal-line {
+      td {
+        border-bottom: solid 1px #d8d8d8;
+      }
+    }
     tr.header {
       td {
         width: 100%;
@@ -111,6 +121,7 @@ div.form-content {
         color: #41aec2;
         font-size: 18px;
         text-align: left;
+        display: inline-block;
       }
 
       td span.slash {

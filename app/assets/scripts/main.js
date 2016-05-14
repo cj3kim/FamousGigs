@@ -16,6 +16,7 @@ var App  = require("./react_views/components/app/app_container.js");
 
 var Gigs = require("./react_views/components/gigs/index.js")
 
+var Checkout = require("./react_views/components/post-job/checkout.js");
 render((
   <Router history={hashHistory}>
       <Route path="/" component={App}>
@@ -23,6 +24,7 @@ render((
           <Route path="/gigs/:job_id" component={AdDetails} />
 
           <Route path="/post_job" component={AdPostForm} />
+          <Route path="/post_job/payment" component={Checkout} />
       </Route>
   </Router>
 ), document.getElementById("app"))
