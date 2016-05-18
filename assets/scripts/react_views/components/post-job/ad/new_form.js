@@ -27,10 +27,9 @@ var AdEditForm = React.createClass({
     var $form = $(form);
     var quillEditor = this.generateQuillForm(div);
 
-    this.setState({
-      $form: $form,
-      quillEditor: quillEditor,
-    });
+    this.temp_refs = {};
+    this.temp_refs.$form = $form;
+    this.temp_refs.quillEditor = quillEditor;
   },
 
   generateQuillForm: function (div) {
@@ -59,18 +58,17 @@ var AdEditForm = React.createClass({
 
   setImage: function (resourceUrl) {
     this.resourceUrl = resourceUrl;
-    var $image = this.state.$form.find("#dropzone-image");
+    var $image = this.temp_refs.$form.find("#dropzone-image");
     var image = $image[0];
     image.src = resourceUrl;
     $image.show();
-    this.state.$form.find(".dropzone-message").hide();
+    this.temp_refs.$form.find(".dropzone-message").hide();
 
   },
   onDrop: function (files) {
     var filePath = "company-ads/logos/";
     var fileSizeLimit = 2097152;
     var file = files[0];
-    console.log('==> files', files);
     this.setImage(file.preview)
     //this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
   },
@@ -78,7 +76,7 @@ var AdEditForm = React.createClass({
     evt.preventDefault();
     evt.stopPropagation();
 
-    var state       = this.state;
+    var state       = this.temp_refs;
     var quillEditor = state.quillEditor;
     var $form       = state.$form;
     var formData    = this.retrieveFormData($form, quillEditor);

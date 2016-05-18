@@ -22,14 +22,3 @@ div.general-content, div.form-content, div.text-content{
   }
 }
 
-div.general-content {
-  position: absolute;
-  z-index: 0;
-
-  div.content-body {
-    video {
-      width: 100%;
-      height: auto;
-    }
-  }
-}
