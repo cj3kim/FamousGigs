@@ -9,19 +9,10 @@ var Input = React.createClass({
   // turn will validate it and the rest of the form
   changeValue: function (event) {
     var inputType = this.props.type;
-    var val;
-    var input = event.currentTarget.value;
-    switch (inputType) {
-      case "checkbox":
-        val = input === "on" ? undefined : "on"
-        break;
-      case "text":
-        val = input;
-        break;
-      default:
-    }
-    this.setValue(val);
+    var input     = event.currentTarget.value;
+    this.setValue(input);
   },
+
 
   render: function () {
     // Set a specific className based on the validation
@@ -38,11 +29,10 @@ var Input = React.createClass({
 
     return (
       <div className={className}>
-        <div className="row">
+        <div className="form-row">
             <div className="col">
+                <label for={this.props.name}>{this.props.label}</label>
                 <input type={this.props.type || defaultType} onChange={this.changeValue} value={this.getValue()}/>
-            </div>
-            <div classname="col">
             </div>
         </div>
       </div>

@@ -9,19 +9,11 @@ var Input = React.createClass({
   // turn will validate it and the rest of the form
   changeValue: function (event) {
     var inputType = this.props.type;
-    var val;
     var input = event.currentTarget.value;
-    switch (inputType) {
-      case "checkbox":
-        val = input === "on" ? undefined : "on"
-        break;
-      case "text":
-        val = input;
-        break;
-      default:
-    }
+    var val = input === "on" ? undefined : "on"
     this.setValue(val);
   },
+
 
   render: function () {
     // Set a specific className based on the validation
@@ -34,18 +26,9 @@ var Input = React.createClass({
     // An error message is returned ONLY if the component is invalid
     // or the server has returned an error message
     var errorMessage = this.getErrorMessage();
-    var defaultType  = "text"
 
     return (
-      <div className={className}>
-        <div className="row">
-            <div className="col">
-                <input type={this.props.type || defaultType} onChange={this.changeValue} value={this.getValue()}/>
-            </div>
-            <div classname="col">
-            </div>
-        </div>
-      </div>
+        <input type="checkbox" onChange={this.changeValue} value={this.getValue()}/>
     );
   }
 });

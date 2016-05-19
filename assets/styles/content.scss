@@ -18,7 +18,11 @@ div.general-content, div.form-content, div.text-content{
   }
 
   div.content-body {
+    overflow: hidden;
     /*width: 100%;*/
+    form {
+      overflow: hidden;
+    }
   }
 }
 

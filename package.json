@@ -36,6 +36,7 @@
     "famous-polyfills": "^0.3.0",
     "flex-columns": "^0.3.3",
     "flux": "^2.0.3",
+    "formsy-react": "^0.18.0",
     "gulp": "^3.8.11",
     "gulp-bg": "0.0.5",
     "gulp-concat-css": "^2.1.0",

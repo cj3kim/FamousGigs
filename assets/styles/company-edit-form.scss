@@ -1,4 +1,39 @@
-form#company-edit-form {
+
+$text-color: #41aec2;
+$snow: #d8d8d8;
+
+form {
+  h3, label {
+    color: $text-color;
+  }
+  div.form-row.checkboxes {
+    overflow: hidden;
+    label, input {
+      float: left;
+    }
+    input[type="checkbox"] {
+      margin: 14px 10px;
+    }
+
+    div.checkbox-col {
+      margin: 20px 20px 10px 0px;
+      overflow: hidden;
+      float: left;
+    }
+  }
+  label {
+    display: inline-block;
+    margin: 10px 0px;
+  }
+  h3 {
+    margin: 20px 0px 10px 0px;
+    font-size: 20px;
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $snow;
+  }
+
+
   img#dropzone-image {
     width: 250px;
     height: 100%; 
