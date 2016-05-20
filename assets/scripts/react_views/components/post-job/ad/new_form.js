@@ -21,7 +21,10 @@ var Formsy = require("formsy-react");
 var AdEditForm = React.createClass({
   mixins: [S3Mixin, DropzoneMixin],
   getInitialState: function () {
-    return { canSubmit: false }
+    return {
+      canSubmit: true,
+      formSubmissionError: false
+    }
   },
   mapInputs: function (inputs) {
     return inputs;
@@ -64,7 +67,6 @@ var AdEditForm = React.createClass({
     //this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
   },
   submit: function (model) {
-    console.log('==> model', model);
     sgCompanyAdStore.set(model);
     this.props.router.push("/post_job/payment");
   },
@@ -72,30 +74,34 @@ var AdEditForm = React.createClass({
     //<td colSpan="4"><progress value="0" max="100"></progress></td>
     return (
      <Formsy.Form  onValidSubmit={this.submit}
+                   onInvalidSubmit={this.notifyFormError}
                    onValid={this.enableButton}
-                   onInvalid={this.disableButton}
+                   inValid={this.disableButton}
                    mapping={this.mapInputs} >
+
              <h3>Job Details </h3>
 
-             <TextInput name="title" label="Title" />
-             <TextInput type="text" name="job_location" label="Location" />
+             <TextInput name="title" label="Title" required/>
+             <TextInput type="text"
+                        name="job_location"
+                        label="Location"
+                        required />
 
              <div className="form-row checkboxes">
                <div className="checkbox-col">
                  <label for="full_time">Full Time?</label>
                  <CheckboxInput type="checkbox" name="full_time" />
                </div>
+
                <div className="checkbox-col">
                  <label for="contract">Contract?</label>
                  <CheckboxInput type="checkbox" name="contract" />
                </div>
 
-
                <div className="checkbox-col">
                  <label for="remote">Remote?</label>
                  <CheckboxInput type="checkbox" name="remote" />
                </div>
-
              </div>
 
 
@@ -106,14 +112,18 @@ var AdEditForm = React.createClass({
              <Toolbar toolbarId="ad-toolbar" />
 
              <h3> Company Information</h3>
-             <TextInput type="text" name="company_name" label="Company Name"/>
-             <TextInput type="text" name="company_link" label="Company Website" validations="isUrl" />
-             <TextInput type="text" name="contact_name" label="Contact Name" />
+             <TextInput type="text" name="company_name" label="Company Name" required/>
+             <TextInput type="text"
+                         name="company_link"
+                         label="Company Website"
+                         validations="isUrl" />
+             <TextInput type="text" name="contact_name" label="Contact Name" required/>
 
              <TextInput type="text" name="contact_email"
                                     label="Contact Email"
                                     validations="isEmail"
-                                    validationError="Please format your email correctly"
+                                    validationError="Please enter a valid email address"
+                                    required
                                     />
              <label>Logo Upload (200x70 is optimal)</label>
              <Dropzone onDrop={this.onDrop} style={{width: "100%", height: "150px", border: "1px dotted #41aec2", marginTop: "10px"}} >
@@ -127,7 +137,53 @@ var AdEditForm = React.createClass({
              </button>
       </Formsy.Form>
     );
-  }
+  },
+  notifyFormError: function (model, resetForm, invalidateForm) {
+    function emptyError(input_name, label_name, model, accum) {
+      var val = model[input_name];
+      var message = val === undefined || val.length === 0 ? "Please enter a " + label_name : "";
+      return message;
+    }
+
+    var errors = Object.keys(model).reduce(function (prev, curr) {
+      var errorMessage;
+      switch (curr) {
+        case "title":
+          errorMessage = emptyError("title", "title", model, prev);
+          break;
+        case "job_location":
+          errorMessage = emptyError("job_location", "location", model, prev);
+          break;
+        case "company_name":
+          errorMessage = emptyError("company_name", "company name", model, prev);
+          break;
+        case "contact_name":
+          errorMessage = emptyError("contact_name", "contact name", model, prev);
+          break;
+        case "contact_email":
+          errorMessage = emptyError("contact_email", "contact email", model, prev);
+          break;
+        default:
+      }
+      prev[curr] = errorMessage;
+      return prev;
+    }, {});
+
+    console.log('==> model', model);
+    console.log('==> errors', errors);
+    invalidateForm(errors);
+    this.setState({
+      formSubmissionError: true
+    });
+  },
+
+  displayFormErrorNotice: function () {
+    var message = "There are errors in the form."
+    var formError =  (<div className="form-error"><span>{message}</span></div>);
+    return this.state.formSubmissionError ? formError : null;
+  },
+
+
 });
 
 module.exports = withRouter(AdEditForm);

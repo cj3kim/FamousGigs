@@ -1,11 +1,54 @@
-form#payment-form {
+
+div.general-content span.payment-errors {
+  margin: 20px 0px;
+  display: inline-block;
+  font-size: 15px;
+  color: red;
+}
+
+div.payment-checkout {
+  width: 800px;
+}
+div.payment-details {
+  overflow: hidden;
+  div.costs {
+    overflow: hidden;
+    div.cost {
+      height: 40px;
+      overflow: hidden;
+      span {
+        float: left;
+        display: block;
+        font-size: 21px;
+      }
+      span.inventory {
+        width: 100px;
+      }
+      span.price {
+        width: 50px;
+      }
+      &:last-child {
+        span {
+          font-weight: 600;
+          padding-top: 10px;
+          border-top: 1px solid #d8d8d8;
+        }
+      }
+    }
+
+  }
+
+}
+
+form.payment-form {
   button.pay-btn {
+    span {
+      color: white;
+    }
     margin: 20px 0px;
   }
 
-  div.subtotal-line {
-    border-bottom: 1px solid grey;
-  }
+
   div.card-types {
     overflow: hidden;
 
@@ -24,24 +67,18 @@ form#payment-form {
 
   div.exp-date-and-cvc {
     margin-top: 10px;
-    label {
-      margin-right: 10px;
+    div.form-row {
+      float: left;
+      margin-right: 50px;
     }
-    input.month {
-      width: 40px;
+    div.exp-date {
+      width: 200px;
     }
-    input.year {
-      margin-right: 20px;
-      width: 60px;
-    }
-
-    input[name="cvc"] {
-      width: 60px;
+    div._cvc {
+      width: 100px;
     }
 
   }
 }
 
-div.payment-checkout {
-  width: 800px;
-}
+

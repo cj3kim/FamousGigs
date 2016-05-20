@@ -2,28 +2,51 @@ var React       = require("react");
 var ReactDOM    = require("react-dom");
 var $           = require("zepto-browserify").$;
 var sgCompanyAdStore = require("../../../models/singleton/company_ad.js");
+var TextInput     = require("../../forms/inputs/text");
 
 var TableHeader = require("../table_header");
 var serializeObject = require("../SerializeObject");
 
 Stripe.setPublishableKey("pk_test_8vofNFraEETbkErpKImun5jZ");
 
-
 var PaymentForm = React.createClass({
+  getInitialState: function () {
+    return { canSubmit: true }
+  },
+
+  mapInputs: function (inputs) {
+    var regex = /(\d\d)\/(\d\d\d\d)/g;
+
+    var expiration_month_year = inputs.expiration_month_year || "";
+    var matches = regex.exec(expiration_month_year);
+    delete inputs["expiration_month_year"]
+    if (matches) {
+      var month = matches[1] || "";
+      var year  = matches[2] || "";
+      inputs.exp_month = month;
+      inputs.exp_year  = year;
+    }
+    return inputs;
+  },
+  enableButton: function () {
+    this.setState({ canSubmit: true });
+  },
+  disableButton: function () {
+    this.setState({canSubmit: false });
+  },
   componentDidMount: function () {
     var $form = $(ReactDOM.findDOMNode(this));
-    this.setState({ $form: $form });
+    this.temp_refs = {}
+    this.temp_refs.$form = $form;
   },
-  handleSubmit: function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    var $form   = this.state.$form;
-    var formObj = serializeObject($form);
-    Stripe.card.createToken(formObj, this.stripeResponseHandler);
+  submit: function (event) {
+    this.disableButton();
+    var formModelData = this.refs.form.getModel();
+    Stripe.card.createToken(formModelData, this.stripeResponseHandler);
   },
 
   stripeResponseHandler: function (status, response) {
-    var $form   = this.state.$form;
+    var $form   = this.temp_refs.$form;
     if (response.error) {
       $form.find(".payment-errors").text(response.error.message);
       $form.find("button").prop("disabled", false);
@@ -37,75 +60,73 @@ var PaymentForm = React.createClass({
       });
     }
   },
+  notifyFormError: function (model, resetForm, invalidateForm) {
+  },
   render: function () {
     return (
-      <form id="payment-form" onSubmit={this.handleSubmit}>
-        <span className="payment-errors"> </span>
-        <table>
-          <tbody>
-          <TableHeader amount="6" />
+     <Formsy.Form  className="payment-form"
+                   onValidSubmit={this.submit}
+                   onInvalidSubmit={this.notifyFormError}
+                   onValid={this.enableButton}
+                   inValid={this.disableButton}
+                   ref="form"
+                   mapping={this.mapInputs} >
+        <h3>Payment Details</h3>
+        <div className="payment-details row">
+          <div className="costs">
+            <div className="cost">
+              <span className="inventory">1x Post</span> <span className="price">$50</span>
+            </div>
+            <div className="cost">
+              <span className="inventory">Total:</span><span className="price">$50</span>
+            </div>
+          </div>
+        </div>
 
-          <tr className="header">
-            <td colSpan="6">Payment Details</td>
-          </tr>
+        <h3>Payment Information</h3>
+        <div className="card-types row">
+          <label for="number">Card Type</label> 
+          <img alt={"Accept Credit Cards Visa MasterCard American Express Discover"} src={"http://www.instamerchant.com/cards4.gif"}  />
+        </div>
 
-          <tr className="payment-details">
-            <td colSpan="2"><label for="number">1x Post</label> </td>
-            <td colSpan="1">$50</td>
-            </tr>
+          <TextInput name="cardholder_name" label="Cardholder Name" />
+          <TextInput name="number"
+                     label="Card Number"
+                     validations={{
+                       isNumeric: true,
+                       maxLength: 19
+                     }}
+                     validationError="Please enter valid card number."
+                     required/>
 
-          <tr className="subtotal-line payment-details">
-            <td colSpan="2"><label for="number">Subtotal: </label> </td>
-            <td colSpan="1">$50</td>
-            </tr>
-          <tr>
-            <td colSpan="2"><label for="number">Total: </label> </td>
-            <td colSpan="4">$50</td>
-            </tr>
+        <div className="exp-date-and-cvc row">
+          <TextInput className="exp-date"
+                     name="expiration_month_year"
+                     label="Expiration (MM/YYYY)"
+                     validations={{
+                       checkExpiration: function (values, value) {
+                         var re = /\d\d\/\d\d\d\d/ig;
+                         return re.test(value);
+                       }
+                     }}
+                     validationError="Please enter valid expiration date."
+                     required/>
+          <TextInput className="_cvc" 
+                     name="cvc" 
+                     label="CVC" 
+                     validations={{
+                       isNumeric: true
+                     }}
+                     validationError="Please enter numbers."
+                     required/>
+        </div>
 
-          <tr className="header">
-            <td colSpan="6">Payment Information</td>
-          </tr>
-          <tr>
-            <td colSpan="2"><label for="number">Card Type</label> </td>
-            <td colSpan="4">
-                <img alt={"Accept Credit Cards Visa MasterCard American Express Discover"} src={"http://www.instamerchant.com/cards4.gif"}  />
-            </td>
-            </tr>
-          <tr>
-            <td colSpan="2"><label for="number">Cardholder Name</label> </td>
-            <td colSpan="4"><input type="text" name="number" /></td>
-            </tr>
-          <tr>
-            <td colSpan="2"><label for="number">Card Number</label> </td>
-            <td colSpan="4"><input type="text" name="number" data-stripe="number"/></td>
-            </tr>
-
-          <tr>
-            <td colSpan="2"><label>Expiration (MM/YYYY)</label></td>
-            <td colSpan="4">
-                <input className="month" type="text"  name="exp_month" data-stripe="exp-month"/>
-                <span> / </span>
-                <input className="year"  type="text"  name="exp_year"  data-stripe="exp-year"/>
-                </td>
-            </tr>
-          <tr>
-            <td colSpan="2"><label for="cvc">CVC</label></td>
-            <td colSpan="1"><input type="text" name="cvc" /></td>
-            </tr>
-
-          <tr>
-            <td colSpan="3"></td>
-            <td colSpan="3">
-              <button className="pay-btn" type="submit">
-                <span> Complete Post </span>
-              </button>
-              </td>
-          </tr>
-
-          </tbody>
-        </table>
-      </form>
+       <button className="pay-btn"
+               type="submit"
+               disabled={!this.state.canSubmit} >
+         <span>Complete Post</span>
+       </button>
+      </Formsy.Form>
     );
   }
 });

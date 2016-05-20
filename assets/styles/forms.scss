@@ -1,0 +1,119 @@
+$text-color: #41aec2;
+$snow: #d8d8d8;
+
+form {
+  width: 90%;
+  padding: 0 5% 0 5%;
+  background-color: white;
+  margin: 0px;
+
+  h3, label {
+    color: $text-color;
+  }
+  label {
+    display: inline-block;
+    margin: 10px 0px;
+  }
+
+  h3 {
+    margin: 20px 0px 10px 0px;
+    font-size: 20px;
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $snow;
+  }
+  input[type='text'] {
+    width: 100%;
+    height: 30px;
+    letter-spacing: 1px;
+
+    font-size: 16px;
+    border: none;
+    outline: 0;
+    background: #FFFFFF;
+
+    /*border: solid 1px #E5E5E5; */
+    border: solid 1px #d8d8d8; 
+    &:hover { border: solid 1px #d8d8d8; }
+  }
+  div.form-row.checkboxes {
+    overflow: hidden;
+    label, input {
+      float: left;
+    }
+    input[type="checkbox"] {
+      margin: 14px 10px;
+    }
+
+    div.checkbox-col {
+      margin: 20px 20px 10px 0px;
+      overflow: hidden;
+      float: left;
+    }
+  }
+  img#dropzone-image {
+    width: 250px;
+    height: 100%; 
+    display: block;
+    margin: 0 auto;
+  }
+  div.dropzone-message {
+    margin-top: 50px; 
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  progress {
+    width: 100%;
+  }
+}
+
+div.general-content span.input-error {
+  color: red;
+}
+
+div.form-error {
+  height: 30px;
+  margin-top: 20px;
+  span {
+    font-size: 20px;
+    color: red;
+  }
+}
+
+button {
+  width: 100%;
+  height: 35px;
+  background-color: #4b9ab2;
+  border: none;
+
+  span {
+    cursor: pointer;
+    font-size: 17px;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(46,86,153,0.3);
+  }
+}
+
+button.checkout-btn {
+  height: 50px;
+  margin: 20px 0px;
+  span {
+    font-size: 20px;
+    color: white;
+  }
+}
+
+div.quill-ad-column {
+  width: 100%;
+  height: 250px;
+
+  border-bottom: none;
+  padding-bottom: 0px !important;
+
+  div.quill-ad-form {
+    width: 100%;
+    overflow-y: scroll;
+    border: solid 1px #d8d8d8;
+  }
+}
+

@@ -1,7 +1,7 @@
 var Formsy = require("formsy-react");
 var React = require("react");
 
-var Input = React.createClass({
+var BasicTextInput = React.createClass({
   // Add the Formsy Mixin
   mixins: [Formsy.Mixin],
 
@@ -20,28 +20,24 @@ var Input = React.createClass({
     // when the value is empty and the required prop is
     // passed to the input. showError() is true when the
     // value typed is invalid
-
-    var className = this.props.className || "";
-    var validationClass = this.showRequired() ? "required" : this.showError() ? "error" : null;
+    var className = this.showRequired() ? "required" : this.showError() ? "error" : null;
 
     // An error message is returned ONLY if the component is invalid
     // or the server has returned an error message
     var errorMessage = this.getErrorMessage();
     var defaultType  = "text"
 
-    var _class = [className, validationClass, "form-row" ].join(" ");
     return (
-      <div className={_class}>
-          <div className="col">
-              <div>
+      <div className={className}>
+        <div className="form-row">
+            <div className="col">
                 <label for={this.props.name}>{this.props.label}</label>
-                <span className="input-error">{this.isRequired() ? "*" : null}&nbsp;{errorMessage}</span>
-              </div>
-              <input type={this.props.type || defaultType} onChange={this.changeValue} value={this.getValue()}/>
-          </div>
+                <input type={this.props.type || defaultType} onChange={this.changeValue} value={this.getValue()}/>
+            </div>
+        </div>
       </div>
     );
   }
 });
 
-module.exports = Input;
+module.exports = BasicTextInput;
