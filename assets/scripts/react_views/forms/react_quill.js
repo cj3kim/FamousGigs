@@ -10,6 +10,11 @@ var ReactQuill = React.createClass({
     var shouldSet = true;
     var onChangeFn = this.props.onChange || function () {} ;
 
+    this.temp_refs = {};
+    this.temp_refs.quillEditor = quillEditor;
+
+    quillEditor.setHTML(this.props.description || "");
+
     quillEditor.on("text-change", function (delta, source) {
         if (shouldSet) {
           setTimeout(function () {

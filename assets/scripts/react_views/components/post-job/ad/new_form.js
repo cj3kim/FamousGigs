@@ -1,16 +1,13 @@
 var $ = require("zepto-browserify").$;
 var React = require("react");
 var ReactDOM    = require("react-dom");
-var Quill = require("quill");
 var Link = require("react-router").Link
 var withRouter = require("react-router").withRouter;
 
 var Toolbar     = require("../../toolbar");
-var TableHeader = require("../../table_header");
 var Dropzone    = require ("react-dropzone");
+var GeneralContent = require("../../../new_general_content");
 
-var S3Mixin         = require("../../../../views/S3Mixin");
-var DropzoneMixin   = require("../../../dropzone_mixin");
 var sgCompanyAdStore = require("../../../../models/singleton/company_ad.js");
 
 var ReactQuill = require("../../../forms/react_quill");
@@ -19,11 +16,12 @@ var CheckboxInput = require("../../../forms/inputs/checkbox");
 var Formsy = require("formsy-react");
 
 var AdEditForm = React.createClass({
-  mixins: [S3Mixin, DropzoneMixin],
   getInitialState: function () {
+    //TODO This code allows the component React-Dropzone to work because
+    //it relies on findDOMNode to be on React instead of ReactDOM.
+    React.findDOMNode = ReactDOM.findDOMNode;
     return {
       canSubmit: true,
-      formSubmissionError: false
     }
   },
   mapInputs: function (inputs) {
@@ -42,100 +40,126 @@ var AdEditForm = React.createClass({
 
     this.temp_refs = {};
     this.temp_refs.$form = $form;
+    var image_preview = sgCompanyAdStore.image_preview;
+    this.setImage(image_preview);
   },
 
   onQuillTextChange: function (text) {
     this.setState({quillText: text });
-    console.log('==> this.state', this.state);
   },
-
   setImage: function (resourceUrl) {
-    this.resourceUrl = resourceUrl;
-    this.temp_refs.$form.find(".dropzone-message").hide();
-    var $image = this.temp_refs.$form.find("#dropzone-image");
-    var image = $image[0];
-    image.src = resourceUrl;
-
-    $image.show();
+    if (resourceUrl) {
+      this.temp_refs.$form.find(".dropzone-message").hide();
+      var $image = this.temp_refs.$form.find("#dropzone-image");
+      var image = $image[0];
+      image.src = resourceUrl;
+      $image.show();
+    }
   },
+
   onDrop: function (files) {
     var filePath = "company-ads/logos/";
     var fileSizeLimit = 2097152;
     var file = files[0];
     sgCompanyAdStore.files = files;
+    sgCompanyAdStore.image_file = file;
+    sgCompanyAdStore.image_preview =  file.preview;
     this.setImage(file.preview)
-    //this.dropAndLoad(files, filePath, fileSizeLimit,  this.setImage);
   },
   submit: function (model) {
+    model.description = sgCompanyAdStore.get("description") || this.state.quillText || "";
     sgCompanyAdStore.set(model);
     this.props.router.push("/post_job/payment");
   },
   render: function () {
-    //<td colSpan="4"><progress value="0" max="100"></progress></td>
+
+  /*<div className="checkbox-col">*/
+  //<label for="contract">Contract?</label>
+  //<CheckboxInput name="contract" value={sgCompanyAdStore.get("contract")} />
+  /*</div>*/
     return (
-     <Formsy.Form  onValidSubmit={this.submit}
-                   onInvalidSubmit={this.notifyFormError}
-                   onValid={this.enableButton}
-                   inValid={this.disableButton}
-                   mapping={this.mapInputs} >
+     <GeneralContent headerName="Post Job">
+         <Formsy.Form  onValidSubmit={this.submit}
+                       onInvalidSubmit={this.rotifyFormError}
+                       onValid={this.enableButton}
+                       inValid={this.disableButton}
+                       mapping={this.mapInputs}
+                       ref="form"
+                       >
 
-             <h3>Job Details </h3>
+               <h3>Job Details </h3>
 
-             <TextInput name="title" label="Title" required/>
-             <TextInput type="text"
-                        name="job_location"
-                        label="Location"
-                        required />
+               <TextInput name="title"
+                          label="Title"
+                          value={sgCompanyAdStore.get("title") || "Test"}
+                          required/>
+               <TextInput type="text"
+                          name="job_location"
+                          label="Location"
+                          value={sgCompanyAdStore.get("job_location") || "Oakland"}
+                          required />
 
-             <div className="form-row checkboxes">
-               <div className="checkbox-col">
-                 <label for="full_time">Full Time?</label>
-                 <CheckboxInput type="checkbox" name="full_time" />
+               <div className="form-row checkboxes">
+                 <div className="checkbox-col">
+                   <label for="full_time">Full Time?</label>
+                   <CheckboxInput name="full_time" value={sgCompanyAdStore.get("full_time")} />
+                 </div>
+
+
+                 <div className="checkbox-col">
+                   <label for="remote">Remote?</label>
+                   <CheckboxInput name="remote" value={sgCompanyAdStore.get("remote")} />
+                 </div>
                </div>
 
-               <div className="checkbox-col">
-                 <label for="contract">Contract?</label>
-                 <CheckboxInput type="checkbox" name="contract" />
+
+               <label for="description">Description</label>
+               <div className="quill-ad-column">
+                  <ReactQuill description={sgCompanyAdStore.get("description")} onChange={this.onQuillTextChange}/>
                </div>
+               <Toolbar toolbarId="ad-toolbar" />
 
-               <div className="checkbox-col">
-                 <label for="remote">Remote?</label>
-                 <CheckboxInput type="checkbox" name="remote" />
-               </div>
-             </div>
+               <h3> Company Information</h3>
+               <TextInput type="text"
+                          name="company_name"
+                          label="Company Name"
+                          value={sgCompanyAdStore.get("company_name") || "WunderCode"}
+                          required/>
+               <TextInput type="text"
+                           name="company_link"
+                           label="Company Website"
+                           validations="isUrl"
+                           validationError="Please enter valid url."
+                           value={sgCompanyAdStore.get("company_link")}
+                           />
+               <TextInput type="text"
+                          name="contact_name"
+                          label="Contact Name"
+                          value={sgCompanyAdStore.get("contact_name") || "Chris Kim"}
+                          required/>
 
+               <TextInput type="text"
+                          name="contact_email"
+                          label="Contact Email"
+                          validations="isEmail"
+                          validationError="Please enter a valid email address"
+                          value={sgCompanyAdStore.get("contact_email") || "cj3kim@gmail.com"}
+                          required
+                          />
+               <label>Logo Upload (200x70 is optimal)</label>
+               <Dropzone onDrop={this.onDrop}
+                         style={{width: "100%", height: "150px", border: "1px dotted #41aec2", marginTop: "10px"}} >
+                 <div className="dropzone-message"> Drop your logo here, or click to select from your computer.  </div>
 
-             <label for="description">Description</label>
-             <div className="quill-ad-column">
-                <ReactQuill onChange={this.onQuillTextChange}/>
-             </div>
-             <Toolbar toolbarId="ad-toolbar" />
-
-             <h3> Company Information</h3>
-             <TextInput type="text" name="company_name" label="Company Name" required/>
-             <TextInput type="text"
-                         name="company_link"
-                         label="Company Website"
-                         validations="isUrl" />
-             <TextInput type="text" name="contact_name" label="Contact Name" required/>
-
-             <TextInput type="text" name="contact_email"
-                                    label="Contact Email"
-                                    validations="isEmail"
-                                    validationError="Please enter a valid email address"
-                                    required
-                                    />
-             <label>Logo Upload (200x70 is optimal)</label>
-             <Dropzone onDrop={this.onDrop} style={{width: "100%", height: "150px", border: "1px dotted #41aec2", marginTop: "10px"}} >
-               <div className="dropzone-message"> Drop your logo here, or click to select from your computer.  </div>
-               <img id="dropzone-image" style={{ display: "none" }} />
-             </Dropzone>
-             <button className="checkout-btn"
-                     type="submit"
-                     disabled={!this.state.canSubmit} >
-               <span>Review and Checkout</span>
-             </button>
-      </Formsy.Form>
+                 <img id="dropzone-image" style={{ display: "none" }} />
+               </Dropzone>
+               <button className="checkout-btn"
+                       type="submit"
+                       disabled={!this.state.canSubmit} >
+                 <span>Review and Checkout</span>
+               </button>
+          </Formsy.Form>
+      </GeneralContent>
     );
   },
   notifyFormError: function (model, resetForm, invalidateForm) {
@@ -169,12 +193,8 @@ var AdEditForm = React.createClass({
       return prev;
     }, {});
 
-    console.log('==> model', model);
-    console.log('==> errors', errors);
     invalidateForm(errors);
-    this.setState({
-      formSubmissionError: true
-    });
+    this.canSubmit();
   },
 
   displayFormErrorNotice: function () {
@@ -182,7 +202,6 @@ var AdEditForm = React.createClass({
     var formError =  (<div className="form-error"><span>{message}</span></div>);
     return this.state.formSubmissionError ? formError : null;
   },
-
 
 });
 

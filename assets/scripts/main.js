@@ -15,8 +15,9 @@ var path = require("path");
 var App  = require("./react_views/components/app/app_container.js");
 
 var Gigs = require("./react_views/components/gigs/index.js")
+var PaymentComplete = require("./react_views/components/post-job/payment_complete")
 
-var Checkout = require("./react_views/components/post-job/checkout.js");
+var PaymentForm = require("./react_views/components/post-job/payment_form");
 render((
   <Router history={hashHistory}>
       <Route path="/" component={App}>
@@ -24,7 +25,8 @@ render((
           <Route path="/gigs/:job_id" component={AdDetails} />
 
           <Route path="/post_job" component={AdPostForm} />
-          <Route path="/post_job/payment" component={Checkout} />
+          <Route path="/post_job/payment" component={PaymentForm} />
+          <Route path="/post_job/payment/complete" component={PaymentComplete} />
       </Route>
   </Router>
 ), document.getElementById("app"))

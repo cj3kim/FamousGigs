@@ -4,14 +4,14 @@ var Promise = require('bluebird');
 var url = require('url');
 
 var S3Mixin = {
-  initialUpload: function (file, filePath) {
+  initialUpload: function (file, filePath, progressCallback) {
     var _this = this;
-    if (!file)
+    if (!file) {
       alert("No file selected");
-
+    }
     return this.getSignedRequest(file, filePath)
       .then(function (response) {
-        return Promise.resolve(_this.uploadToS3(file, response.signed_request, response.url));
+        return Promise.resolve(_this.uploadToS3(file, response.signed_request, response.url, progressCallback));
       })
       .then(function (xhr) {
         var parsedUrl   = url.parse(xhr.responseURL);
@@ -32,7 +32,7 @@ var S3Mixin = {
     );
   },
 
-  uploadToS3: function (file, signedRequest, url) {
+  uploadToS3: function (file, signedRequest, url, progressCallback) {
     var _this = this;
 
     return new Promise(function(resolve, reject) {
@@ -51,13 +51,7 @@ var S3Mixin = {
       xhr.onerror = function () {
         reject(xhr.error);
       };
-      xhr.upload.addEventListener('progress', function(e) {
-        if (e.lengthComputable) {
-          var percentComplete = e.loaded / e.total;
-          var value = percentComplete * 100;
-          _this.progress.value = value;
-        }
-      })
+      xhr.upload.addEventListener('progress', progressCallback)
       xhr.send(file.slice());
     });
   },

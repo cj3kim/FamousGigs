@@ -17,13 +17,23 @@ module.exports = function (app) {
     });
   });
 
+  function boolScraper(input) {
+    if (input==="true") {
+      return true;
+    } else if (input === "false" || input === "undefined") {
+      return false;
+    } else {
+      return input
+    }
+  }
   app.post('/company_ads/create', function (req, res) {
-    var companyAd = req.body;
-    companyAd.title = xss(companyAd.title);
-    companyAd.job_location = xss(companyAd.job_location);
-    companyAd.description = xss(companyAd.description);
-    companyAd.contact_email = xss(companyAd.contact_email);
-
+    var _companyAd = req.body;
+    var companyAd = Object.keys(_companyAd)
+                      .reduce(function (accum, key) {
+                        var val    = xss(_companyAd[key]);
+                        accum[key] =  boolScraper(val);
+                        return accum;
+                      }, {});
     var charge = stripe.charges.create({
       amount: 1000, // amount in cents, again
       currency: "usd",
@@ -39,6 +49,8 @@ module.exports = function (app) {
             res.sendStatus(200);
           })
           .catch(function (err) {
+
+            console.log('==> err', err);
             companyAdsRouteLogger.error({error: err, req: req });
             res.sendStatus(501);
           });

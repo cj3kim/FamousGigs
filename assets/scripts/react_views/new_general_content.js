@@ -4,13 +4,11 @@ var ContentHeader = require('./components/content_header');
 var GeneralContent = React.createClass({
   render: function () {
     var headerName = this.props.headerName;
-    var classes = this.props.classes || [];
-    classes.push("general-content");
-
-    var className = classes.join(" ");
+    var className = this.props.className ||  "";
+    var classes = [className, "general-content"].join(" ");
 
     return (
-      <div className={className}>
+      <div className={classes}>
         <ContentHeader headerName={ headerName }/>
         <div className="content-body">
           {this.props.children}

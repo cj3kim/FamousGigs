@@ -1,17 +1,28 @@
 var React       = require("react");
 var ReactDOM    = require("react-dom");
+var withRouter = require("react-router").withRouter;
 var $           = require("zepto-browserify").$;
 var sgCompanyAdStore = require("../../../models/singleton/company_ad.js");
 var TextInput     = require("../../forms/inputs/text");
-
-var TableHeader = require("../table_header");
-var serializeObject = require("../SerializeObject");
+var GeneralContent = require("../../new_general_content");
 
 Stripe.setPublishableKey("pk_test_8vofNFraEETbkErpKImun5jZ");
+Formsy.addValidationRule("expiration_date", function (values, value) {
+    var regex = /(\d\d)\/(\d\d\d\d)/g;
+    return regex.test(value);
+});
 
+// usage
 var PaymentForm = React.createClass({
   getInitialState: function () {
-    return { canSubmit: true }
+    return {
+      canSubmit: true,
+      stripe: {
+        hasError: false,
+        errorData: null,
+        successData: null,
+      }
+    }
   },
 
   mapInputs: function (inputs) {
@@ -39,96 +50,88 @@ var PaymentForm = React.createClass({
     this.temp_refs = {}
     this.temp_refs.$form = $form;
   },
-  submit: function (event) {
+  submit: function (modelData) {
     this.disableButton();
     var formModelData = this.refs.form.getModel();
     Stripe.card.createToken(formModelData, this.stripeResponseHandler);
   },
 
   stripeResponseHandler: function (status, response) {
-    var $form   = this.temp_refs.$form;
+    var _this = this;
     if (response.error) {
-      $form.find(".payment-errors").text(response.error.message);
-      $form.find("button").prop("disabled", false);
+      this.setState({ stripe: { hasError: true, errorData: response.error } });
+      this.enableButton();
     } else {
       var token = response.id;
       sgCompanyAdStore.set({stripe_token: token});
-
-      var postObj = sgCompanyAdStore.attributes;
-      $.post('/company_ads/create', postObj, function () {
-          console.log("Successfully created the ad.");
-      });
+      _this.props.router.push("post_job/payment/complete");
     }
   },
   notifyFormError: function (model, resetForm, invalidateForm) {
   },
   render: function () {
+    var stripeError = this.state.stripe.hasError;
+
     return (
-     <Formsy.Form  className="payment-form"
-                   onValidSubmit={this.submit}
-                   onInvalidSubmit={this.notifyFormError}
-                   onValid={this.enableButton}
-                   inValid={this.disableButton}
-                   ref="form"
-                   mapping={this.mapInputs} >
-        <h3>Payment Details</h3>
-        <div className="payment-details row">
-          <div className="costs">
-            <div className="cost">
-              <span className="inventory">1x Post</span> <span className="price">$50</span>
-            </div>
-            <div className="cost">
-              <span className="inventory">Total:</span><span className="price">$50</span>
-            </div>
-          </div>
-        </div>
+      <GeneralContent className="payment-checkout" headerName="Review and Checkout" >
+         <Formsy.Form  className="payment-form"
+                       onValidSubmit={this.submit}
+                       onInvalidSubmit={this.notifyFormError}
+                       onValid={this.enableButton}
+                       inValid={this.disableButton}
+                       ref="form"
+                       mapping={this.mapInputs} >
 
-        <h3>Payment Information</h3>
-        <div className="card-types row">
-          <label for="number">Card Type</label> 
-          <img alt={"Accept Credit Cards Visa MasterCard American Express Discover"} src={"http://www.instamerchant.com/cards4.gif"}  />
-        </div>
+              <div className={stripeError ? "": "hidden"}><span className="input-error">{stripeError ? "*" + this.state.stripe.errorData.message : ""}</span></div>
+              <h3>Payment Details</h3>
+              <div className="payment-details row">
+                <div className="costs">
+                  <div className="cost">
+                    <span className="inventory">1x Post</span> <span className="price">$50</span>
+                  </div>
+                  <div className="cost">
+                    <span className="inventory">Total:</span><span className="price">$50</span>
+                  </div>
+                </div>
+              </div>
 
-          <TextInput name="cardholder_name" label="Cardholder Name" />
-          <TextInput name="number"
-                     label="Card Number"
-                     validations={{
-                       isNumeric: true,
-                       maxLength: 19
-                     }}
-                     validationError="Please enter valid card number."
-                     required/>
+              <h3>Payment Information </h3>
+              <div className="card-types row">
+                <label for="number">Card Type</label>
+                <img alt={"Accept Credit Cards Visa MasterCard American Express Discover"} src={"http://www.instamerchant.com/cards4.gif"}  />
+              </div>
 
-        <div className="exp-date-and-cvc row">
-          <TextInput className="exp-date"
-                     name="expiration_month_year"
-                     label="Expiration (MM/YYYY)"
-                     validations={{
-                       checkExpiration: function (values, value) {
-                         var re = /\d\d\/\d\d\d\d/ig;
-                         return re.test(value);
-                       }
-                     }}
-                     validationError="Please enter valid expiration date."
-                     required/>
-          <TextInput className="_cvc" 
-                     name="cvc" 
-                     label="CVC" 
-                     validations={{
-                       isNumeric: true
-                     }}
-                     validationError="Please enter numbers."
-                     required/>
-        </div>
+                <TextInput name="cardholder_name" label="Cardholder Name" />
+                <TextInput name="number"
+                           label="Card Number"
+                           validations="isNumeric,maxLength:19"
+                           validationError="Please enter valid card number."
+                           value="4242424242424242"
+                           required/>
 
-       <button className="pay-btn"
-               type="submit"
-               disabled={!this.state.canSubmit} >
-         <span>Complete Post</span>
-       </button>
-      </Formsy.Form>
+              <div className="exp-date-and-cvc row">
+                <TextInput className="exp-date"
+                           name="expiration_month_year"
+                           label="Expiration (MM/YYYY)"
+                           validations="expiration_date"
+                           validationError="Please enter valid date."
+                           value="12/2017"
+                           required/>
+                <TextInput className="_cvc"
+                           name="cvc"
+                           label="CVC"
+                           validationError="Please enter numbers."
+                           value="123"
+                           required/>
+              </div>
+
+             <button className="pay-btn" type="submit" disabled={!this.state.canSubmit} >
+               <span>Complete Post</span>
+             </button>
+        </Formsy.Form>
+      </GeneralContent>
     );
   }
 });
 
-module.exports = PaymentForm;
+module.exports = withRouter(PaymentForm);

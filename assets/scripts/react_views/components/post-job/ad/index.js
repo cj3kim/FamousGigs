@@ -8,9 +8,7 @@ var AdPostForm = React.createClass({
         return (
           <div className="post-job">
             <div className="col-1">
-               <GeneralContent headerName="Post Job">
                   <NewForm />
-               </GeneralContent>
             </div>
             <div className="col-2">
                <PaymentExplanation />

@@ -1,14 +1,13 @@
 var Formsy = require("formsy-react");
 var React = require("react");
 
-var Input = React.createClass({
+var TextInput = React.createClass({
   // Add the Formsy Mixin
   mixins: [Formsy.Mixin],
 
   // setValue() will set the value of the component, which in
   // turn will validate it and the rest of the form
   changeValue: function (event) {
-    var inputType = this.props.type;
     var input     = event.currentTarget.value;
     this.setValue(input);
   },
@@ -35,7 +34,8 @@ var Input = React.createClass({
           <div className="col">
               <div>
                 <label for={this.props.name}>{this.props.label}</label>
-                <span className="input-error">{this.isRequired() ? "*" : null}&nbsp;{errorMessage}</span>
+                <span className="input-error">{this.isRequired() ? "*" : null}</span>
+                <span className="input-error"> &nbsp;{errorMessage}</span>
               </div>
               <input type={this.props.type || defaultType} onChange={this.changeValue} value={this.getValue()}/>
           </div>
@@ -44,4 +44,4 @@ var Input = React.createClass({
   }
 });
 
-module.exports = Input;
+module.exports = TextInput;
