@@ -24,11 +24,16 @@ var PaymentComplete = React.createClass({
     var _this = this;
 
     var image_file = sgCompanyAdStore.image_file;
+    var postObj    = sgCompanyAdStore.attributes;
 
+    function createPost () {
+      $.post("/company_ads/create", postObj, function () {
+        _this.flipIt();
+      });
+    }
     if (image_file && !_this.state.hasUploadedImage) {
         _this.setState({hasUploadedImage: true})
         var image_file = sgCompanyAdStore.image_file;
-        var postObj = sgCompanyAdStore.attributes;
         _this.uploadImage(image_file,
            function(e) {
               if (e.lengthComputable) {
@@ -40,13 +45,11 @@ var PaymentComplete = React.createClass({
             },
             function (logo_url) {
               postObj.logo_url = logo_url;
-              $.post("/company_ads/create", postObj, function () {
-                _this.flipIt();
-              });
+              createPost();
             }
         );
     } else {
-      _this.flipIt();
+      createPost();
     }
   },
   flipIt: function () {

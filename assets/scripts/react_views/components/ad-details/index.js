@@ -19,10 +19,9 @@ var AdDetailsComponent = React.createClass({
       return { model: {}};
   },
   componentDidMount: function () {
-      var _this = this;
-      var adId = this.props.params.job_id;
-      console.log('==> adId', adId);
-      var model = new CompanyAdModel({id: adId});
+      var _this   = this;
+      var adId    = this.props.params.job_id;
+      var model   = new CompanyAdModel({id: adId});
       var promise = model.fetch();
       promise.done(function (model) { 
         console.log('==> model', model);
