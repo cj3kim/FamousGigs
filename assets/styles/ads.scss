@@ -1,33 +1,32 @@
-div.company-ad, div.developer-ad {
+div.job-details,div.company-ad, div.developer-ad {
   background-color: white;
-  border-radius: 2.5%;
-  padding: 10px;
-}
-.example-enter {
-  opacity: 0.01;
+  border-radius: 2px;
 }
 
-.example-enter.example-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
 
-.example-leave {
-  opacity: 1;
+div.job-details {
+  width: 98%;
+  padding: 1%;
+  height: auto;
 }
-
-.example-leave.example-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}
-
 
 div.company-ad {
   width:  250px;
   height: 300px;
-  float: left;
   margin: 0px 10px 10px 0px;
+  padding: 10px;
+}
+div.job-details, div.company-ad {
+  float: left;
   overflow: hidden;
+
+  img {
+    width: 100%;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+  }
+
   h3 {
     margin-top: 0px;
     margin-bottom: 10px;
@@ -73,3 +72,5 @@ div.developer-ad {
     height: 100%;
   }
 }
+
+

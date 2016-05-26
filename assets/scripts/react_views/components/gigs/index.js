@@ -2,6 +2,7 @@ var React       = require("react");
 var ReactRouter = require("react-router");
 var CompanyAdComponent  = require("./company_ad.js");
 var CompanyAdCollection = require("../../../collections/company_ads.js");
+var AdFilter = require ("../filter/index.js");
 
 var companyAdCollection = new CompanyAdCollection();
 
@@ -26,6 +27,7 @@ module.exports = React.createClass({
   render: function () {
     return (
       <div className="gigs">
+          <AdFilter />
           <ReactCSSTransitionGroup transitionName="example"
                                    transitionAppear={true}
                                    transitionAppearTimeout={500}

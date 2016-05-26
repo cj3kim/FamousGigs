@@ -2,13 +2,20 @@ var React       = require("react");
 var ReactRouter = require("react-router");
 var Link        = ReactRouter.Link;
 
+/* <li>*/
+    //<Link to="/developers">
+       //<span className='icon flaticon-user91'></span>
+       //&nbsp;
+       //Developers
+    //</Link>
+/*</li>*/
 var App = React.createClass({
   render: function () {
     return (
       <div>
         <div className="main-nav-bar">
           <div className="main-nav-bar-floater">
-            <div className='text-logo'><span className='first'>famous<span className='second'>gigs</span></span></div>
+            <div className='text-logo'><span className='first'>React<span className='second'>Hero</span></span></div>
             <ul>
               <li>
                   <Link to="/gigs">
@@ -18,13 +25,6 @@ var App = React.createClass({
                   </Link>
               </li>
 
-              <li>
-                  <Link to="/developers">
-                     <span className='icon flaticon-user91'></span>
-                     &nbsp;
-                     Developers
-                  </Link>
-              </li>
               <li>
                   <Link to="/post_job">
                     <span className='icon flaticon-sheet3'></span>

@@ -10,9 +10,6 @@ var AdPostForm = React.createClass({
             <div className="col-1">
                   <NewForm />
             </div>
-            <div className="col-2">
-               <PaymentExplanation />
-            </div>
           </div>
         );
     }

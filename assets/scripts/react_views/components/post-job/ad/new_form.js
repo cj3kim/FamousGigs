@@ -3,14 +3,11 @@ var React = require("react");
 var ReactDOM    = require("react-dom");
 var Link = require("react-router").Link
 var withRouter = require("react-router").withRouter;
-
 var Toolbar     = require("../../toolbar");
 var Dropzone    = require ("react-dropzone");
 var GeneralContent = require("../../../new_general_content");
-
 var sgCompanyAdStore = require("../../../../models/singleton/company_ad.js");
-
-var ReactQuill = require("../../../forms/react_quill");
+var ReactQuill    = require("../../../forms/react_quill");
 var TextInput     = require("../../../forms/inputs/text");
 var CheckboxInput = require("../../../forms/inputs/checkbox");
 var Formsy = require("formsy-react");
@@ -45,6 +42,7 @@ var AdEditForm = React.createClass({
   },
 
   onQuillTextChange: function (text) {
+    console.log('==> text', text);
     this.setState({quillText: text });
   },
   setImage: function (resourceUrl) {
@@ -67,6 +65,7 @@ var AdEditForm = React.createClass({
     this.setImage(file.preview)
   },
   submit: function (model) {
+
     model.description = sgCompanyAdStore.get("description") || this.state.quillText || "";
     sgCompanyAdStore.set(model);
     this.props.router.push("/post_job/payment");
@@ -96,7 +95,8 @@ var AdEditForm = React.createClass({
                <TextInput type="text"
                           name="job_location"
                           label="Location"
-                          value={sgCompanyAdStore.get("job_location") || "Oakland"}
+                          google_search={true}
+                          value={sgCompanyAdStore.get("job_location") || "Oakland, CA, United States"}
                           required />
 
                <div className="form-row checkboxes">

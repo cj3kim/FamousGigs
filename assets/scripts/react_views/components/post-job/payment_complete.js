@@ -14,8 +14,10 @@ var DropzoneMixin   = require("../../dropzone_mixin");
 var PaymentComplete = React.createClass({
   mixins:  [S3Mixin, DropzoneMixin],
   getInitialState: function () {
+    var image_file = sgCompanyAdStore.image_file;
+
     return {
-      flip: true,
+      flip: image_file ? true : false,
       progress: 0,
       hasUploadedImage: false
     }
@@ -26,9 +28,9 @@ var PaymentComplete = React.createClass({
     var image_file = sgCompanyAdStore.image_file;
     var postObj    = sgCompanyAdStore.attributes;
 
-    function createPost () {
+    function createPost (cb) {
       $.post("/company_ads/create", postObj, function () {
-        _this.flipIt();
+        if (cb) { cb()}
       });
     }
     if (image_file && !_this.state.hasUploadedImage) {
@@ -45,7 +47,7 @@ var PaymentComplete = React.createClass({
             },
             function (logo_url) {
               postObj.logo_url = logo_url;
-              createPost();
+              createPost(_this.flipIt);
             }
         );
     } else {
@@ -103,8 +105,8 @@ var Complete = withRouter(React.createClass({
         <p>Done!</p>
         <p> Thank you for posting on our site! </p>
 
-        <button onClick={this.returnHome} className="pay-btn" type="submit">
-          <span>Return to Home Page</span>
+        <button className="complete-btn"onClick={this.returnHome}  type="submit">
+          <span style={{color: "white"}} >Return to Home Page</span>
         </button>
       </div>
     );

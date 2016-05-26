@@ -1,5 +1,7 @@
 var Formsy = require("formsy-react");
+var ReactDOM    = require("react-dom");
 var React = require("react");
+var $ = require("zepto-browserify").$;
 
 var TextInput = React.createClass({
   // Add the Formsy Mixin
@@ -12,6 +14,15 @@ var TextInput = React.createClass({
     this.setValue(input);
   },
 
+  componentDidMount: function () {
+    var google_search = this.props.google_search;
+    if (google_search) {
+      var $div = $(ReactDOM.findDOMNode(this))
+      var $input = $div.find("input");
+      var input = $input[0];
+      var searchBox = new google.maps.places.SearchBox(input);
+    }
+  },
 
   render: function () {
     // Set a specific className based on the validation
@@ -27,7 +38,6 @@ var TextInput = React.createClass({
     // or the server has returned an error message
     var errorMessage = this.getErrorMessage();
     var defaultType  = "text"
-
     var _class = [className, validationClass, "form-row" ].join(" ");
     return (
       <div className={_class}>
@@ -37,7 +47,7 @@ var TextInput = React.createClass({
                 <span className="input-error">{this.isRequired() ? "*" : null}</span>
                 <span className="input-error"> &nbsp;{errorMessage}</span>
               </div>
-              <input type={this.props.type || defaultType} onChange={this.changeValue} value={this.getValue()}/>
+              <input type={this.props.type || defaultType} onChange={this.changeValue} placeholder="" value={this.getValue()}/>
           </div>
       </div>
     );

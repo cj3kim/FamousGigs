@@ -1,8 +1,8 @@
 var React       = require("react");
 var ReactRouter = require("react-router");
 var Link        = ReactRouter.Link;
-var CompanyAdModel = require("../../../models/company_ad.js");
-var CompanyAd     = require('../../../react_views/components/gigs/company_ad.js');
+var JobDetailsModel = require("../../../models/company_ad.js");
+var JobDetails     = require('./job_details.js');
 var AdInformation = require('./ad_information');
 var JoinUs        = require('./JoinUs');
 var FormContent   = require('../../form_content');
@@ -21,11 +21,9 @@ var AdDetailsComponent = React.createClass({
   componentDidMount: function () {
       var _this   = this;
       var adId    = this.props.params.job_id;
-      var model   = new CompanyAdModel({id: adId});
+      var model   = new JobDetailsModel({id: adId});
       var promise = model.fetch();
-      promise.done(function (model) { 
-        console.log('==> model', model);
-        _this.setState({ model: model}); })
+      promise.done(function (model) { _this.setState({ model: model}); });
   },
 
   render: function () {
@@ -33,7 +31,7 @@ var AdDetailsComponent = React.createClass({
     return (
       <div className='ad-details'>
         <div className='col one'>
-          <CompanyAd model={model}/>
+          <JobDetails model={model}/>
         </div>
 
         <div className='col two'>
