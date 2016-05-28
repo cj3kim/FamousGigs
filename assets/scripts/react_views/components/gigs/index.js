@@ -17,7 +17,7 @@ module.exports = React.createClass({
       console.log("called componentDidMount");
       filterModel.on("change", function (evt) {
           _this.setState({
-            companyAds: _this.generateAds(_this.state.models) 
+            companyAds: _this.generateAds(_this.state.models)
           });
       });
       var _this = this;
@@ -33,7 +33,7 @@ module.exports = React.createClass({
      var job_location = filterModel.get("job_location");
       if (job_location.length > 0) {
         models = models.filter(function (e) {
-          return e.job_location ===job_location;
+          return e.job_location === job_location;
         })
       }
       var ads = models.map(function (model) {
@@ -47,14 +47,7 @@ module.exports = React.createClass({
     return (
       <div className="gigs">
           <div className="col-1">
-              <ReactCSSTransitionGroup
-                 transitionName="gigs"
-                 transitionAppear={true}
-                 transitionAppearTimeout={500}
-                 transitionEnterTimeout={500}
-                 transitionLeaveTimeout={300}>
                   {this.state.companyAds}
-              </ReactCSSTransitionGroup>
           </div>
           <div className="col-2">
             <AdFilter />
@@ -65,5 +58,12 @@ module.exports = React.createClass({
 });
 
 
+              /*<ReactCSSTransitionGroup*/
+                 //transitionName="gigs"
+                 //transitionAppear={true}
+                 //transitionAppearTimeout={500}
+                 //transitionEnterTimeout={500}
+                 //transitionLeaveTimeout={300}>
 
+              //</ReactCSSTransitionGroup>
 

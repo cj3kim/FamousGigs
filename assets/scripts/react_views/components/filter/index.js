@@ -16,6 +16,10 @@ var AdFilterComponent = React.createClass({
     evt.preventDefault();
     filterModel.set("job_location", evt.target.text);
   },
+  triggerAll: function () {
+    evt.preventDefault();
+    filterModel.set("job_location", "");
+  },
   render: function () {
     var _this = this;
     var location_counts = companyAdsCollection.models.reduce(function (accum, curr_model) {
@@ -30,10 +34,9 @@ var AdFilterComponent = React.createClass({
       return accum;
     }, {});
 
-    var locations = Object.keys(location_counts).map(function (location) {
-      return (<li><a href="" onClick={_this.triggerFilter}>{location}</a> ({location_counts[location]})</li>);
+    var locations = Object.keys(location_counts).map(function (location, i) {
+      return (<li key={i} ><a href="" onClick={_this.triggerFilter}>{location}</a> ({location_counts[location]})</li>);
     });
-
     return (
       <GeneralContent className="ad-filter" headerName="Filter">
         <h3>Locations </h3>
