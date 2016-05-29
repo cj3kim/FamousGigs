@@ -43,7 +43,6 @@ var AdFilterComponent = React.createClass({
         <ul>
           {locations}
         </ul>
-        <h3>Backend</h3>
       </GeneralContent>
     );
   }
