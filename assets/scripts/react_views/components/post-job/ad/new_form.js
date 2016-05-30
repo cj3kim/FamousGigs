@@ -77,7 +77,7 @@ var AdEditForm = React.createClass({
   //<CheckboxInput name="contract" value={sgCompanyAdStore.get("contract")} />
   /*</div>*/
     return (
-     <GeneralContent headerName="Post Job">
+     <GeneralContent className="post-job" headerName="Post Job">
          <Formsy.Form  onValidSubmit={this.submit}
                        onInvalidSubmit={this.rotifyFormError}
                        onValid={this.enableButton}

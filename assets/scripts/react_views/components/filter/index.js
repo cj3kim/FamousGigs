@@ -1,6 +1,4 @@
 var React       = require("react");
-var ReactRouter = require("react-router");
-var ReactDOM    = require("react-dom");
 var Link = require("react-router").Link
 var withRouter = require("react-router").withRouter;
 var GeneralContent = require("../../new_general_content");
@@ -11,12 +9,11 @@ var companyAdsCollection = require("../../../collections/singleton/company_ads")
 var AdFilterComponent = React.createClass({
   componentDidMount: function () {
   },
-
   triggerFilter: function (evt) {
     evt.preventDefault();
     filterModel.set("job_location", evt.target.text);
   },
-  triggerAll: function () {
+  triggerAll: function (evt) {
     evt.preventDefault();
     filterModel.set("job_location", "");
   },
@@ -37,10 +34,12 @@ var AdFilterComponent = React.createClass({
     var locations = Object.keys(location_counts).map(function (location, i) {
       return (<li key={i} ><a href="" onClick={_this.triggerFilter}>{location}</a> ({location_counts[location]})</li>);
     });
+
     return (
       <GeneralContent className="ad-filter" headerName="Filter">
         <h3>Locations </h3>
         <ul>
+          <li><a href="" onClick={_this.triggerAll}>All</a></li>
           {locations}
         </ul>
       </GeneralContent>

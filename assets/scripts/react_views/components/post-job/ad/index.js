@@ -6,10 +6,9 @@ var NewForm = require("./new_form");
 var AdPostForm = React.createClass({
     render: function () {
         return (
-          <div className="post-job">
-            <div className="col-1">
+          <div className="post-job-section">
                   <NewForm />
-            </div>
+                  <PaymentExplanation />
           </div>
         );
     }

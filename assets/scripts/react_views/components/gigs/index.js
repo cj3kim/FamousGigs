@@ -7,14 +7,14 @@ var AdFilter = require ("../filter/index.js");
 
 var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
-//Gigs
-module.exports = React.createClass({
+var withRouter = require("react-router").withRouter;
+
+var Gigs = React.createClass({
   getInitialState: function () {
       return { models: [],
         companyAds: [] };
   },
   componentDidMount: function () {
-      console.log("called componentDidMount");
       filterModel.on("change", function (evt) {
           _this.setState({
             companyAds: _this.generateAds(_this.state.models)
@@ -57,13 +57,5 @@ module.exports = React.createClass({
   }
 });
 
-
-              /*<ReactCSSTransitionGroup*/
-                 //transitionName="gigs"
-                 //transitionAppear={true}
-                 //transitionAppearTimeout={500}
-                 //transitionEnterTimeout={500}
-                 //transitionLeaveTimeout={300}>
-
-              //</ReactCSSTransitionGroup>
+module.exports = withRouter(Gigs);
 
