@@ -30,13 +30,10 @@ var AdDetailsComponent = React.createClass({
     var model = this.state.model;
     return (
       <div className='ad-details'>
-        <div className='col one'>
-          <JobDetails model={model}/>
-        </div>
+        <JobDetails model={model}/>
 
-        <div className='col two'>
+        <div className="right-col">
           <AdInformation model={model}/>
-
           <FormContent { ...settings}/>
         </div>
       </div>

@@ -5,9 +5,9 @@ var PaymentExplanation = React.createClass({
     return (
       <GeneralContent className='payment-explanation' headerName="Simple Pricing">
         <ul>
-          <li>$50 for full-time/freelance</li>
-          <li>active for two months</li>
-          <li>emailed to our subscribers</li>
+          <li>$50 for Full-Time/Freelance Posts</li>
+          <li>Active for Two Months</li>
+          <li>Your Ad Blasted to Our Subscribers</li>
         </ul>
       </GeneralContent>
     );

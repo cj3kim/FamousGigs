@@ -5,11 +5,10 @@ div.gigs {
     float: left;
   }
   .col-2 {
-    width: 29%;
+    width: 25%;
     float: left;
   }
 }
-
 @media (max-width: 500px) {
   body div.app-body {
     width: 100%;
@@ -66,8 +65,9 @@ div.job-details, div.company-ad {
 
 
 div.job-details {
-  width: 98%;
+  width: 700px;
   padding: 1%;
+  margin-right: 20px;
   height: auto;
 }
 
@@ -77,6 +77,7 @@ div.company-ad {
   margin: 0px 10px 10px 0px;
   padding: 10px;
 }
+
 div.job-details, div.company-ad {
   float: left;
   overflow: hidden;

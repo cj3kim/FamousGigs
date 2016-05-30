@@ -2,6 +2,9 @@
 
 .hidden { display:none;}
 
+.add-20-margin-left {
+  margin-left: 20px;
+}
 html, body {
   background: #efecf0;
   margin: 0;
@@ -71,10 +74,10 @@ div.main-nav-bar {
     }
   }
 
-  ul {
-    margin-right: 93px;
-    float: right;
 
+  ul {
+    margin-right: 168px;
+    float: right;
   }
   ul li {
     width: auto;

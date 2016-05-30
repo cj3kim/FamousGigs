@@ -7,19 +7,9 @@ var JoinUsComponent = React.createClass({
   render: function () {
     return (
       <form id='email-form'>
-        <table border="0">
-          <TableHeader amount={6} />
-          <tr>
-            <td colSpan="6"> <span> Sign up and get free contract updates </span> </td>
-          </tr>
-
-          <tr>
-            <td colSpan="6"> <input type='text' /> </td>
-          </tr>
-          <tr>
-            <td colSpan="6"> <button> <span>Sign Up </span></button> </td>
-          </tr>
-        </table>
+          <span>Sign up and get free contract updates</span>
+          <input type='text' />
+          <button><span>Sign Up</span></button>
       </form>
     );
   }
