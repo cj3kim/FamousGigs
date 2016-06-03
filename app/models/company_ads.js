@@ -6,7 +6,8 @@ var knex = require('knex')(dbConfig);
 var bookshelf = require('bookshelf')(knex);
 
 var CompanyAds = bookshelf.Model.extend({
-  tableName: 'company_ads'
+  tableName: 'company_ads',
+  hasTimestamps: true
 });
 
 module.exports = CompanyAds;

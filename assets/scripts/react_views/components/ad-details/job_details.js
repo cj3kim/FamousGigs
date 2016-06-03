@@ -3,6 +3,7 @@ var ReactRouter = require("react-router");
 var Link        = ReactRouter.Link;
 var pathService = require("path");
 
+var Moment = require("moment");
 
 var JobDetails = React.createClass({
   render: function () {
@@ -15,6 +16,7 @@ var JobDetails = React.createClass({
       <div className="job-details" >
         <h3><Link className='title' to={urlPath}>{ model.title }</Link></h3>
         <p>{ model.job_location }</p>
+        <p>{ Moment(model.created_at).format("MMMM Do YYYY") }</p>
         <div className="scrollable" dangerouslySetInnerHTML={createMarkup()} />
       </div>
     );

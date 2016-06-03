@@ -9,6 +9,7 @@ Promise.promisifyAll(bcrypt);
 
 var Work = bookshelf.Model.extend({
     tableName: 'works',
+    hasTimestamps: true,
     initialize: function () {},
     defaults: {
       title: "write a title",
