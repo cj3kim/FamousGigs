@@ -1,1 +1,12 @@
-
+form#email-form {
+  span {
+    display: block;
+  }
+  input {
+    display: block;
+    margin: 10px 0px;
+  }
+  button {
+    margin-top: 10px;
+  }
+}
