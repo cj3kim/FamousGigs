@@ -81,9 +81,10 @@ div.ad-information {
   overflow: hidden;
 
   img.company-logo {
-    width:  100%;
-    height: auto;
-    background-color: #0d283e;
+    width:  auto;
+    max-height: 200px;
+    margin: 0px auto;
+    display: block;
   }
 
   div.apply-now-btn{

@@ -11,10 +11,12 @@ var AdFilterComponent = React.createClass({
   },
   triggerFilter: function (evt) {
     evt.preventDefault();
+    evt.stopPropagation();
     filterModel.set("job_location", evt.target.text);
   },
   triggerAll: function (evt) {
     evt.preventDefault();
+    evt.stopPropagation();
     filterModel.set("job_location", "");
   },
   render: function () {

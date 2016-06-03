@@ -50,17 +50,11 @@ var Gigs = React.createClass({
     var _this = this;
     return (
       <div className="gigs">
-          <div className="col-1">
-            <Masonry className={"my-gallery-class"}
-                     elementType={"div"}
-                     options={masonryOptions}
-                     disableImagesLoaded={false} >
-                {this.state.companyAds}
-            </Masonry>
-          </div>
-          <div className="col-2">
-            <AdFilter />
-          </div>
+          <Masonry className={"my-gallery-class"} elementType={"div"} options={masonryOptions} disableImagesLoaded={false} >
+
+              <AdFilter />
+              {this.state.companyAds}
+          </Masonry>
       </div>
     );
   }
