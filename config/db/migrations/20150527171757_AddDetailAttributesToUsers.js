@@ -16,6 +16,6 @@ exports.down = function(knex, Promise) {
     t.dropColumn('state');
     t.dropColumn('country');
     t.dropColumn('about_tagline');
-    t.text('bio');
+    t.dropColumn('bio');
   });
 };
