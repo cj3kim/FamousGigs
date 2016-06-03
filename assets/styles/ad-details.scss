@@ -12,6 +12,9 @@ div.ad-details {
     float: left;
   }
 
+  div.ad-information {
+    border-radius: 3px;
+  }
 
   @media (min-width: 701px) {
     width: 1200px;
@@ -29,24 +32,23 @@ div.ad-details {
         float: none;
       }
 
-  div.right-col {
-    width: 85%;
-    margin: 0px auto;
-    float: none;
-    div.ad-information, div#developer-signup {
-      width: 100%;
+    div.right-col {
+      width: 85%;
+      margin: 0px auto;
+      float: none;
+      div.ad-information, div#developer-signup {
+        width: 100%;
+        margin: 0px auto 20px;
+        float: none;
+      }
+    }
 
+    body div.job-details {
+      width: 75%;
       margin: 0px auto 20px;
+      padding: 5%;
       float: none;
     }
-  }
-
-  body div.job-details {
-    width: 75%;
-    margin: 0px auto 20px;
-    padding: 5%;
-    float: none;
-  }
 
   }
 

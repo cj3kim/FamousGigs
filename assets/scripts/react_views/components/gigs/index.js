@@ -5,9 +5,13 @@ var companyAdCollection = require("../../../collections/singleton/company_ads.js
 var filterModel = require("../../../models/singleton/filter");
 var AdFilter = require ("../filter/index.js");
 
+var Masonry = require('react-masonry-component');
 var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
-
 var withRouter = require("react-router").withRouter;
+
+var masonryOptions = {
+    transitionDuration: 0
+};
 
 var Gigs = React.createClass({
   getInitialState: function () {
@@ -47,7 +51,12 @@ var Gigs = React.createClass({
     return (
       <div className="gigs">
           <div className="col-1">
-                  {this.state.companyAds}
+            <Masonry className={"my-gallery-class"}
+                     elementType={"div"}
+                     options={masonryOptions}
+                     disableImagesLoaded={false} >
+                {this.state.companyAds}
+            </Masonry>
           </div>
           <div className="col-2">
             <AdFilter />

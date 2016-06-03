@@ -18,10 +18,12 @@ var CompanyAd = React.createClass({
     return (
       <div className="company-ad" >
         {imgBlock}
-
-        <h3><Link className='title' to={urlPath}>{ model.title }</Link></h3>
-        <p>{ model.job_location }</p>
-        <div className="scrollable" dangerouslySetInnerHTML={createMarkup()} />
+        <div className="company-ad-body">
+          <h3><Link className='title' to={urlPath}>{ model.title }</Link></h3>
+          <p>{ model.job_location }</p>
+          <p>3/12/2016</p>
+          <div className="scrollable" dangerouslySetInnerHTML={createMarkup()}></div>
+        </div>
       </div>
     );
   }

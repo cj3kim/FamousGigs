@@ -69,25 +69,41 @@ div.job-details {
   padding: 1%;
   margin-right: 20px;
   height: auto;
-}
-
-div.company-ad {
-  width:  250px;
-  height: 300px;
-  margin: 0px 10px 10px 0px;
-  padding: 10px;
-}
-
-div.job-details, div.company-ad {
   float: left;
+  border-radius: 2px;
+  ul {
+    margin-left: 20px;
+  }
+}
+div.company-ad {
+  width:  260px;
+  height: auto;
+  margin: 0px 10px 10px 0px;
   overflow: hidden;
-
   img {
     width: 100%;
+    height: 115px;
     display: block;
     margin: 0px;
     padding: 0px;
   }
+  div.company-ad-body {
+    width: 95%;
+    height: 95%;
+    padding: 2.5%;
+    display: block;
+    overflow: hidden;
+
+    div.scrollable {
+      max-height: 100px;
+      overflow: hidden;
+    }
+  }
+}
+
+div.job-details,
+div.company-ad div.company-ad-body {
+
 
   h3 {
     margin-top: 0px;
