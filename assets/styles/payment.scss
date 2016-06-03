@@ -82,8 +82,8 @@ div.payment-completion {
     text-align: center;
   }
   img {
-    width: 200px;
-    height: 70px;
+    width: auto;
+    height: 200px;
     display: block;
     margin: 10px auto;
   }
@@ -98,6 +98,10 @@ div.payment-completion {
     width: 300px;
     margin: 0px auto;
     display: block;
+  }
+  div.content-body {
+    min-height: 150px;
+
   }
 
 }
