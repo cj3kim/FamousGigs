@@ -40,6 +40,7 @@ div.job-details {
   float: left;
   border-radius: 2px;
   font-size: 20px;
+  background-color: white;
   ul {
     margin-left: 20px;
   }
@@ -102,6 +103,12 @@ div.front-page {
     width: 100%;
   }
 
+  div.job-details {
+    width: 77%;
+    margin: 20px auto;
+    padding:4%;
+    float: none;
+  }
   div.company-ad, div.ad-filter.general-content {
     width: 90%;
     margin: 0px;
