@@ -1,5 +1,4 @@
 var React = require('react');
-var ContentHeader = require('./components/content_header');
 
 var GeneralContent = React.createClass({
   render: function () {
@@ -7,9 +6,10 @@ var GeneralContent = React.createClass({
     var className = this.props.className ||  "";
     var classes = [className, "general-content"].join(" ");
 
+    var header = typeof headerName === "string" ? <div className="content-header"> <span>{ headerName }</span> </div> : null;
     return (
       <div className={classes}>
-        <ContentHeader headerName={ headerName }/>
+        {header}
         <div className="content-body">
           {this.props.children}
         </div>

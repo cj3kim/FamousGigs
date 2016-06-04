@@ -1,5 +1,4 @@
 var React = require('react');
-var ContentHeader = require('./components/content_header');
 
 var GeneralContent = React.createClass({
   render: function () {
@@ -9,7 +8,10 @@ var GeneralContent = React.createClass({
 
     return (
       <div className="general-content stop-gap-div">
-        <ContentHeader headerName={ headerName }/>
+        <div className="content-header">
+          <span>{ headerName }</span>
+        </div>
+
         <div className="content-body"> 
           <ReactClass{...attributes} />
         </div>
