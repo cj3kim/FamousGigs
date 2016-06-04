@@ -1,29 +1,6 @@
 div.gigs {
   overflow: hidden;
 }
-@media (max-width: 500px) {
-  body div.app-body {
-    width: 100%;
-  }
-
-  div.ad-filter {
-    width: 90%;
-    margin: 10px auto;
-    float: none;
-  }
-
-  div.company-ad {
-    width: 85%;
-    margin: 10px auto;
-    float: none;
-  }
-  div.gigs {
-    overflow: hidden;
-    width: 100%;
-    float: left;
-  }
-}
-
 
 div.ad-filter.general-content {
   width: 260px;
@@ -48,8 +25,10 @@ div.ad-filter.general-content {
 }
 
 div.job-details, div.company-ad {
-  background-color: white;
-  border-radius: 2px;
+  div.content-body {
+    background-color: white;
+    border-radius: 2px;
+  }
 }
 
 
@@ -70,9 +49,12 @@ div.company-ad {
   height: auto;
   margin: 1px 20px 10px 1px;
   overflow: hidden;
-  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+
+  div.content-body {
+    -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  }
 
   img {
     width: auto;
@@ -97,8 +79,6 @@ div.company-ad {
 
 div.job-details,
 div.company-ad div.company-ad-body {
-
-
   h3 {
     margin-top: 0px;
     margin-bottom: 10px;
@@ -116,3 +96,24 @@ div.front-page {
   height: 100%;
   overflow: hidden;
 }
+
+@media (max-width: 500px) {
+  body div.app-body {
+    width: 100%;
+  }
+
+  div.company-ad, div.ad-filter.general-content {
+    width: 90%;
+    margin: 0px;
+    padding: 2.5% 5%;
+    float: none;
+  }
+
+  div.gigs {
+    overflow: hidden;
+    width: 100%;
+    float: left;
+  }
+}
+
+

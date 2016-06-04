@@ -4,6 +4,7 @@ var Link        = ReactRouter.Link;
 var pathService = require("path");
 
 var Moment = require("moment");
+var GeneralContent = require("../../new_general_content");
 
 var CompanyAd = React.createClass({
   render: function () {
@@ -17,7 +18,7 @@ var CompanyAd = React.createClass({
     var imgBlock = logoUrl ?  <img src={logoUrl} /> : null;
 
     return (
-      <div className="company-ad" >
+      <GeneralContent className="company-ad">
         {imgBlock}
         <div className="company-ad-body">
           <h3><Link className='title' to={urlPath}>{ model.title }</Link></h3>
@@ -25,7 +26,7 @@ var CompanyAd = React.createClass({
           <p>{ Moment(model.created_at).format("MMMM Do YYYY") }</p>
           <div className="scrollable" dangerouslySetInnerHTML={createMarkup()}></div>
         </div>
-      </div>
+      </GeneralContent>
     );
   }
 });

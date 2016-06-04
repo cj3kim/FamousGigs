@@ -16,6 +16,7 @@ var App = React.createClass({
         <div className="main-nav-bar">
           <div className="main-nav-bar-floater">
             <div className='text-logo'><span className='first'>React<span className='second'>Hero</span></span></div>
+            <div className="menu-button"><span className='icon flaticon-menu55'></span></div>
             <ul>
               <li>
                   <Link to="/gigs">

@@ -49,6 +49,12 @@ div.main-nav-bar-floater {
   width: 1200px;
   height: 100%;
   margin: 0px auto;
+  div.menu-button {
+    width: 50px;
+    height: 100%;
+    float: left;
+    display: none;
+  }
 }
 
 div.main-nav-bar {
@@ -105,3 +111,25 @@ div.main-nav-bar.left {
 }
 
 
+@media (max-width: 500px) {
+
+  div.main-nav-bar-floater {
+    width: 100%;
+
+    div.menu-button {
+      display: block;
+      float: right;
+      span {
+        font-size: 20px;
+        color: white;
+        display: block;
+        margin-top: 15px;
+        margin-left: 10px;
+      }
+    }
+    ul {
+      display: none;
+    }
+  }
+
+}
