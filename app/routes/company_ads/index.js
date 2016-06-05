@@ -36,7 +36,7 @@ module.exports = function (app) {
                         return accum;
                       }, {});
     var charge = stripe.charges.create({
-      amount: 1000, // amount in cents, again
+      amount: 5000, // amount in cents, again
       currency: "usd",
       source: companyAd.stripe_token,
       description: companyAd.contact_email
