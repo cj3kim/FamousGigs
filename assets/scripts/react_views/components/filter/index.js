@@ -22,7 +22,8 @@ var AdFilterComponent = React.createClass({
   render: function () {
     var _this = this;
     var location_counts = companyAdsCollection.models.reduce(function (accum, curr_model) {
-      var job_location = curr_model.get("job_location");
+      var _job_location = curr_model.get("job_location");
+      var job_location  = _job_location.split(",").slice(0,2).join(", ");
       var job_count = accum[job_location];
 
       if (job_count === undefined) {
