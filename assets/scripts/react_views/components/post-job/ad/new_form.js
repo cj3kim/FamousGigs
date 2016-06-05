@@ -42,7 +42,6 @@ var AdEditForm = React.createClass({
   },
 
   onQuillTextChange: function (text) {
-    console.log('==> text', text);
     this.setState({quillText: text });
   },
   setImage: function (resourceUrl) {
@@ -65,7 +64,6 @@ var AdEditForm = React.createClass({
     this.setImage(file.preview)
   },
   submit: function (model) {
-
     model.description = sgCompanyAdStore.get("description") || this.state.quillText || "";
     sgCompanyAdStore.set(model);
     this.props.router.push("/post_job/payment");
@@ -79,7 +77,7 @@ var AdEditForm = React.createClass({
     return (
      <GeneralContent className="post-job" headerName="Post Job">
          <Formsy.Form  onValidSubmit={this.submit}
-                       onInvalidSubmit={this.rotifyFormError}
+                       onInvalidSubmit={this.notifyFormError}
                        onValid={this.enableButton}
                        inValid={this.disableButton}
                        mapping={this.mapInputs}
