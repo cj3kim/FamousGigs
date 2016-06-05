@@ -15,12 +15,20 @@ var TextInput = React.createClass({
   },
 
   componentDidMount: function () {
+    var _this = this;
     var google_search = this.props.google_search;
     if (google_search) {
       var $div = $(ReactDOM.findDOMNode(this))
       var $input = $div.find("input");
       var input = $input[0];
       var searchBox = new google.maps.places.SearchBox(input);
+
+      searchBox.addListener("places_changed", function () {
+        var places = searchBox.getPlaces();
+        var place  = places[0];
+        var location = place.formatted_address;
+        _this.setValue(location);
+      });
     }
   },
 
