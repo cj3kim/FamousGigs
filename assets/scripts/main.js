@@ -8,6 +8,7 @@ var Route       = ReactRouter.Route;
 var Router      = ReactRouter.Router;
 var hashHistory = ReactRouter.hashHistory;
 
+var IndexRoute  = ReactRouter.IndexRoute;
 var AdDetails   = require("./react_views/components/ad-details/index.js");
 var AdPostForm  = require("./react_views/components/post-job/ad/index.js");
 
@@ -21,6 +22,7 @@ var ReviewAndCheckout = require("./react_views/components/post-job/review/index"
 render((
   <Router history={hashHistory}>
       <Route path="/" component={App}>
+          <IndexRoute component={Gigs}/>
           <Route path="/gigs" component={Gigs} />
           <Route path="/gigs/:job_id" component={AdDetails} />
 
