@@ -102,8 +102,8 @@ var Complete = withRouter(React.createClass({
   render: function () {
     return (
       <div key="2">
-        <p>Done!</p>
-        <p> Thank you for posting on our site! </p>
+        <p>Thank you for posting on our site!</p>
+        <p>A receipt has been sent to your email</p>
 
         <button className="complete-btn"onClick={this.returnHome}  type="submit">
           <span style={{color: "white"}} >Return to Home Page</span>

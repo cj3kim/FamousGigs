@@ -1,6 +1,4 @@
 var React = require('react');
-var ContentHeader = require('./components/content_header');
-
 
 var FormContent = React.createClass({
   render: function () {
@@ -10,7 +8,9 @@ var FormContent = React.createClass({
 
     return (
       <div id={id} className="form-content">
-        <ContentHeader headerName={ headerName }/>
+        <div className="content-header">
+          <span>{ headerName }</span>
+        </div>
         <div className="content-body">
           <ReactClass {...this.props}/>
         </div>
