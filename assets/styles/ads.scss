@@ -5,10 +5,11 @@ div.gigs {
 div.ad-filter.general-content {
   width: 260px;
   margin: 1px 20px 10px 1px;
+
+
   div.content-body {
     width: 92%;
-    padding: 3.6%;
-    border: 1px solid #c5c3c6;
+    padding: 4%;
     ul {
       margin-left: 20px;
     }
@@ -41,17 +42,23 @@ div.job-details {
   border-radius: 2px;
   font-size: 20px;
   background-color: white;
+  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+
   ul {
     margin-left: 20px;
   }
 }
+
 div.company-ad {
   width:  260px;
   height: auto;
   margin: 1px 20px 10px 1px;
   overflow: hidden;
 
-  div.content-body {
+  //Desktop size
+  @media (min-width: 700px) {
     -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
@@ -114,8 +121,14 @@ div.front-page {
     margin: 0px;
     padding: 2.5% 5%;
     float: none;
+
   }
 
+  div.company-ad div.content-body {
+    -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  }
   div.gigs {
     overflow: hidden;
     width: 100%;

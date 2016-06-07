@@ -4,17 +4,40 @@ div.post-job-section {
   overflow: hidden;
   margin-bottom: 30px;
 
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+
+
   div.general-content {
     float: left;
+
+    @media (max-width: 700px) {
+      float: none;
+    }
+
   }
   div.post-job {
     width: 700px;
     margin-right: 20px;
+    @media (max-width: 700px) {
+      width: 95%;
+      margin: 0 auto;
+      float: none;
+    }
+
   }
 
   div.payment-explanation, div.why-us {
     width: 320px;
     margin-bottom: 20px;
+
+    @media (max-width: 700px) {
+      width: 95%;
+      margin: 20px auto;
+      float: none;
+    }
+
     div.content-body {
       width: 90%;
       padding: 2% 5% 5% 5%;

@@ -1,6 +1,13 @@
 div.payment-checkout {
   width: 700px;
   margin-right: 20px;
+
+  @media (max-width: 700px) {
+    width: 95%;
+    margin: 0 auto;
+    float: none;
+  }
+
 }
 
 div.payment-details {
@@ -76,8 +83,12 @@ form.payment-form {
 }
 
 div.payment-completion {
-  width: 800px;
+  width: 500px;
   margin: 0px auto;
+  @media (max-width: 700px) {
+    width: 95%;
+  }
+
   p {
     font-size: 18px;
     text-align: center;

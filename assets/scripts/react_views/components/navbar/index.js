@@ -13,7 +13,7 @@ module.exports = React.createClass({
       var iconClass = "icon flaticon-" + iconName
       return (
         <li key={displayName}>
-          <Link onClick={_this.showMenu} to={_path}>
+          <Link onClick={_this.closeMenu} to={_path}>
             <span className={iconClass}></span>
             &nbsp;
             {displayName}
@@ -26,16 +26,26 @@ module.exports = React.createClass({
   generateLinkObj: function (_path, iconName, displayName) {
     return {_path: _path, iconName: iconName, displayName: displayName};
   },
-  showMenu: function () {
-    function isHidden(el) {
-        return (el.offsetParent === null)
-    }
+  toggleMenu: function () {
     var menuLinks = this.refs.menuLinks;
 
-    var hidden = isHidden(menuLinks);
+    var hidden = this.isHidden(menuLinks);
     menuLinks.style.display = hidden ? "block" : "none";
   },
 
+  closeMenu: function () {
+    var menuButton = this.refs.menuButton;
+    var isMenuButtonHidden = this.isHidden(menuButton);
+
+    var isMenuButtonShown  = !isMenuButtonHidden;
+    if (isMenuButtonShown) {
+      var menuLinks = this.refs.menuLinks;
+      menuLinks.style.display = "none";
+    }
+  },
+  isHidden: function isHidden(el) {
+    return (el.offsetParent === null)
+  },
   render: function () {
     var _this = this;
     var linkArgs = [
@@ -49,7 +59,7 @@ module.exports = React.createClass({
       <div className="main-nav-bar">
         <div className="main-nav-bar-floater">
           <div className='text-logo'><span className='first'>React<span className='second'>Hero</span></span></div>
-          <div className="menu-button" onClick={this.showMenu}><span className='icon flaticon-menu55'></span></div>
+          <div ref="menuButton" className="menu-button" onClick={this.toggleMenu}><span className='icon flaticon-menu55'></span></div>
           <ul ref="menuLinks">
             {this.renderLinks(links)}
           </ul>

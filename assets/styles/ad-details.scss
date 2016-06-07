@@ -48,6 +48,7 @@ div.ad-details {
       margin: 0px auto 20px;
       padding: 5%;
       float: none;
+
     }
 
   }
@@ -79,6 +80,10 @@ div.ad-information {
   height: auto !important;
   background-color: white;
   overflow: hidden;
+
+  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.75);
 
   img.company-logo {
     width:  auto;
