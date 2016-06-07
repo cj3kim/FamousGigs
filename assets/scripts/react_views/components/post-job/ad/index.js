@@ -2,6 +2,7 @@ var React = require("react");
 var GeneralContent = require("../../../new_general_content");
 var PaymentExplanation = require("../payment_explanation");
 var WhyUs = require("../why_us");
+var OurValues = require("../values");
 var NewForm = require("./new_form");
 
 module.exports = React.createClass({
@@ -10,8 +11,9 @@ module.exports = React.createClass({
     return (
       <div className="post-job-section">
           <NewForm />
-          <PaymentExplanation />
+          <OurValues />
           <WhyUs />
+          <PaymentExplanation />
       </div>
     );
   }

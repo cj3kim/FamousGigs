@@ -6,9 +6,8 @@ module.exports = React.createClass({
     return (
       <GeneralContent className="why-us" headerName="Why Us?">
           <ul>
-            <li>Find Great React and JS Devs</li>
-            <li>Access to Developer Network</li>
             <li>Focus on React</li>
+            <li>Great Developer Network</li>
           </ul>
       </GeneralContent>
     );
