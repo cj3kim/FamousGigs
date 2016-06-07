@@ -5,6 +5,7 @@ var Link        = ReactRouter.Link;
 module.exports = React.createClass({
   displayName: "MainNavBar",
   renderLinks: function (links) {
+    var _this = this;
     return links.map(function (elem) {
       var _path = elem._path;
       var iconName = elem.iconName;
@@ -12,7 +13,7 @@ module.exports = React.createClass({
       var iconClass = "icon flaticon-" + iconName
       return (
         <li key={displayName}>
-          <Link to={_path}>
+          <Link onClick={_this.showMenu} to={_path}>
             <span className={iconClass}></span>
             &nbsp;
             {displayName}
