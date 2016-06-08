@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactSurface = require('react-surface');
 var FormContent   = require('../../../react_views/form_content');
 var TableHeader = require('../../../react_views/components/table_header');
 

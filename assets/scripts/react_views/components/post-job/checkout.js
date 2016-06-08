@@ -4,9 +4,6 @@ var Quill       = require("quill");
 var FormContent = require("../../form_content");
 var PaymentForm = require("./payment_form");
 var GeneralContent = require("../../new_general_content");
-
-var $ = require("zepto-browserify").$;
-
 var Checkout = React.createClass({
   render: function () {
     return (
