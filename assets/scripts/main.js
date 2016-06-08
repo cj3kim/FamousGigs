@@ -6,7 +6,7 @@ var render      = ReactDom.render;
 var Link        = ReactRouter.Link;
 var Route       = ReactRouter.Route;
 var Router      = ReactRouter.Router;
-var hashHistory = ReactRouter.hashHistory;
+//var hashHistory = ReactRouter.hashHistory;
 
 var IndexRoute  = ReactRouter.IndexRoute;
 var AdDetails   = require("./react_views/components/ad-details/index.js");
@@ -19,8 +19,10 @@ var Gigs = require("./react_views/components/gigs/index.js")
 var PaymentComplete = require("./react_views/components/post-job/payment_complete")
 var ReviewAndCheckout = require("./react_views/components/post-job/review/index");
 
+var browserHistory = ReactRouter.browserHistory;
+
 render((
-  <Router history={hashHistory}>
+  <Router history={browserHistory}>
       <Route path="/" component={App}>
           <IndexRoute component={Gigs}/>
           <Route path="/gigs" component={Gigs} />

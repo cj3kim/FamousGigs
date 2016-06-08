@@ -57,24 +57,28 @@ authRoutes.map(function (authRoute) {
           })
           .forEach(function (_module) { app.use("/api", _module); });
 
-
-var MobileDetect = require("mobile-detect");
-
-app.get("/", function(req, res) {
-  var md = new MobileDetect(req.headers["user-agent"]);
-  var isMobile   = !!md.mobile();
-  var showMobile = appConfig.showMobile;
-
-  var template = isMobile && showMobile ?  "mobile" : "index";
-  res.render(template);
-});
-
 var executeRoute = genExecuteMainRoute(app);
 var mainRoutes = ["company_ads", "developers", "works"];
 mainRoutes.forEach(function (mainRoute) { executeRoute(mainRoute); });
 
 var port = appConfig.server[NODE_ENV].port;
 console.log("Starting server at port " + port + ".");
+
+
+var MobileDetect = require("mobile-detect");
+app.get("/", function(req, res) {
+  /*var md = new MobileDetect(req.headers["user-agent"]);*/
+  //var isMobile   = !!md.mobile();
+  //var showMobile = appConfig.showMobile;
+  /*var template = isMobile && showMobile ?  "mobile" : "index";*/
+  var template = "index";
+  res.render(template);
+});
+
+app.get("*", function(req, res) {
+  var template = "index";
+  res.render(template);
+});
 
 app.listen(port);
 
