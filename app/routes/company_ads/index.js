@@ -1,4 +1,4 @@
-var stripe = require("stripe")("sk_test_1WASPwzkx5thPhUjyW06SYXb");
+var stripe = require("stripe")("sk_test_gV5sOgdNOOdjOHClWlrvkbW2");
 var xss = require("xss");
 var companyAdsRouteLogger = require('../../loggers/routes/index').company_ads;
 var Moment = require("moment");

@@ -6,7 +6,7 @@ var sgCompanyAdStore = require("../../../models/singleton/company_ad.js");
 var TextInput     = require("../../forms/inputs/text");
 var GeneralContent = require("../../new_general_content");
 
-Stripe.setPublishableKey("pk_test_8vofNFraEETbkErpKImun5jZ");
+Stripe.setPublishableKey("pk_test_kfMDX6TYhww4CZBhU8do5di6");
 Formsy.addValidationRule("expiration_date", function (values, value) {
     var regex = /(\d\d)\/(\d\d\d\d)/g;
     return regex.test(value);
