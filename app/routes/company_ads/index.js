@@ -2,31 +2,35 @@ var stripe = require("stripe")("sk_test_1WASPwzkx5thPhUjyW06SYXb");
 var xss = require("xss");
 var companyAdsRouteLogger = require('../../loggers/routes/index').company_ads;
 var Moment = require("moment");
+var ObjectId = require("node-time-uuid");
 
+function boolScraper(input) {
+  if (input === "true") {
+    return true;
+  } else if (input === "false" || input === "undefined") {
+    return false;
+  } else {
+    return input
+  }
+}
 
 module.exports = function (app) {
   var CompanyAds = require('../../models/company_ads');
 
   app.get('/company_ads', function(req, res) {
-    CompanyAds.fetchAll()
-    .then(function (models) {
-      res.json(models.toJSON());
-    })
-    .catch(function (err) {
-      companyAdsRouteLogger.error({error: err, req: req });
-      res.sendStatus(501);
-    });
+    CompanyAds.query(function (qb) {
+                qb.orderBy("created_at", "DESC");
+               })
+              .fetchAll()
+              .then(function (models) {
+                res.json(models.toJSON());
+              })
+              .catch(function (err) {
+                companyAdsRouteLogger.error({error: err, req: req });
+                res.sendStatus(501);
+              });
   });
 
-  function boolScraper(input) {
-    if (input==="true") {
-      return true;
-    } else if (input === "false" || input === "undefined") {
-      return false;
-    } else {
-      return input
-    }
-  }
   app.post('/company_ads/create', function (req, res) {
     var _companyAd = req.body;
     var companyAd = Object.keys(_companyAd)
@@ -35,6 +39,9 @@ module.exports = function (app) {
                         accum[key] =  boolScraper(val);
                         return accum;
                       }, {});
+    var uuidBuffer = new ObjectId();
+    companyAd.uuid = uuidBuffer.toString();
+
     var charge = stripe.charges.create({
       amount: 5000, // amount in cents, again
       currency: "usd",
@@ -46,12 +53,8 @@ module.exports = function (app) {
       } else {
         new CompanyAds(companyAd)
           .save()
-          .then(function () {
-            res.sendStatus(200);
-          })
+          .then(function () { res.sendStatus(200); })
           .catch(function (err) {
-
-            console.log('==> err', err);
             companyAdsRouteLogger.error({error: err, req: req });
             res.sendStatus(501);
           });
@@ -59,15 +62,15 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/ad-details/:id', function (req, res) {
-    CompanyAds.where({id: req.params.id })
-      .fetch()
-      .then(function (model) {
-        res.json(model.toJSON());
-      })
-      .catch(function (err) {
-        companyAdsRouteLogger.error({error: err, req: req });
-        res.sendStatus(501);
-      })
+  app.get('/ad_details/:uuid', function (req, res) {
+    CompanyAds.where({uuid: req.params.uuid })
+              .fetch()
+              .then(function (model) {
+                res.json(model.toJSON());
+              })
+              .catch(function (err) {
+                companyAdsRouteLogger.error({error: err, req: req });
+                res.sendStatus(501);
+              })
   });
 }

@@ -1,6 +1,8 @@
 var Backbone = require('backbone');
 var CompanyAd = Backbone.Model.extend({
-  urlRoot: '/ad-details',
+  urlRoot: '/ad_details',
+
+
 });
 
 module.exports = CompanyAd;

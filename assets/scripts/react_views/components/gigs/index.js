@@ -12,11 +12,15 @@ var withRouter = require("react-router").withRouter;
 var masonryOptions = {
     transitionDuration: 0
 };
+companyAdCollection.firstFetch = true;
 
 var Gigs = React.createClass({
   getInitialState: function () {
-      return { models: [],
-        companyAds: [] };
+      var models = companyAdCollection.models;
+      return {
+        models:  models,
+        companyAds: this.generateAds(models)
+      };
   },
   componentDidMount: function () {
       filterModel.on("change", function (evt) {
@@ -24,14 +28,19 @@ var Gigs = React.createClass({
             companyAds: _this.generateAds(_this.state.models)
           });
       });
+
       var _this = this;
-      var promise = companyAdCollection.fetch();
-      promise.done(function (models) {
-        var ads = _this.generateAds(models);
-        _this.setState({
-          models: models,
-          companyAds: ads });
-      });
+      if (companyAdCollection.firstFetch) {
+          var promise = companyAdCollection.fetch();
+          promise.done(function (models) {
+            var ads = _this.generateAds(companyAdCollection.models);
+            companyAdCollection.firstFetch = false;
+            _this.setState({
+              models: models,
+              companyAds: ads,
+            });
+          });
+      }
   },
   generateAds: function (models) {
      var job_location = filterModel.get("job_location");
@@ -41,7 +50,7 @@ var Gigs = React.createClass({
         })
       }
       var ads = models.map(function (model) {
-          return <CompanyAdComponent key={model.id} model={model}/>;
+          return <CompanyAdComponent key={model.id} model={model.attributes}/>;
       });
       return ads;
   },

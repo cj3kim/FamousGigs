@@ -12,7 +12,7 @@ var CompanyAd = React.createClass({
     var model = this.props.model;
     function createMarkup() { return { __html: model.description }; };
 
-    var urlPath = !isNaN(model.id) ? pathService.join("gigs", model.id.toString()) : "";
+    var urlPath = !isNaN(model.id) ? pathService.join("gigs", model.uuid) : "";
 
     var logoUrl = model.logo_url;
     var imgBlock = logoUrl ?  <img src={logoUrl} /> : null;
