@@ -1,12 +1,19 @@
-form#email-form {
-  span {
-    display: block;
+
+
+div#developer-signup {
+  div.content-body {
+    padding: 10px 0px;
   }
-  input {
-    display: block;
-    margin: 10px 0px;
-  }
-  button {
-    margin-top: 10px;
+  form#email-form {
+    span {
+      display: block;
+    }
+    input {
+      display: block;
+      margin: 10px 0px;
+    }
+    button {
+      margin-top: 10px;
+    }
   }
 }
