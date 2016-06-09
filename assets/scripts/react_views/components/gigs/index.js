@@ -33,10 +33,11 @@ var Gigs = React.createClass({
       if (companyAdCollection.firstFetch) {
           var promise = companyAdCollection.fetch();
           promise.done(function (models) {
-            var ads = _this.generateAds(companyAdCollection.models);
+            var bbModels = companyAdCollection.models;
+            var ads = _this.generateAds(bbModels);
             companyAdCollection.firstFetch = false;
             _this.setState({
-              models: models,
+              models: bbModels,
               companyAds: ads,
             });
           });
@@ -44,11 +45,13 @@ var Gigs = React.createClass({
   },
   generateAds: function (models) {
      var job_location = filterModel.get("job_location");
-      if (job_location.length > 0) {
-        models = models.filter(function (e) {
-          return e.job_location === job_location;
-        })
-      }
+     if (job_location.length > 0) {
+       models = models.filter(function (e) {
+         return e.get("job_location") === job_location;
+       });
+     }
+
+
       var ads = models.map(function (model) {
           return <CompanyAdComponent key={model.id} model={model.attributes}/>;
       });
