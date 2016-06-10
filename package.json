@@ -51,6 +51,7 @@
     "mustache": "^1.1.0",
     "name-generator": "^0.1.1",
     "node-rest-client": "^1.5.1",
+    "node-sass": "^3.7.0",
     "node-time-uuid": "^0.1.5",
     "object-merge": "^2.5.1",
     "options": "0.0.6",

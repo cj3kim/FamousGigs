@@ -2,6 +2,12 @@
   "server": {
     "development": {
       "port": 1337
+    },
+    "staging": {
+      "port": 1337
+    },
+    "production": {
+      "port": 1337
     }
   },
   "showMobile": true
