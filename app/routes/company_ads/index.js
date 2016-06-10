@@ -40,24 +40,30 @@ module.exports = function (app) {
                         return accum;
                       }, {});
     var uuidBuffer = new ObjectId();
-    companyAd.uuid = uuidBuffer.toString();
+    var uuid       = uuidBuffer.toString()
 
     var charge = stripe.charges.create({
       amount: 5000, // amount in cents, again
       currency: "usd",
       source: companyAd.stripe_token,
-      description: companyAd.contact_email
-    }, function(err, charge) {
-      if (err && err.type === 'StripeCardError') {
-        companyAdsRouteLogger.error({error: err, req: req });
-      } else {
-        new CompanyAds(companyAd)
-          .save()
-          .then(function () { res.sendStatus(200); })
-          .catch(function (err) {
+      receipt_email: companyAd.contact_email,
+      description:   "Job Posting Fee",
+      statement_descriptor: "Job Posting Fee"
+    }, function (err, charge) {
+          if (err && err.type === 'StripeCardError') {
             companyAdsRouteLogger.error({error: err, req: req });
-            res.sendStatus(501);
-          });
+          } else {
+            console.log('==> err', err);
+            console.log('==> charge', charge);
+            companyAd.uuid = uuid;
+            companyAd.charge_id = charge.id;
+            new CompanyAds(companyAd)
+              .save()
+              .then(function () { res.sendStatus(200); })
+              .catch(function (err) {
+                companyAdsRouteLogger.error({error: err, req: req });
+                res.sendStatus(501);
+              });
       }
     });
   });
