@@ -106,7 +106,6 @@ var PaymentForm = React.createClass({
                            label="Card Number"
                            validations="isNumeric,maxLength:19"
                            validationError="Please enter valid card number."
-                           value="4242424242424242"
                            required/>
 
               <div className="exp-date-and-cvc row">
@@ -115,13 +114,11 @@ var PaymentForm = React.createClass({
                            label="Expiration (MM/YYYY)"
                            validations="expiration_date"
                            validationError="Please enter valid date."
-                           value="12/2017"
                            required/>
                 <TextInput className="_cvc"
                            name="cvc"
                            label="CVC"
                            validationError="Please enter numbers."
-                           value="123"
                            required/>
               </div>
 

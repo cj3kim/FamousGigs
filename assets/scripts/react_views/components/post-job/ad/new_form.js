@@ -88,13 +88,13 @@ var AdEditForm = React.createClass({
 
                <TextInput name="title"
                           label="Title"
-                          value={sgCompanyAdStore.get("title") || "Test"}
+                          value={sgCompanyAdStore.get("title") }
                           required/>
                <TextInput type="text"
                           name="job_location"
                           label="Location"
                           google_search={true}
-                          value={sgCompanyAdStore.get("job_location") || "Oakland, CA, United States"}
+                          value={sgCompanyAdStore.get("job_location")}
                           required />
 
                <div className="form-row checkboxes">
@@ -121,7 +121,7 @@ var AdEditForm = React.createClass({
                <TextInput type="text"
                           name="company_name"
                           label="Company Name"
-                          value={sgCompanyAdStore.get("company_name") || "WunderCode"}
+                          value={sgCompanyAdStore.get("company_name")}
                           required/>
                <TextInput type="text"
                            name="company_link"
@@ -133,7 +133,7 @@ var AdEditForm = React.createClass({
                <TextInput type="text"
                           name="contact_name"
                           label="Contact Name"
-                          value={sgCompanyAdStore.get("contact_name") || "Chris Kim"}
+                          value={sgCompanyAdStore.get("contact_name") }
                           required/>
 
                <TextInput type="text"
@@ -141,7 +141,7 @@ var AdEditForm = React.createClass({
                           label="Contact Email"
                           validations="isEmail"
                           validationError="Please enter a valid email address"
-                          value={sgCompanyAdStore.get("contact_email") || "cj3kim@gmail.com"}
+                          value={sgCompanyAdStore.get("contact_email")}
                           required
                           />
                <label>Logo Upload (200x70 is optimal)</label>
