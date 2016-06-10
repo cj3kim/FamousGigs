@@ -1,5 +1,6 @@
 var bunyan = require('bunyan');
 var path = require('path');
+var fs = require('fs');
 
 function errorSerializer(err) {
   return {
@@ -19,6 +20,11 @@ function reqSerializer(req) {
   };
 }
 
+
+var logDir = path.join(__dirname, '..', '..', 'logs');
+if (!fs.existsSync(logDir)){
+    fs.mkdirSync(logDir);
+}
 var logger = bunyan.createLogger({
     name: 'main',
     serializers: {
@@ -35,7 +41,7 @@ var logger = bunyan.createLogger({
         stream: process.stderr
       },
       {
-        path: path.join(__dirname, '..', '..', 'logs', 'main-log.json')
+        path: path.join(logDir, 'main-log.json')
       }
     ]
 });
