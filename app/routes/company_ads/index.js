@@ -50,7 +50,7 @@ module.exports = function (app) {
       description:   "Job Posting Fee",
       statement_descriptor: "Job Posting Fee"
     }, function (err, charge) {
-          if (err && err.type === 'StripeCardError') {
+          if (err) {
             companyAdsRouteLogger.error({error: err, req: req });
           } else {
             console.log('==> err', err);
